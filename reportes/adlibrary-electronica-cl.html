@@ -105,13 +105,34 @@ input[type=search]{width:100%;padding:10px 12px;border-radius:10px;border:1px so
 .rev.in{opacity:1;transform:none}
 footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
 .tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 9px;border-radius:8px;opacity:0;transition:opacity .15s;z-index:50;max-width:260px}
+.gsHero>*,.grid2>*{min-width:0}
+.gsHero{display:grid;grid-template-columns:1.1fr 1fr;gap:16px;align-items:stretch}
+.vs{display:flex;align-items:flex-end;gap:14px;height:170px;padding-top:10px}
+.vs .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.vs .b{width:100%;max-width:56px;border-radius:10px 10px 4px 4px;height:0;transition:height 1.3s cubic-bezier(.2,.8,.2,1);background:var(--accent2)}
+.vs .col.me .b{background:var(--warn);min-height:4px}
+.vs .col b{font:700 18px "Space Grotesk"}.vs .col small{font-size:11px;color:var(--muted);text-align:center}
+.score{width:100%;font-size:13px}.score td,.score th{text-align:center}.score td:first-child,.score th:first-child{text-align:left}
+.score th.me,.score td.me{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.y{color:var(--ok);font-weight:700}.n{color:var(--muted)}
+.catb{cursor:pointer}.catb:hover .l,.catb.on .l{color:var(--accent);font-weight:600}
+.gauge{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:6px}
+.gauge div{background:var(--surface2);border-radius:12px;padding:12px}.gauge b{font:700 26px "Space Grotesk";display:block}.gauge small{font-size:12px;color:var(--muted)}
+.waves{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.wave{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;position:relative;overflow:hidden}
+.wave::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.wave em{font-style:normal;font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.wave>b{display:block;font:700 16px "Space Grotesk";margin:6px 0}.wave p{margin:0 0 6px;font-size:13px;color:var(--muted)}
+.wave ul{margin:0;padding-left:16px;font-size:13px}
+.scrollx{overflow-x:auto}
+@media (max-width:820px){.gsHero,.waves{grid-template-columns:1fr}.gauge{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:820px){.kpis{grid-template-columns:repeat(2,1fr)}.grid2,.reco{grid-template-columns:1fr}.bar{grid-template-columns:110px 1fr 36px}.tlr{grid-template-columns:110px 1fr 54px}.persona{grid-template-columns:1fr}.avatar{width:80px;height:80px;font-size:36px}.ti .body{padding-left:16px}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rev{opacity:1;transform:none}.bub{transform:scale(1)}}
 </style>
 </head>
 <body>
 <nav><div class="wrap">
-<a href="#resumen">Resumen</a><a href="#formatos">Formatos</a><a href="#partners">Partnerships</a><a href="#mensajes">Mensajes</a><a href="#personas">Audiencias</a><a href="#top">Top 10</a><a href="#longevos">Longevos</a><a href="#accion">Qué hacer</a><a href="#datos">Datos</a>
+<a href="#resumen">Resumen</a><a href="#formatos">Formatos</a><a href="#partners">Partnerships</a><a href="#mensajes">Mensajes</a><a href="#personas">Audiencias</a><a href="#top">Top 10</a><a href="#longevos">Longevos</a><a href="#gs">GS vs competencia</a><a href="#accion">Qué hacer</a><a href="#datos">Datos</a>
 <button id="theme" aria-label="Cambiar tema">◐ Tema</button>
 </div></nav>
 
@@ -195,8 +216,48 @@ footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
 </div>
 </section>
 
+<section id="gs" class="rev">
+<div class="sh"><span class="n">07</span><h2>GS Electronic vs. la competencia</h2></div>
+<p class="sub">Tu catálogo (140 productos, pedidos por WhatsApp, mayorista con 15% desde 8 unidades) frente a los anunciantes que venden lo mismo que tú: accesorios, cargadores, cables, audio y pilas.</p>
+<div class="gsHero">
+<div class="card"><h3>Anuncios activos en Meta (Chile)</h3>
+<div class="vs" id="vs"></div>
+<div class="insight warnbox"><b>GS Electronic no aparece en la Ad Library:</b> no hay anuncios activos ni pasados con "GS Electronic" o "gselectronic" en Chile, y la página tampoco está entre las páginas con permiso de anuncios en tu cuenta. Hoy tus competidores directos tienen el feed para ellos solos.</div></div>
+<div class="card"><h3>Cuadro comparativo</h3>
+<div class="scrollx"><table class="score"><thead><tr><th></th><th class="me">GS</th><th>LifeMax</th><th>Tecnocenter</th><th>Murguia</th></tr></thead><tbody>
+<tr><td>Anuncios activos</td><td class="me n">0</td><td>30</td><td>3</td><td>2</td></tr>
+<tr><td>Catálogo o carrusel en ads</td><td class="me n">—</td><td class="y">✓</td><td class="y">✓</td><td class="n">—</td></tr>
+<tr><td>Oferta mayorista</td><td class="me y">✓ 15% desde 8 uds</td><td class="y">✓ eje principal</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>Promesa de rapidez o garantía</td><td class="me n">no se comunica</td><td class="y">✓ "1 hora", "15 años"</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>Envío, cuotas o retiro</td><td class="me y">✓ en el catálogo</td><td class="n">—</td><td class="n">—</td><td class="y">✓ envío gratis RM</td></tr>
+<tr><td>Venta por WhatsApp</td><td class="me y">✓</td><td class="n">?</td><td class="n">?</td><td class="n">?</td></tr>
+<tr><td>Creadores (partnership)</td><td class="me n">—</td><td class="n">—</td><td class="n">—</td><td class="n">—</td></tr>
+</tbody></table></div>
+<p style="font-size:12px;color:var(--muted);margin:8px 0 0">"—" = no aparece en los headlines de sus anuncios. "?" = la API no lo muestra.</p></div>
+</div>
+
+<div class="grid2" style="margin-top:16px">
+<div class="card"><h3>Tus categorías y quién compite en cada una</h3><p style="font-size:13px;color:var(--muted);margin:-4px 0 10px">Productos únicos por categoría. Toca una barra.</p><div class="bars" id="gsBars"></div></div>
+<div class="card" id="gsCat"></div>
+</div>
+
+<div class="card" style="margin-top:16px"><h3>⚠️ Antes de pautar, limpia el catálogo</h3>
+<p style="font-size:14px;margin:0 0 6px;color:var(--muted)">Los anuncios de catálogo muestran el nombre y el precio tal como están en el feed. Si los usas con el catálogo actual, saldrían anuncios con errores.</p>
+<div class="gauge"><div><b data-gs="66">0</b><small>productos únicos reales, de 140 publicados</small></div><div><b data-gs="39">0</b><small>fichas vacías ("Descripción del producto")</small></div><div><b data-gs="35">0</b><small>productos duplicados</small></div><div><b data-gs="22">0</b><small>precios de $1.000 a $2.500 que parecen de relleno (SSD 1TB Kingston a $1.000, pilas a $1.000)</small></div></div>
+<div class="insight warnbox"><b>Revisa también:</b> los teclados Logitech (PRO X 60 a $4.399, MX Mechanical a $4.249) parecen tener un cero de menos. Un precio así en un anuncio o genera reclamos o te come el margen.</div></div>
+
+<h3 style="margin:26px 0 12px;font-size:20px">Plan para GS en 4 olas (Meta)</h3>
+<div class="waves">
+<div class="wave"><em>Ola 1 · Venta</em><b>Anuncios a WhatsApp con productos estrella</b><p>Tus pedidos ya entran por WhatsApp, así que el anuncio debe llevar directo ahí.</p><ul><li>Kit carcasa + lámina + antiespía iPhone <b>$6.990</b> (antes $11.990)</li><li>Power bank MagSafe <b>$13.990</b> (antes $16.990)</li><li>Base de carga 3 en 1 <b>$22.990</b> (antes $28.990)</li><li>Ángulo: precio tachado + "pide por WhatsApp" + retiro en tienda</li></ul></div>
+<div class="wave"><em>Ola 2 · Mayorista</em><b>Pelearle el B2B a LifeMax</b><p>LifeMax corre más de 15 variantes de "precio mayorista". Tú tienes una oferta concreta que ellos no ponen en el headline.</p><ul><li>Headline: "15% de descuento comprando desde 8 unidades"</li><li>Para técnicos y locales de accesorios</li><li>Al WhatsApp, con tu mensaje "AL POR MAYOR"</li></ul></div>
+<div class="wave"><em>Ola 3 · Diferenciación</em><b>Creadores y video de producto</b><p>Ningún competidor usa creadores.</p><ul><li>Unboxing del soporte magnético para auto y del parlante Lumina RGB</li><li>Partnership ads con un creador tech o de autos local</li><li>Hook: el problema ("se te cae el celular en el auto") y luego la solución</li></ul></div>
+<div class="wave"><em>Ola 4 · Recompra</em><b>Catálogo para retargeting</b><p>Solo con el feed limpio.</p><ul><li>Anuncios de catálogo para quien vio productos o escribió al WhatsApp</li><li>Cross-sell: quien compra carcasa, ve láminas y cables</li><li>Mensaje de confianza: envío, cuotas, retiro en tienda</li></ul></div>
+</div>
+<div class="insight"><b>Por qué este orden:</b> sin anuncios activos no tienes datos propios. Las olas 1 y 2 generan conversaciones y ventas rápido, la ola 3 crea el diferencial que nadie tiene, y la ola 4 reutiliza la audiencia que generaron las anteriores.</div>
+</section>
+
 <section id="accion" class="rev">
-<div class="sh"><span class="n">07</span><h2>Qué hacer con esto</h2></div>
+<div class="sh"><span class="n">08</span><h2>Qué hacer con esto</h2></div>
 <p class="sub">Huecos del mercado que puedes tomar.</p>
 <div class="reco">
 <div class="card"><b>1 · Ocupa el espacio de creadores</b><p>Nadie usa partnership ads. Un creador tech o gamer reseñando tu producto te da prueba social que ningún competidor tiene. Testea 2 o 3 creadores contra tu mejor anuncio de marca.</p></div>
@@ -209,7 +270,7 @@ footer{padding:30px 0 60px;color:var(--muted);font-size:13px}
 </section>
 
 <section id="datos" class="rev">
-<div class="sh"><span class="n">08</span><h2>Explorador de anuncios</h2></div>
+<div class="sh"><span class="n">09</span><h2>Explorador de anuncios</h2></div>
 <p class="sub">Todos los anuncios del análisis con enlace directo a la Ad Library.</p>
 <input type="search" id="q" placeholder="Buscar por anunciante o texto…">
 <div class="tablewrap"><table><thead><tr><th>Anunciante</th><th>Headline</th><th>Formato (inferido)</th><th>Días</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
@@ -366,6 +427,25 @@ $('#longevos').addEventListener('reveal',()=>document.querySelectorAll('#tl .f')
 // table
 function drawT(q=''){q=q.toLowerCase();$('#tb').innerHTML=ADS.filter(a=>(a.page+' '+a.title).toLowerCase().includes(q)).sort((a,b)=>b.days-a.days).map(a=>`<tr><td>${a.page}</td><td>${a.title||'<span style="color:var(--muted)">—</span>'}</td><td>${a.fmt}</td><td>${Math.round(a.days)}</td><td><a href="https://www.facebook.com/ads/library/?id=${a.id}" target="_blank" rel="noopener">ver ↗</a></td></tr>`).join('')}
 drawT();$('#q').oninput=e=>drawT(e.target.value);
+
+// GS
+const VS=[['GS',0,1],['LifeMax',30],['Chiletronics',6],['Tecnocenter',3],['Murguia',2],['aresphone',1]];
+$('#vs').innerHTML=VS.map(v=>`<div class="col${v[2]?' me':''}"><b>${v[1]}</b><div class="b" data-h="${v[1]/30*100}"></div><small>${v[0]}</small></div>`).join('');
+const GSC=[
+ {c:'Accesorios de celular',n:12,p:['Kit carcasa + lámina + antiespía iPhone · $6.990 (antes $11.990)','Carcasa 360 KBOD URBAN · $9.990 (antes $14.440)','Tarjetero MagSafe de cuero · $6.990'],r:['LifeMax (repuestos y láminas)','Ale Ocho (pack x50 láminas hidrogel $19.990)','aresphone.cl ("tu tienda de confianza en tecnología")'],tip:'Es la categoría más disputada. Diferénciate con kits y precio tachado; nadie más arma bundles.'},
+ {c:'Cargadores',n:5,p:['Base de carga 3 en 1 15W · $22.990 (antes $28.990)','Power bank 10.000 mAh 45W · $15.990','Power bank MagSafe 5.000 · $13.990'],r:['LifeMax (power bank, cargador GaN 65W, cargador para auto)'],tip:'LifeMax los vende como mayorista. Tú puedes ganar en el consumidor final con el ángulo MagSafe/iPhone.'},
+ {c:'Cables y adaptadores',n:6,p:['Cable USB-C para iPhone 3 m nylon · $8.990','Cable KBOD para CarPlay · $6.990','Adaptador jack 3.5 mm · $3.990'],r:['Tecnocenter (cable HDMI, "pilas y cables disponibles")','LifeMax (cable USB-C)'],tip:'Ticket bajo: úsalo para subir el ticket promedio junto a carcasas y cargadores, no como anuncio principal.'},
+ {c:'Audio',n:8,p:['Parlante Kbod Lumina RGB sumergible · $24.990','Parlante Pulse Pro 10 h · $15.990','Intercomunicador moto RGB · $16.990'],r:['LifeMax ("Lo mejor en AUDIO")','Bros Market (lentes con audio)'],tip:'Producto muy visual (luces RGB): ideal para Reels y creadores.'},
+ {c:'Computación y gamer',n:11,p:['Kit teclado + mouse MO-18 · $19.900','Mouse Bluetooth silencioso · $8.990','Logitech PRO X 60 · $4.399 ⚠️ revisar precio'],r:['Mr Click, MyShop (notebooks gamer)','Falabella y Paris (monitores, kits gamer)','Tecnocenter (mouse gamer)'],tip:'Aquí compiten retailers grandes. Enfócate en periféricos y no en notebooks.'},
+ {c:'Automóvil',n:9,p:['Soporte magnético panel 360 LZ078 · $9.990','Soporte Motomo Q17 · $6.990 (antes $8.790)','Soporte con sensor de gravedad · $10.000'],r:['Shenzhen Duby (CarPlay y dashcam, pero desde China y en CNY)'],tip:'Casi sin competencia local en Meta. Es tu mejor oportunidad para crecer con video: problema y solución en 5 segundos.'},
+ {c:'Almacenamiento',n:6,p:['Pendrive Motomo metálico 64 GB · $16.990','Micro SD Motomo 16 GB · $9.990 (antes $11.990)','SSD Kingston 1 TB · $1.000 ⚠️ precio de relleno'],r:['No se vieron competidores en el set'],tip:'Sin competencia visible, pero corrige los precios antes de pautar.'},
+ {c:'Pilas',n:9,p:['Duracell 2, 4 y 5 en 1','Panasonic, Energizer, Rayovac','Recargables Volteck'],r:['Tecnocenter (pilas Duracell en catálogo)'],tip:'Commodity. Úsalo como complemento o en la oferta mayorista, no como anuncio principal.'}];
+$('#gsBars').innerHTML=GSC.map((g,i)=>`<div class="bar catb${i?'':' on'}" data-i="${i}"><span class="l">${g.c}</span><div class="t"><div class="f" data-w="${g.n/12*100}"></div></div><span class="v">${g.n}</span></div>`).join('');
+function drawGS(i){const g=GSC[i];$('#gsCat').innerHTML=`<h3>${g.c}</h3><p style="margin:0 0 6px;font-size:13px;color:var(--muted)">Tus productos destacados</p><div class="examples" style="margin:0">${g.p.map((x,k)=>`<div class="ex" style="animation-delay:${k*60}ms">${x}</div>`).join('')}</div><p style="margin:14px 0 6px;font-size:13px;color:var(--muted)">Quién compite en Meta</p><ul style="margin:0;padding-left:18px;font-size:14px">${g.r.map(x=>`<li>${x}</li>`).join('')}</ul><div class="insight"><b>Jugada:</b> ${g.tip}</div>`}
+$('#gsBars').onclick=e=>{const b=e.target.closest('.catb');if(!b)return;document.querySelectorAll('.catb').forEach(x=>x.classList.toggle('on',x===b));drawGS(+b.dataset.i)};
+drawGS(0);
+$('#gs').addEventListener('reveal',()=>{document.querySelectorAll('#vs .b').forEach(b=>b.style.height=b.dataset.h+'%');document.querySelectorAll('#gsBars .f').forEach(f=>f.style.width=f.dataset.w+'%');
+ document.querySelectorAll('[data-gs]').forEach(el=>{const end=+el.dataset.gs;let t0=null;const st=ts=>{t0=t0||ts;const p=Math.min((ts-t0)/1100,1);el.textContent=Math.round(end*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(st)};requestAnimationFrame(st)})});
 
 // nav active
 const secs=[...document.querySelectorAll('header[id],section[id]')];
