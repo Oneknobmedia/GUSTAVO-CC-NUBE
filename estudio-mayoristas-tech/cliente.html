@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>El Primer Lugar Online</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Figtree:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: una columna mobile-first, bandas separadas por filos de degradado; cada sección = un paso del recorrido PAS → AIDA */
+:root{
+  --bg:#07060c; --surface:#100d19; --surface-2:#18122a; --line:#8b5cf6; --line-soft:rgba(139,92,246,.32);
+  --fg:#f6f4fb; --muted:#a9a1c3; --dim:#5d5578;
+  --orange:#ff7a1a; --pink:#ff2e88; --purple:#a855f7; --green:#2dff9b; --red:#ff4d5e;
+  --grad:linear-gradient(90deg,var(--orange),var(--pink) 35%,var(--purple) 68%,var(--green));
+  --glow:0 0 0 1px var(--line-soft),0 0 24px rgba(168,85,247,.18);
+  --f-display:'Unbounded','Arial Black',system-ui,sans-serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(56px,9vw,104px);position:relative}
+section+section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad);opacity:.45}
+h1,h2,h3{font-family:var(--f-display);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1{font-size:clamp(30px,6.4vw,62px);font-weight:900}
+h2{font-size:clamp(25px,4.4vw,42px);font-weight:700}
+h3{font-size:clamp(17px,2.2vw,20px);font-weight:700}
+p{margin:0;max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--grad)}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.stack{display:flex;flex-direction:column;gap:20px}
+.lead{font-size:clamp(18px,2.2vw,21px);color:var(--muted)}
+.lead b,.lead strong{color:var(--fg)}
+.panel{background:var(--surface);border:1px solid var(--line-soft);border-radius:16px;box-shadow:var(--glow)}
+a{color:var(--green)}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+
+/* top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(7,6,12,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line-soft)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-block:12px}
+.top b{font-family:var(--f-display);font-size:13px;letter-spacing:.04em;white-space:nowrap}
+@media(max-width:560px){.top .long{display:none}}
+.top span{font-family:var(--f-mono);font-size:11px;color:var(--muted);text-align:right}
+
+/* hero */
+.hero{padding-block:clamp(40px,7vw,88px) clamp(48px,7vw,80px)}
+.hero h1 .strike{position:relative;white-space:nowrap}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px;margin-top:8px}
+.stat{padding:20px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.stat .n{font-family:var(--f-display);font-weight:900;font-size:clamp(34px,5vw,46px);line-height:1;font-variant-numeric:tabular-nums}
+.stat .n small{font-size:.45em;color:var(--muted);font-weight:700}
+.stat p{font-size:15px;color:var(--muted)}
+.n.o{color:var(--orange)}.n.p{color:var(--pink)}.n.r{color:var(--red)}.n.g{color:var(--green)}
+.src{font-family:var(--f-mono);font-size:11px;color:var(--dim);letter-spacing:.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border-radius:999px;border:0;font-family:var(--f-display);font-weight:700;font-size:15px;color:#0b0812;background:var(--grad);cursor:pointer;text-decoration:none;box-shadow:0 0 28px rgba(255,46,136,.35)}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line);box-shadow:none}
+
+/* story */
+.story{display:grid;grid-template-columns:1fr;gap:28px}
+@media(min-width:860px){.story{grid-template-columns:1.05fr .95fr;align-items:start}}
+.phone{max-width:340px;width:100%;margin-inline:auto;border-radius:34px;border:2px solid var(--line);padding:16px 14px 20px;background:linear-gradient(180deg,#0e0b18,#090711);box-shadow:0 0 40px rgba(139,92,246,.28)}
+.phone .bar{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--muted);padding:0 8px 10px}
+.chat{display:flex;flex-direction:column;gap:10px}
+.msg{max-width:84%;padding:10px 12px;border-radius:14px;font-size:14px;line-height:1.45}
+.msg.out{align-self:flex-end;background:#1f5e47;color:#eafff5;border-bottom-right-radius:4px}
+.msg.sys{align-self:center;font-family:var(--f-mono);font-size:11px;color:var(--muted);background:transparent;padding:2px}
+.msg.cold{align-self:flex-start;background:var(--surface-2);color:var(--dim);border:1px dashed var(--dim);border-bottom-left-radius:4px}
+.msg .t{display:block;font-family:var(--f-mono);font-size:10px;opacity:.7;margin-top:4px;text-align:right}
+.alt{margin-top:14px;padding:12px;border-radius:14px;border:1px solid var(--green);background:rgba(45,255,155,.06);font-size:14px}
+.alt b{color:var(--green)}
+
+/* agitation */
+.losses{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
+.loss{padding:18px 18px 20px;border-left:3px solid var(--pink);background:var(--surface);border-radius:4px 14px 14px 4px;display:flex;flex-direction:column;gap:6px}
+.loss h3{font-size:16px}
+.loss p{font-size:15px;color:var(--muted)}
+.calc{padding:clamp(18px,3vw,30px);display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:860px){.calc{grid-template-columns:1fr 1fr;align-items:center}}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{display:flex;justify-content:space-between;gap:12px;font-size:15px;color:var(--muted)}
+.field output{font-family:var(--f-mono);color:var(--fg);font-weight:700;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--pink);height:28px}
+.result{text-align:center;padding:24px 16px;border-radius:14px;background:radial-gradient(120% 120% at 50% 0%,rgba(255,46,136,.16),transparent 60%),var(--surface-2);border:1px solid var(--pink)}
+.result .big{font-family:var(--f-display);font-weight:900;font-size:clamp(32px,6vw,52px);line-height:1.05;color:var(--pink);font-variant-numeric:tabular-nums;word-break:break-word}
+.result p{margin:8px auto 0;color:var(--muted);font-size:15px}
+.note{font-size:13px;color:var(--dim);margin-top:10px}
+
+/* competition map */
+.mapgrid{display:grid;grid-template-columns:1fr;gap:18px}
+@media(min-width:900px){.mapgrid{grid-template-columns:1.35fr .65fr}}
+.scroll{overflow-x:auto;border-radius:16px;border:1px solid var(--line-soft);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:10px 12px;text-align:center;border-bottom:1px solid rgba(139,92,246,.14);white-space:nowrap}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500;position:sticky;top:0;background:var(--surface)}
+td:first-child,th:first-child{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1}
+td:first-child{font-weight:700}
+.d{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;font-family:var(--f-mono);font-size:12px;font-weight:700}
+.d.y{background:rgba(45,255,155,.16);color:var(--green);box-shadow:inset 0 0 0 1px var(--green)}
+.d.n{background:transparent;color:var(--dim);box-shadow:inset 0 0 0 1px var(--dim)}
+.d.w{background:rgba(255,77,94,.16);color:var(--red);box-shadow:inset 0 0 0 1px var(--red)}
+.d.h{background:rgba(255,122,26,.14);color:var(--orange);box-shadow:inset 0 0 0 1px var(--orange)}
+.d.u{color:var(--dim)}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:var(--muted);margin-top:10px}
+.legend span{display:inline-flex;gap:6px;align-items:center}
+.insights{display:flex;flex-direction:column;gap:14px}
+.ins{padding:18px}
+.ins h3{font-size:15px;margin-bottom:6px}
+.ins p{font-size:15px;color:var(--muted)}
+.donut{width:150px;height:150px;border-radius:50%;margin:4px auto 10px;display:grid;place-items:center;background:conic-gradient(var(--pink) 0 calc(var(--v)*1%),rgba(139,92,246,.2) 0)}
+.donut::after{content:attr(data-label);width:108px;height:108px;border-radius:50%;background:var(--surface);display:grid;place-items:center;font-family:var(--f-display);font-weight:900;font-size:26px;text-align:center}
+.split{display:flex;height:34px;border-radius:10px;overflow:hidden;margin:10px 0 6px;font-family:var(--f-mono);font-size:12px;font-weight:700}
+.split div{display:grid;place-items:center;color:#0b0812}
+
+/* comparison */
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 14px var(--f-body);cursor:pointer}
+.seg button[aria-pressed="true"]{border-color:var(--pink);color:var(--fg);background:rgba(255,46,136,.12)}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px;font-size:15px}
+.cmp>div{padding:12px 10px;border-bottom:1px solid rgba(139,92,246,.14);display:flex;align-items:center}
+.cmp .hd{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);justify-content:center;text-align:center}
+.cmp .hd:first-child{justify-content:flex-start}
+.cmp .c{justify-content:center}
+.cmp .pro{background:rgba(45,255,155,.05)}
+.scorebar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px}
+.scorebar .track{height:12px;border-radius:99px;background:rgba(139,92,246,.18);overflow:hidden}
+.scorebar .fill{height:100%;border-radius:99px;transition:width .5s ease}
+.scorebar b{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.verdict{padding:18px;border-radius:14px;border:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.verdict b{color:var(--fg)}
+
+/* ecosystem */
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px;counter-reset:s}
+.step{padding:16px 14px;border-radius:14px;border:1px solid var(--line-soft);background:var(--surface);display:flex;flex-direction:column;gap:6px;transition:border-color .3s,box-shadow .3s,transform .3s}
+.step .k{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
+.step b{font-family:var(--f-display);font-size:14px}
+.step p{font-size:13.5px;color:var(--muted)}
+.step.on{border-color:var(--green);box-shadow:0 0 22px rgba(45,255,155,.25);transform:translateY(-2px)}
+.qw{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:16px}
+.qwc{padding:22px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+.qwc::before{content:"";position:absolute;inset:0 0 auto;height:3px;background:var(--grad)}
+.qwc .tag{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
+.qwc p{font-size:15px;color:var(--muted)}
+.qwc ul{margin:0;padding-left:18px;font-size:15px;color:var(--fg);display:flex;flex-direction:column;gap:4px}
+.ba{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:760px){.ba{grid-template-columns:1fr 1fr}}
+.ba .panel{padding:20px}
+.ba ul{margin:10px 0 0;padding-left:18px;display:flex;flex-direction:column;gap:6px;font-size:15px}
+.ba .before h3{color:var(--dim)} .ba .before li{color:var(--muted)}
+.ba .after{border-color:var(--green)} .ba .after h3{color:var(--green)}
+.manifesto{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,3.2vw,30px);line-height:1.25;max-width:30ch}
+
+/* names */
+.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
+.nm{padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--line-soft);display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;color:var(--fg);font:inherit;transition:border-color .2s,box-shadow .2s}
+.nm:hover,.nm[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 0 22px rgba(255,46,136,.22)}
+.nm .word{font-family:var(--f-display);font-weight:900;font-size:26px;letter-spacing:.02em}
+.nm .sl{font-size:15px;color:var(--fg)}
+.nm .cp{font-size:13.5px;color:var(--muted)}
+.sw{display:flex;gap:6px;margin-top:4px}
+.sw i{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.nm .fav{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
+.nm[aria-pressed="true"] .fav{color:var(--pink)}
+.top3{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:99px;border:1px solid var(--green);color:var(--green);width:max-content}
+
+/* cta */
+.cta{padding:clamp(24px,4vw,44px);text-align:left;display:flex;flex-direction:column;gap:18px;border:1px solid var(--line);background:radial-gradient(140% 100% at 0% 0%,rgba(255,122,26,.14),transparent 50%),radial-gradient(140% 100% at 100% 100%,rgba(45,255,155,.12),transparent 50%),var(--surface)}
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.ph{padding:16px;border-radius:12px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px}
+.ph .k{font-family:var(--f-mono);font-size:11px;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
+.ph p{font-size:14.5px;color:var(--muted)}
+.copyrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.kw{font-family:var(--f-mono);font-weight:700;font-size:18px;padding:12px 16px;border-radius:12px;border:1px dashed var(--green);color:var(--green);user-select:all}
+footer{padding-block:40px 56px;color:var(--dim);font-size:13px}
+footer ol{padding-left:18px;display:flex;flex-direction:column;gap:6px;margin:10px 0 0}
+footer a{color:var(--muted);word-break:break-word}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head><body>
+
+<header class="top"><div class="wrap"><b class="grad-text">ONE KNOB MEDIA</b><span>Estudio de mercado<span class="long"> · Mayoristas de accesorios tecnológicos · Santiago</span> · oct 2026</span></div></header>
+
+<main>
+<!-- ATENCIÓN -->
+<section class="hero"><div class="wrap stack">
+  <span class="eyebrow">13 competidores revisados uno por uno</span>
+  <h1>Tu cliente compra desde el celular. <span class="grad-text">8 de 13 mayoristas</span> no tienen una tienda web que funcione para venderle.</h1>
+  <p class="lead">Revisamos webs, catálogos, WhatsApp, redes y publicidad de 13 mayoristas de accesorios tecnológicos de Santiago. Encontramos una puerta abierta: <b>vender en serio por internet</b>. Casi nadie la está cruzando bien, y la que la cruce primero se lleva al cliente que hoy no puede ir a la galería.</p>
+  <div class="stats">
+    <div class="panel stat"><span class="n p">8<small>/13</small></span><p>no tienen tienda web propia funcionando. Venden por chat, PDF o apps prestadas.</p></div>
+    <div class="panel stat"><span class="n o">5<small>/8</small></span><p>de los que publicitan en Meta mandan ese clic a un chat o a un perfil. No tienen tienda donde cerrar la venta.</p></div>
+    <div class="panel stat"><span class="n r">2</span><p>tienen un WhatsApp que no recibe mensajes o un número que ya no funciona. Pagan por atraer clientes que no pueden atender.</p></div>
+    <div class="panel stat"><span class="n g">80<small>%</small></span><p>del tráfico llega desde el celular. Ahí se decide la compra.</p></div>
+  </div>
+  <p class="src">Fuente: levantamiento propio de los 13 perfiles, web y WhatsApp (oct 2026). El 80 % móvil es el dato de tráfico con el que trabajamos en el nicho.</p>
+  <div><a class="btn" href="#problema">Ver dónde se está yendo la plata ↓</a></div>
+</div></section>
+
+<!-- PROBLEMA -->
+<section id="problema"><div class="wrap story">
+  <div class="stack">
+    <span class="eyebrow">El problema</span>
+    <h2>No pierdes ventas por precio. Las pierdes por no estar disponible.</h2>
+    <p class="lead">Son las 23:40. Una revendedora de Talca necesita 50 cables tipo C y 20 cargadores para su local. No puede viajar a Monjitas. Ve un anuncio, escribe al WhatsApp y espera.</p>
+    <p class="lead">Nadie contesta. A la mañana siguiente le responden con <b>"hola, ¿qué necesitas?"</b> Para entonces ya le compró a otro.</p>
+    <p class="lead">Ese pedido no se perdió por el precio del cable. Se perdió porque <b>tu negocio cierra cuando cierras tú</b>, y tu cliente compra cuando tiene tiempo: de noche, en el bus, entre clientes.</p>
+  </div>
+  <div class="phone" aria-label="Ejemplo de conversación de WhatsApp sin respuesta">
+    <div class="bar"><span>23:41</span><span>Mayorista · en línea hace 6 h</span></div>
+    <div class="chat">
+      <div class="msg sys">HOY</div>
+      <div class="msg out">Hola! Vi su anuncio. Necesito 50 cables tipo C y 20 cargadores 20W. ¿Precio por mayor? ¿Envían a Talca?<span class="t">23:40 ✓✓</span></div>
+      <div class="msg out">¿Tienen catálogo?<span class="t">23:52 ✓✓</span></div>
+      <div class="msg sys">8 h 40 min después</div>
+      <div class="msg cold">hola, ¿qué necesitas?<span class="t">08:32</span></div>
+    </div>
+    <div class="alt"><b>Mientras tanto, en otra pestaña:</b> una tienda con precios por volumen, carrito y despacho a regiones. Pedido pagado a las 23:47.</div>
+  </div>
+</div></section>
+
+<!-- AGITACIÓN -->
+<section><div class="wrap stack">
+  <span class="eyebrow">Lo que cuesta seguir igual</span>
+  <h2>Cada semana sin tienda online pagas cuatro costos que no aparecen en ninguna boleta.</h2>
+  <div class="losses">
+    <div class="loss"><h3>El cliente de regiones no existe para ti</h3><p>Si para comprarte hay que ir al local, tu mercado termina donde termina el metro.</p></div>
+    <div class="loss"><h3>Tu WhatsApp es un cuello de botella</h3><p>Cada cotización depende de que alguien esté mirando el teléfono. Una persona responde una conversación a la vez. Una tienda atiende a cien.</p></div>
+    <div class="loss"><h3>Compites solo por precio</h3><p>Si vendes el mismo cargador que el local de al lado y no tienes cómo mostrar algo más, el cliente compara precio y nada más.</p></div>
+    <div class="loss"><h3>La publicidad trabaja a ciegas</h3><p>Sin tienda no hay cómo decirle a Meta o Google quién te compró. El algoritmo optimiza para mensajes y "me gusta", no para ventas.</p></div>
+  </div>
+
+  <div class="panel calc" aria-labelledby="calc-t">
+    <div class="stack" style="gap:16px">
+      <h3 id="calc-t">Calcula cuánto se te escapa al mes</h3>
+      <div class="field"><label for="q">Consultas que recibes por semana <output id="qo">40</output></label><input id="q" type="range" min="5" max="300" step="5" value="40"></div>
+      <div class="field"><label for="miss">Consultas que no alcanzas a responder a tiempo <output id="misso">30 %</output></label><input id="miss" type="range" min="5" max="80" step="5" value="30"></div>
+      <div class="field"><label for="close">De las que respondes bien, cuántas compran <output id="closeo">25 %</output></label><input id="close" type="range" min="5" max="60" step="5" value="25"></div>
+      <div class="field"><label for="tk">Pedido promedio mayorista <output id="tko">$120.000</output></label><input id="tk" type="range" min="20000" max="600000" step="10000" value="120000"></div>
+    </div>
+    <div class="result" aria-live="polite">
+      <span class="eyebrow" style="justify-content:center">Ventas que se van a otro local</span>
+      <div class="big" id="lost">$1.559.000</div>
+      <p>al mes, solo por consultas que llegan y no se atienden a tiempo. <b id="lostY" style="color:var(--fg)">$18.706.000</b> al año.</p>
+      <p class="note">Valores de ejemplo. Mueve los controles con tus números reales.</p>
+    </div>
+  </div>
+</div></section>
+
+<!-- INTERÉS: COMPETENCIA -->
+<section id="competencia"><div class="wrap stack">
+  <span class="eyebrow">Así juega tu competencia</span>
+  <h2>Todos venden lo mismo, en las mismas cuadras, por el mismo chat.</h2>
+  <p class="lead">Cinco de los trece están en la misma cuadra de Monjitas (843 a 874). Revenden las mismas marcas de fábrica: LDNIO, Hoco, Borofone, Motomo, Inkax. Cuando todos ofrecen lo mismo, <b>el que facilita la compra gana</b>.</p>
+  <div class="mapgrid">
+    <div style="min-width:0">
+      <div class="scroll"><table aria-label="Mapa de presencia digital de 13 competidores">
+        <thead><tr><th>Competidor</th><th>Tienda web</th><th>Anuncia en Meta</th><th>WhatsApp responde solo</th><th>Catálogo</th><th>TikTok</th></tr></thead>
+        <tbody id="mapBody"></tbody>
+      </table></div>
+      <div class="legend"><span><i class="d y">✓</i>Sí</span><span><i class="d h">~</i>A medias</span><span><i class="d w">!</i>Roto</span><span><i class="d n">✕</i>No</span><span><i class="d u">·</i>Sin dato</span></div>
+    </div>
+    <div class="insights">
+      <div class="panel ins">
+        <div class="donut" style="--v:61.5" data-label="8/13"></div>
+        <h3>Sin tienda web propia funcionando</h3>
+        <p>Venden por chat, PDF, catálogo de WhatsApp, apps de terceros o marketplaces. Ninguno de esos formatos le dice a la publicidad quién compró.</p>
+      </div>
+      <div class="panel ins">
+        <h3>Pagan publicidad, pero ¿hacia dónde?</h3>
+        <div class="split" role="img" aria-label="De 8 anunciantes en Meta, 3 tienen tienda web y 5 no">
+          <div style="flex:3;background:var(--green)">3 con web</div>
+          <div style="flex:5;background:var(--pink)">5 sin web</div>
+        </div>
+        <p>De 8 que tienen anuncios registrados en la Biblioteca de Anuncios de Meta, 5 no tienen dónde vender después del clic.</p>
+      </div>
+      <div class="panel ins">
+        <h3>El más fuerte: Kolm</h3>
+        <p>Es el único que junta web propia, anuncios, respuesta automática en WhatsApp y las tres redes. Aun así es un nombre que no dice nada al comprador. El primer lugar en "comprar fácil desde el celular" sigue sin dueño.</p>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- DESEO: CATÁLOGO VS TIENDA -->
+<section id="comparar"><div class="wrap stack">
+  <span class="eyebrow">Catálogo barato vs. tienda que vende</span>
+  <h2>Un catálogo muestra productos. Una tienda profesional <span class="grad-text">cierra ventas y alimenta tu publicidad</span>.</h2>
+  <p class="lead">¿Algún catálogo de tu competencia sirve para hacer publicidad que venda? Elige uno y compáralo.</p>
+  <div class="seg" role="group" aria-label="Elegir contra qué comparar">
+    <button type="button" id="seg-pdf" data-k="pdf" aria-pressed="true">PDF o catálogo de WhatsApp</button>
+    <button type="button" id="seg-ext" data-k="ext" aria-pressed="false">App de terceros o link en bio</button>
+    <button type="button" id="seg-cheap" data-k="cheap" aria-pressed="false">Tienda barata de plantilla</button>
+  </div>
+  <div class="panel" style="padding:6px 8px 10px;overflow:hidden">
+    <div class="cmp" id="cmp"></div>
+  </div>
+  <div class="panel" style="padding:18px;display:flex;flex-direction:column;gap:10px">
+    <div class="scorebar"><span id="lblA">PDF / WhatsApp</span><div class="track"><div class="fill" id="barA" style="background:var(--pink);width:5%"></div></div><b id="scA">0,5</b></div>
+    <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--green);width:100%"></div></div><b>10</b></div>
+  </div>
+  <div class="verdict" id="verdict"></div>
+</div></section>
+
+<!-- DESEO: ECOSISTEMA + QUICK WINS -->
+<section><div class="wrap stack">
+  <span class="eyebrow">Cómo se ve cuando funciona</span>
+  <h2>Tu tienda pasa a ser el centro. Todo lo demás le trae clientes.</h2>
+  <div class="flow" id="flow">
+    <div class="step"><span class="k">01</span><b>Anuncio</b><p>Meta, TikTok o Google muestran tu producto a revendedores.</p></div>
+    <div class="step"><span class="k">02</span><b>Ficha del producto</b><p>Precio por volumen, stock y fotos reales. Carga rápido en el celular.</p></div>
+    <div class="step"><span class="k">03</span><b>Pedido</b><p>Carrito armado. Paga en línea o lo envía a tu WhatsApp con el detalle listo.</p></div>
+    <div class="step"><span class="k">04</span><b>WhatsApp confirma</b><p>Respuesta automática al instante. Tu equipo solo cierra y despacha.</p></div>
+    <div class="step"><span class="k">05</span><b>El píxel aprende</b><p>Meta y Google saben quién compró y buscan más gente parecida.</p></div>
+    <div class="step"><span class="k">06</span><b>Vuelve a comprar</b><p>Quien vio un producto y no compró lo vuelve a ver. Quien compró, recompra.</p></div>
+  </div>
+
+  <h3 style="margin-top:24px">Tus 3 ventajas rápidas sobre los 13</h3>
+  <div class="qw">
+    <div class="panel qwc"><span class="tag">Ventaja 01 · Vende 24/7</span><h3>Tienda mayorista hecha para el celular</h3><p>Lo que tu cliente necesita ver para comprar sin preguntar:</p><ul><li>Precios por volumen a la vista (1, 10, 50+ unidades)</li><li>Pedido mínimo y despacho a regiones claros</li><li>Pedido en menos de un minuto, sin esperar cotización</li></ul></div>
+    <div class="panel qwc"><span class="tag">Ventaja 02 · Nadie espera</span><h3>WhatsApp que responde en segundos</h3><p>Dos competidores tienen el WhatsApp roto y tres no tienen saludo automático. Tú contestas al instante con el link al producto que te preguntan.</p><ul><li>Saludo y menú automático</li><li>Pedido llega con detalle y total</li><li>Tu equipo cierra, no cotiza</li></ul></div>
+    <div class="panel qwc"><span class="tag">Ventaja 03 · Publicidad que aprende</span><h3>Lista para vender con anuncios desde el día 1</h3><p>Tienda conectada al píxel de Meta, a su API de Conversiones y a tu catálogo de Instagram y Facebook. Cada venta le enseña al anuncio a quién mostrarse.</p><ul><li>Anuncios de catálogo y remarketing</li><li>Google Shopping habilitado</li><li>Sabes cuánto vendió cada peso invertido</li></ul></div>
+  </div>
+
+  <div class="ba">
+    <div class="panel before"><h3>Hoy, como la mayoría</h3><ul><li>Vendes cuando estás conectado</li><li>Cotizas una por una por chat</li><li>Tu mercado es quien llega al local</li><li>La publicidad optimiza mensajes</li><li>Compites por precio con el vecino</li></ul></div>
+    <div class="panel after"><h3>Con tu tienda profesional</h3><ul><li>Vendes de noche y en fin de semana</li><li>El cliente arma su pedido solo</li><li>Todo Chile puede comprarte</li><li>La publicidad optimiza ventas</li><li>Compites por facilidad, rapidez y confianza</li></ul></div>
+  </div>
+  <p class="manifesto">No hacemos "marca bonita". Hacemos lo único que importa: <span class="grad-text">que tus ventas crezcan.</span></p>
+</div></section>
+
+<!-- NOMBRES -->
+<section id="marca"><div class="wrap stack">
+  <span class="eyebrow">Tu marca</span>
+  <h2>Un nombre que venda antes de que digas una palabra.</h2>
+  <p class="lead">Tu competencia se llama con siglas (KBOD, CDC, CPC), con nombres de los 2000 (Munditel, Movilcell) o con la marca del fabricante que revende. Ninguno le dice al comprador qué gana. Estas son 10 opciones. Toca las que te gusten.</p>
+  <div class="names" id="names"></div>
+  <p class="note">Disponibilidad de marca (INAPI) y dominio .cl (NIC Chile) por confirmar antes de elegir.</p>
+</div></section>
+
+<!-- ACCIÓN -->
+<section id="accion"><div class="wrap">
+  <div class="cta panel">
+    <span class="eyebrow">El siguiente paso</span>
+    <h2>El primer lugar online en tu rubro está libre. Ocúpalo antes que el local de al lado.</h2>
+    <p class="lead">Cada mes sin tienda es un mes en que el píxel no registra ninguna venta tuya. Ese aprendizaje no se recupera después: empieza a contar el día que tu tienda sale al aire.</p>
+    <div class="phases">
+      <div class="ph"><span class="k">Fase 1 · Tienda</span><b>Tu tienda mayorista lista para vender y medir</b><p>Catálogo con precios por volumen, carrito, WhatsApp automático, píxel y catálogo conectados.</p></div>
+      <div class="ph"><span class="k">Fase 2 · Crecimiento</span><b>Encendemos la publicidad</b><p>Campañas de ventas en Meta, Google Shopping y TikTok, optimizadas con tus ventas reales.</p></div>
+    </div>
+    <p class="lead">Responde este mensaje con la palabra:</p>
+    <div class="copyrow"><span class="kw" id="kw">QUIERO SER EL PRIMERO</span><button class="btn" type="button" id="copyBtn">Copiar</button></div>
+    <p class="note" id="copyMsg" aria-live="polite"></p>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <b style="color:var(--muted)">Fuentes</b>
+  <ol>
+    <li>Levantamiento de 13 competidores (perfiles de Facebook, Instagram, TikTok, WhatsApp, webs y Biblioteca de Anuncios de Meta), One Knob Media, oct 2026.</li>
+    <li>Meta Pixel, documentación oficial: <a href="https://developers.facebook.com/docs/meta-pixel" target="_blank" rel="noopener">developers.facebook.com/docs/meta-pixel</a></li>
+    <li>API de Conversiones de Meta: <a href="https://developers.facebook.com/docs/marketing-api/conversions-api" target="_blank" rel="noopener">developers.facebook.com/docs/marketing-api/conversions-api</a></li>
+    <li>Google Merchant Center, verificar y reclamar tu sitio web: <a href="https://support.google.com/merchants/answer/176793" target="_blank" rel="noopener">support.google.com/merchants/answer/176793</a></li>
+    <li>Think with Google, velocidad móvil y rebote: <a href="https://www.thinkwithgoogle.com/marketing-strategies/app-and-mobile/mobile-page-speed-new-industry-benchmarks/" target="_blank" rel="noopener">thinkwithgoogle.com</a></li>
+  </ol>
+</div></footer>
+
+<script>
+const D={y:['y','✓'],n:['n','✕'],w:['w','!'],h:['h','~'],u:['u','·']};
+const comp=[
+ ['Kolm','y','y','y','y','y'],['KBOD.cl','y','n','y','y','y'],['CDC Tecno · Hoco','y','y','n','y','y'],
+ ['Fernapet','y','y','w','y','y'],['CPC Center · Motomo','y','n','y','y','n'],['Nexora Chile','n','y','y','h','y'],
+ ['Meidimake','n','y','u','h','y'],['Cosashop','h','u','u','h','y'],['Seros Chile · LDNIO','w','y','n','n','y'],
+ ['Movilcell','n','y','u','n','y'],['Munditel','n','y','w','n','y'],['Haomai','n','h','u','h','y'],['Inkax Chile','h','n','n','u','y']];
+document.getElementById('mapBody').innerHTML=comp.map(r=>'<tr><td>'+r[0]+'</td>'+r.slice(1).map(v=>'<td><span class="d '+D[v][0]+'">'+D[v][1]+'</span></td>').join('')+'</tr>').join('');
+
+const fmt=n=>'$'+(Math.round(n/1000)*1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const $=id=>document.getElementById(id);
+function calc(){const q=+$('q').value,m=+$('miss').value,c=+$('close').value,t=+$('tk').value;
+ $('qo').textContent=q;$('misso').textContent=m+' %';$('closeo').textContent=c+' %';$('tko').textContent=fmt(t);
+ const lost=q*4.33*(m/100)*(c/100)*t;$('lost').textContent=fmt(lost);$('lostY').textContent=fmt(lost*12);}
+['q','miss','close','tk'].forEach(i=>$(i).addEventListener('input',calc));calc();
+
+const rows=[
+ ['El cliente encuentra el producto en segundos desde el celular','n','h','h'],
+ ['Precios por volumen (1, 10, 50+) visibles','n','h','h'],
+ ['El pedido llega armado, con detalle y total','n','h','h'],
+ ['Dominio propio .cl que verificas en Meta y Google','n','n','y'],
+ ['Píxel de Meta + API de Conversiones registrando ventas','n','n','h'],
+ ['Catálogo conectado a Instagram y Facebook para anuncios','n','n','h'],
+ ['Aparece en Google Shopping','n','n','h'],
+ ['Remarketing a quien vio un producto y no compró','n','n','h'],
+ ['Los datos de tus clientes son tuyos','h','n','y'],
+ ['Vende de noche y a regiones sin que estés conectado','n','h','h']];
+const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata'};
+const verdicts={
+ pdf:'<b>PDF y catálogo de WhatsApp</b> (lo que usan KBOD y Nexora como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
+ ext:'<b>App de terceros o link en bio</b> (Yollgo en Haomai y Meidimake, Taplink en Cosashop): el dominio no es tuyo. No lo puedes verificar en Meta ni reclamar en Google Merchant Center, así que tus anuncios no aprenden de tus ventas.',
+ cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin píxel bien configurado, sin API de Conversiones, sin catálogo conectado y sin precios por volumen. Es una vitrina, no una máquina de ventas.'};
+const idx={pdf:1,ext:2,cheap:3};
+function cmp(k){const i=idx[k];let s=0;
+ let h='<div class="hd">Capacidad</div><div class="hd">'+labels[k]+'</div><div class="hd pro">Profesional</div>';
+ rows.forEach(r=>{const v=r[i];s+=v==='y'?1:v==='h'?.5:0;h+='<div>'+r[0]+'</div><div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>';});
+ $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*10)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
+ document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
+document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>cmp(b.dataset.k)));cmp('pdf');
+
+const steps=[...document.querySelectorAll('#flow .step')];let si=0;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+steps[0].classList.add('on');
+if(!reduce)setInterval(()=>{steps[si].classList.remove('on');si=(si+1)%steps.length;steps[si].classList.add('on');},1800);
+
+const names=[
+ ['ALTIRO','Pides hoy. Vendes al tiro.','Rapidez chilena: pedido y despacho sin vueltas.',['#ff7a1a','#0b0b10','#2dff9b'],1],
+ ['OHM','Cero resistencia para comprar.','El ohm mide resistencia. La promesa: comprar sin fricción.',['#a855f7','#ff7a1a','#0b0b10'],1],
+ ['PILAS','Ponte las pilas: stock que no se descarga.','Chilenismo de estar atento + energía. Se recuerda solo.',['#2dff9b','#0b0b10','#ff2e88'],1],
+ ['ENCHUFE','El enchufe que tu negocio necesitaba.','"Tener enchufe" es tener el contacto correcto.',['#a855f7','#ff7a1a','#f6f4fb'],0],
+ ['KARGO','Stock que llega.','Carga y despacho en una palabra.',['#ff2e88','#0b0b10','#2dff9b'],0],
+ ['VOLTIO','Carga tu negocio.','Técnico, corto, energético.',['#ffb800','#0b0b10','#8b5cf6'],0],
+ ['CHISPA','El stock que prende.','Energía e ingenio para el revendedor.',['#ff7a1a','#ff2e88','#0b0b10'],0],
+ ['MARGEN','Compras para revender, no para guardar.','Le habla directo al bolsillo del revendedor.',['#2dff9b','#f6f4fb','#0b0b10'],0],
+ ['REVENDE','Tu proveedor con margen incluido.','El nombre es la instrucción.',['#ff2e88','#f6f4fb','#0b0b10'],0],
+ ['NODO','Conecta tu tienda al stock.','El punto donde se cruza todo el abastecimiento.',['#8b5cf6','#2dff9b','#0b0b10'],0]];
+let favs=[];try{favs=JSON.parse(localStorage.getItem('okm-favs')||'[]')}catch(e){}
+$('names').innerHTML=names.map((n,i)=>'<button type="button" class="nm" id="nm'+i+'" data-n="'+n[0]+'" aria-pressed="'+favs.includes(n[0])+'">'+(n[4]?'<span class="top3">TOP 3</span>':'')+'<span class="word" style="color:'+n[3][0]+'">'+n[0]+'</span><span class="sl">'+n[1]+'</span><span class="cp">'+n[2]+'</span><span class="sw">'+n[3].map(c=>'<i style="background:'+c+'"></i>').join('')+'</span><span class="fav">'+(favs.includes(n[0])?'♥ Me gusta':'♡ Tocar para marcar')+'</span></button>').join('');
+document.querySelectorAll('.nm').forEach(b=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.querySelector('.fav').textContent=on?'♥ Me gusta':'♡ Tocar para marcar';
+ const k=b.dataset.n;favs=on?[...favs,k]:favs.filter(x=>x!==k);try{localStorage.setItem('okm-favs',JSON.stringify(favs))}catch(e){}}));
+
+$('copyBtn').addEventListener('click',()=>{const t=$('kw').textContent;
+ const sel=()=>{const r=document.createRange();r.selectNodeContents($('kw'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('copyMsg').textContent='Texto seleccionado. Cópialo y respóndenos.';};
+ try{navigator.clipboard.writeText(t).then(()=>{$('copyMsg').textContent='Copiado. Pégalo en tu respuesta.';},sel);}catch(e){sel();}});
+</script>
+</body></html>
