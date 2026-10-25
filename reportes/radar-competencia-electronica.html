@@ -2,187 +2,187 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Radar Competencia Electrónica</title>
+<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
+/* Layout: informe vertical por capítulos; tesis "sin catálogo no hay publicidad" en cada bloque */
 :root{
+  color-scheme:dark;
   --bg:#07060b;--panel:#0f0d17;--panel2:#151223;--line:#7c3aed;--neon:#b26bff;
   --o:#ff7a18;--p:#ff2d95;--m:#8b5cf6;--g:#22f5a0;--w:#ffffff;--mut:#a9a3bd;--red:#ff4d6d;--yel:#ffd166;
   --grad:linear-gradient(90deg,var(--o),var(--p),var(--m),var(--g));
+  --fd:"Space Grotesk",system-ui,sans-serif;--fb:Inter,system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--w);font:15px/1.55 Inter,system-ui,sans-serif;
+body{margin:0;background:var(--bg);color:var(--w);font:15px/1.55 var(--fb);
   background-image:radial-gradient(circle at 10% 0%,#2a0f4a55,transparent 40%),radial-gradient(circle at 90% 20%,#ff2d9522,transparent 35%)}
-h1,h2,h3{font-family:"Space Grotesk",sans-serif;margin:0 0 .5em;line-height:1.15}
-h1{font-size:clamp(28px,6vw,54px)}
+h1,h2,h3{font-family:var(--fd);margin:0 0 .5em;line-height:1.15;text-wrap:balance}
+h1{font-size:clamp(28px,6vw,52px)}
 h2{font-size:clamp(22px,4vw,32px);margin-top:0}
 h3{font-size:18px}
 a{color:var(--g)}
-.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+a:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .grad-txt{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
-header{padding:56px 0 28px}
+header{padding-block:52px 26px}
 .kick{letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--neon)}
-.sub{color:var(--mut);max-width:780px}
-nav{position:sticky;top:0;z-index:5;background:#07060bdd;backdrop-filter:blur(8px);border-bottom:1px solid #2b1f4a}
-nav .wrap{display:flex;gap:6px;overflow-x:auto;padding:10px 16px;scrollbar-width:none}
+.sub{color:var(--mut);max-width:760px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:#07060bdd;backdrop-filter:blur(8px);border-bottom:1px solid #2b1f4a}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
 nav a{white-space:nowrap;font-size:13px;color:var(--w);text-decoration:none;padding:6px 12px;border:1px solid #3b2a66;border-radius:999px}
 nav a:hover{border-color:var(--neon);box-shadow:0 0 12px #b26bff66}
-section{padding:40px 0;border-bottom:1px solid #1d1630}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;
-  box-shadow:0 0 0 1px #7c3aed22,0 0 24px #7c3aed22;position:relative;overflow:hidden}
+section{padding-block:40px;border-bottom:1px solid #1d1630}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 0 0 1px #7c3aed22,0 0 24px #7c3aed22;position:relative;overflow:hidden}
 .card.gl::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:var(--grad)}
 .grid{display:grid;gap:16px}
+.grid>*{min-width:0}
 .g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
 .g3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.big{font:700 40px/1 "Space Grotesk";}
+.big{font:700 40px/1 var(--fd);font-variant-numeric:tabular-nums}
 .mut{color:var(--mut)}
 .tag{display:inline-block;font-size:11px;padding:3px 9px;border-radius:999px;margin:2px 4px 2px 0;border:1px solid #3b2a66;color:var(--w)}
 .t-o{border-color:var(--o);color:var(--o)}.t-p{border-color:var(--p);color:var(--p)}.t-m{border-color:var(--m);color:#c4a8ff}.t-g{border-color:var(--g);color:var(--g)}.t-r{border-color:var(--red);color:var(--red)}.t-y{border-color:var(--yel);color:var(--yel)}
-.alert{border:1px solid var(--yel);background:#ffd16610;border-radius:14px;padding:16px}
-.alert b{color:var(--yel)}
 .hero-op{border:2px solid transparent;border-radius:18px;padding:24px;background:linear-gradient(var(--panel2),var(--panel2)) padding-box,var(--grad) border-box}
-ul{padding-left:18px;margin:.4em 0}
+ul,ol{padding-left:18px;margin:.4em 0}
 li{margin:.25em 0}
 .tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
 table{border-collapse:collapse;width:100%;min-width:760px;font-size:13.5px}
-th{background:#1a1430;text-align:left;padding:10px;font-family:"Space Grotesk";font-weight:500;color:#d9c8ff;position:sticky;top:0}
+th{background:#1a1430;text-align:left;padding:10px;font-family:var(--fd);font-weight:500;color:#d9c8ff}
 td{padding:10px;border-top:1px solid #241b3d;vertical-align:top}
 tr:hover td{background:#130f22}
 .sev{font-weight:700}.s-a{color:var(--red)}.s-m{color:var(--yel)}.s-b{color:var(--g)}
 .chart-box{position:relative;height:320px}
 .dots{letter-spacing:2px;color:var(--p)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.vs>div{padding:18px}
+.vs .no{background:#1a0d14}.vs .si{background:#0b1a14}
+.vs h3{font-size:16px}
+.vs .no h3{color:var(--red)}.vs .si h3{color:var(--g)}
+@media (max-width:640px){.vs{grid-template-columns:1fr}}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.flow span{padding:8px 12px;border-radius:10px;border:1px solid #3b2a66;background:var(--panel2);font-size:13px}
+.flow i{font-style:normal;color:var(--neon)}
+.flow.bad span{border-color:#5a2433}
+.flow.good span{border-color:#1f6b4d}
 .brand{border-radius:18px;padding:0;overflow:hidden}
 .brand .top{padding:22px 20px 16px}
-.brand .nm{font:700 30px/1 "Space Grotesk";letter-spacing:-.02em}
+.brand .nm{font:700 30px/1 var(--fd);letter-spacing:-.02em}
 .brand .sl{font-style:italic;margin:.4em 0 .6em}
 .sw{display:flex;height:46px}
-.sw span{flex:1;display:flex;align-items:flex-end;justify-content:center;font-size:10px;padding-bottom:4px;color:#0008;font-weight:600}
+.sw span{flex:1;display:flex;align-items:flex-end;justify-content:center;font-size:10px;padding-bottom:4px;font-weight:600}
 .rank{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--grad);color:#000;font-weight:700;margin-right:8px}
 .qw{display:flex;gap:14px;align-items:flex-start}
-.qw .n{flex:0 0 44px;height:44px;border-radius:12px;background:var(--grad);display:grid;place-items:center;color:#000;font:700 20px "Space Grotesk"}
-footer{padding:30px 0 60px;color:var(--mut);font-size:13px}
-.fade{opacity:0;transform:translateY(18px);transition:.7s ease}
-.fade.in{opacity:1;transform:none}
-@media (max-width:600px){header{padding:36px 0 18px}.big{font-size:32px}section{padding:28px 0}}
+.qw .n{flex:0 0 44px;height:44px;border-radius:12px;background:var(--grad);display:grid;place-items:center;color:#000;font:700 20px var(--fd)}
+footer{padding-block:30px 60px;color:var(--mut);font-size:13px}
+@media (prefers-reduced-motion:no-preference){.fade.in{animation:rise .7s ease both}@keyframes rise{from{transform:translateY(14px)}to{transform:none}}}
+@media (max-width:600px){header{padding-block:36px 18px}.big{font-size:32px}section{padding-block:28px}}
 </style>
-</head>
-<body>
+
 <header class="wrap">
-  <div class="kick">Radar competitivo · Chile · 24-oct-2026</div>
-  <h1>Accesorios <span class="grad-txt">electrónicos</span> low-cost:<br>quién manda, quién copia y dónde está tu hueco</h1>
-  <p class="sub">Branding + CRO (LIFT, MECLABS, Fogg, Cialdini) + Meta Ads Library. Competidores: KBOD, Motomo, Meidimake, Haomai. Benchmarks fuera de nicho: Fernapet, Segal Deudores, Lexy Deudor.</p>
+  <div class="kick">Versión equipo · Mayoreo de electrónica · Estación Central, Santiago · oct-2026</div>
+  <h1>En San Alfonso nadie hace publicidad.<br><span class="grad-txt">No es por falta de plata: es por falta de catálogo.</span></h1>
+  <p class="sub">Análisis de branding, funnel y publicidad de la competencia en el mayoreo de electrónica de Estación Central (San Alfonso, Sazie, Barrio Meiggs). Conclusión: el primero que tenga un catálogo digital conectado a Meta, Google y TikTok se queda con el feed completo.</p>
 </header>
 
 <nav><div class="wrap">
-  <a href="#alerta">Datos</a><a href="#resumen">Resumen</a><a href="#marcas">Marcas</a><a href="#presencia">Presencia</a>
-  <a href="#pixel">Pixel</a><a href="#funnel">Funnels</a><a href="#ads">Ads</a><a href="#top">Top 10</a>
-  <a href="#cliche">Clichés</a><a href="#cro">CRO</a><a href="#ice">ICE</a><a href="#qw">Quick wins</a><a href="#nombres">Nombres</a><a href="#final">Oportunidad</a>
+  <a href="#resumen">Resumen</a><a href="#marcas">Competencia</a><a href="#presencia">Ranking</a><a href="#catalogo">Por qué catálogo</a>
+  <a href="#funnel">Funnels</a><a href="#ads">Publicidad</a><a href="#top">Top 10</a><a href="#cliche">Clichés</a>
+  <a href="#cro">CRO</a><a href="#ice">ICE</a><a href="#qw">Quick wins</a><a href="#nombres">Nombres</a><a href="#final">Oportunidad</a>
 </div></nav>
 
 <main class="wrap">
 
-<section id="alerta" class="fade">
-  <div class="alert">
-    <b>⚠ Límites de datos (léelo antes de decidir):</b>
-    <ul>
-      <li><b>Webs no inspeccionadas en vivo</b>: el entorno bloqueó la conexión a los dominios. Meta Pixel <b>no verificado técnicamente</b>; se infiere por actividad publicitaria. Verificación en 2 min al final de la sección Pixel.</li>
-      <li><b>Impresiones</b>: Meta no publica impresiones de anuncios comerciales en Chile (solo UE / política). "Top 10" = anuncios más relevantes observados, no ranking real de impresiones.</li>
-      <li><b>Nicho mal mezclado</b>: Fernapet = pet shop. El Facebook/IG/Page ID que pasaste para Haomai es <b>Segal Deudores</b> (abogados de deudas). Lexy Deudor = legaltech. Se usan solo como benchmark de ejecución publicitaria.</li>
-      <li><b>Motomo</b> (page 349617092141708) y <b>Meidimake</b> (100463512812150): <b>0 anuncios</b> en Ads Library (activos e históricos).</li>
-    </ul>
-  </div>
-</section>
-
 <section id="resumen" class="fade">
   <h2>Resumen ejecutivo</h2>
   <div class="grid g4">
-    <div class="card gl"><div class="big grad-txt">0/4</div><div class="mut">competidores directos con Meta Ads activos</div></div>
-    <div class="card gl"><div class="big grad-txt">192K</div><div class="mut">seguidores TikTok Haomai (líder de atención)</div></div>
-    <div class="card gl"><div class="big grad-txt">0%</div><div class="mut">anuncios con creadores ("with @") detectados</div></div>
-    <div class="card gl"><div class="big grad-txt">8 días</div><div class="mut">vida máx. de anuncios del benchmark Fernapet → sin creativo ganador estable</div></div>
+    <div class="card gl"><div class="big grad-txt">1 de 5</div><div class="mut">competidores con publicidad activa en Meta: el único que tiene catálogo online (Fernapet)</div></div>
+    <div class="card gl"><div class="big grad-txt">283K</div><div class="mut">visitas al mes estimadas de Fernapet, el que sí tiene catálogo y anuncia</div></div>
+    <div class="card gl"><div class="big grad-txt">192K</div><div class="mut">seguidores de Haomai en TikTok que no pueden comprar online: no hay catálogo donde aterrizarlos</div></div>
+    <div class="card gl"><div class="big grad-txt">0</div><div class="mut">mayoristas de San Alfonso / Sazie con anuncios de catálogo en Meta</div></div>
   </div>
   <div class="grid g2" style="margin-top:16px">
     <div class="card">
       <h3>Diagnóstico</h3>
       <ul>
-        <li>El nicho compite <b>solo por precio</b> ("desde $200", "por mayor", "envío gratis"). Commodity puro → nadie tiene marca, todos tienen catálogo.</li>
-        <li>Dos modelos: <b>bodega Meiggs/Estación Central + TikTok</b> (Haomai, Meidimake) y <b>marca-producto en retail</b> (KBOD, Motomo en Falabella, Sodimac, SP Digital, Lider).</li>
-        <li>Nadie corre <b>paid social con pixel + retargeting</b>. Las subastas de Meta para "audífonos/cargadores" las ocupan retailers grandes (SP Digital, PhoneClick) y vendedores informales.</li>
-        <li>Ansiedad no resuelta en todo el nicho: <b>¿dura?, ¿es original?, ¿si falla qué?</b> Nadie lo responde con garantía explícita ni prueba.</li>
+        <li>El mayoreo de Estación Central vende con <b>TikTok orgánico + WhatsApp + local físico</b>. Funciona mientras el cliente pueda ir a San Alfonso.</li>
+        <li>Sus catálogos son <b>fotos sueltas, PDF por WhatsApp o listas en Mercado Libre</b>. Ninguno de esos formatos se puede conectar a Meta, Google o TikTok.</li>
+        <li>Sin catálogo digital no existen los anuncios de catálogo, el retargeting dinámico, Instagram Shopping ni Google Shopping. Por eso nadie anuncia.</li>
+        <li>El único que tiene catálogo online y anuncia (Fernapet) es también el que más tráfico web recibe del grupo.</li>
       </ul>
     </div>
     <div class="hero-op">
       <div class="kick">Oportunidad #1</div>
-      <h3 style="font-size:24px">Ser la única marca de accesorios <span class="grad-txt">probados y garantizados</span>, vendida con paid social.</h3>
+      <h3 style="font-size:24px">Tener el <span class="grad-txt">primer catálogo profesional</span> del mayoreo de San Alfonso conectado a la publicidad.</h3>
       <ul>
-        <li><b>Por qué</b>: MECLABS penaliza la ansiedad (−2a). Bajar ansiedad vale más que bajar precio cuando el precio ya es commodity.</li>
-        <li><b>Cómo</b>: garantía "cambio en 24 h, 12 meses" + video test real (vatímetro, prueba de batería) + reseñas con foto.</li>
-        <li><b>Cialdini</b>: Prueba social + Autoridad (test medido) + Compromiso (garantía).</li>
-        <li><b>Meta</b>: campaña Ventas (Advantage+) con catálogo + creativos de demostración, donde el nicho no tiene presencia.</li>
+        <li><b>Por qué</b>: el catálogo es la materia prima de las campañas de ventas. Sin él, Meta solo puede mostrar un post; con él, muestra a cada persona el producto que más probablemente va a comprar.</li>
+        <li><b>Qué cambia</b>: el cliente de regiones o el revendedor que no viaja a Santiago puede ver precio detalle, precio por mayor y stock, y comprar desde el celular.</li>
+        <li><b>Ventaja</b>: hoy nadie del sector compite en esa subasta. El primero entra con menos competencia directa.</li>
       </ul>
     </div>
   </div>
 </section>
 
 <section id="marcas" class="fade">
-  <h2>Fichas de marca</h2>
+  <h2>La competencia</h2>
   <div class="grid g2">
     <div class="card gl">
-      <h3>KBOD Chile <span class="tag t-m">marca-producto</span></h3>
+      <h3>Fernapet <span class="tag t-g">único con catálogo + ads</span></h3>
+      <ul>
+        <li><b>Modelo</b>: e-commerce propio (fernapet.cl) + tiendas físicas.</li>
+        <li><b>Tráfico</b>: ~283K visitas/mes estimadas (Semrush); 38% directo, 30% Google.</li>
+        <li><b>Publicidad</b>: 9 anuncios en Meta iniciados entre el 17 y el 24 de octubre de 2026; rota creativos cada pocos días.</li>
+        <li><b>Débil</b>: reclamos públicos por pedidos incompletos, entregas fuera de horario y falta de teléfono de contacto. Su catálogo atrae ventas que la operación no siempre cumple.</li>
+      </ul>
+    </div>
+    <div class="card gl">
+      <h3>Haomai <span class="tag t-o">líder en TikTok</span></h3>
+      <ul>
+        <li><b>Vende</b>: electrónica, gamer, electrodomésticos de cocina, belleza. "Desde $200".</li>
+        <li><b>Branding</b>: "la tienda de electrónica más barata de Santiago". Ancla de precio extrema.</li>
+        <li><b>Canales</b>: TikTok @haomaioficial (~192K seguidores, ~526K likes), local en Sazie 2893 (locales 6 y 8), Mercado Libre.</li>
+        <li><b>Débil</b>: toda su audiencia termina en "ven al local". Sin catálogo online no hay venta a regiones ni retargeting.</li>
+      </ul>
+    </div>
+    <div class="card gl">
+      <h3>Meidimake <span class="tag t-o">bodega + WhatsApp</span></h3>
+      <ul>
+        <li><b>Vende</b>: importación directa: cocina, HDMI, teclados LED, masajeadores, lámparas solares, audio Bluetooth.</li>
+        <li><b>Branding</b>: "importación directa", "detalle y mayor desde 3 del mismo producto".</li>
+        <li><b>Canales</b>: TikTok @meidimake.chile (~44K), locales en San Alfonso 458 y Sazie 2862, catálogo por WhatsApp, Mercado Libre.</li>
+        <li><b>Débil</b>: el catálogo vive en un chat. Envíos solo sobre $150.000: deja fuera al comprador online de un producto.</li>
+      </ul>
+    </div>
+    <div class="card gl">
+      <h3>KBOD <span class="tag t-m">marca-producto</span></h3>
       <ul>
         <li><b>Vende</b>: audífonos, parlantes (línea gamer RGB), smartwatch, cables, cargadores, power banks.</li>
-        <li><b>Branding</b>: genérico importador; +13 años mayorista MX/CL/GT/US. Nombre sin significado → no vende solo.</li>
-        <li><b>Canales</b>: kbod.cl + Falabella + Sodimac. Sin RRSS (según tu dato).</li>
-        <li><b>Promesa</b>: envío gratis Santiago desde $9.990; pedidos antes de 14:00 llegan el mismo día.</li>
-        <li><b>Débil</b>: cero comunidad, cero retargeting, depende de SEO y marketplaces.</li>
+        <li><b>Modelo</b>: +13 años mayorista en México, Chile, Guatemala y EE.UU. Web propia + Falabella + Sodimac.</li>
+        <li><b>Promesa</b>: envío gratis en Santiago desde $9.990; pedidos antes de las 14:00 llegan el mismo día.</li>
+        <li><b>Débil</b>: sin redes sociales ni anuncios. Tiene catálogo web pero no lo usa para publicidad.</li>
       </ul>
     </div>
     <div class="card gl">
       <h3>Motomo <span class="tag t-m">marca-producto</span></h3>
       <ul>
-        <li><b>Vende</b>: cargadores pared/auto, audífonos (Air Pro, Microbuds, MO-L225 ANC), fundas, parlantes.</li>
-        <li><b>Branding</b>: nombre corto y pronunciable; identidad visual débil. FB ~1,5K / IG @motomostore ~197 seguidores.</li>
-        <li><b>Canales</b>: motomo.cl, tienda Providencia (Padre Mariano 356), SP Digital, Lider, Phonestore, Mercado Libre.</li>
-        <li><b>Ads</b>: page oficial 0 anuncios. "motomo.lastarria" corrió 1 anuncio (23-mar-2026) hacia instagram.com. SP Digital incluye Motomo en sus anuncios de catálogo → exposición pagada por terceros.</li>
+        <li><b>Vende</b>: cargadores de pared y auto, audífonos (Air Pro, Microbuds, MO-L225 ANC), fundas, parlantes.</li>
+        <li><b>Canales</b>: motomo.cl, tienda en Providencia (Padre Mariano 356), SP Digital, Lider, Phonestore, Mercado Libre.</li>
+        <li><b>Publicidad</b>: su página oficial no tiene anuncios. La cuenta "motomo.lastarria" corrió 1 anuncio (23-mar-2026) que llevaba a Instagram, no a comprar. Quien sí anuncia sus productos es SP Digital, con su propio catálogo.</li>
+        <li><b>Lección</b>: el que tiene el catálogo conectado (SP Digital) se lleva la venta, aunque el producto sea de otro.</li>
       </ul>
     </div>
-    <div class="card gl">
-      <h3>Meidimake <span class="tag t-o">bodega + TikTok</span></h3>
+    <div class="card" style="border-color:var(--g)">
+      <h3>Patrón común</h3>
       <ul>
-        <li><b>Vende</b>: importación directa: cocina, HDMI, teclados LED, masajeadores, lámparas solares, audio BT.</li>
-        <li><b>Branding</b>: "importación directa", "detalle y mayor de 3". Estética de bodega.</li>
-        <li><b>Canales</b>: TikTok @meidimake.chile (~44K), 2 locales (San Alfonso 458 / Sazie 2862), WhatsApp catálogo, Mercado Libre.</li>
-        <li><b>Débil</b>: envío solo sobre $150.000 → excluye al comprador online unitario.</li>
-      </ul>
-    </div>
-    <div class="card gl">
-      <h3>Haomai <span class="tag t-o">bodega + TikTok</span> <span class="tag t-g">líder atención</span></h3>
-      <ul>
-        <li><b>Vende</b>: electrónica, gamer, electrodomésticos cocina, belleza. "Desde $200".</li>
-        <li><b>Branding</b>: "la tienda de electrónica más barata de Santiago". Ancla de precio extrema.</li>
-        <li><b>Canales</b>: TikTok @haomaioficial (~192K seg., ~526K likes), local Sazie 2893 (Estación Central), Mercado Libre.</li>
-        <li><b>Débil</b>: funnel offline (visita física), sin captura de datos ni recompra digital.</li>
-      </ul>
-    </div>
-    <div class="card" style="border-color:#3b2a66">
-      <h3>Benchmark: Fernapet <span class="tag t-y">fuera de nicho</span></h3>
-      <ul>
-        <li>Pet shop. ~283K visitas/mes est. (Semrush, may-2025): 38% directo, 30% Google.</li>
-        <li>9 anuncios Meta registrados, todos iniciados 17–24 oct-2026 → rota creativos cada pocos días.</li>
-        <li>Reclamos recurrentes: pedidos incompletos, entregas fuera de horario, sin teléfono. <b>Lección</b>: paid sin operación = reclamos públicos.</li>
-      </ul>
-    </div>
-    <div class="card" style="border-color:#3b2a66">
-      <h3>Benchmark: Segal Deudores / Lexy <span class="tag t-y">fuera de nicho</span></h3>
-      <ul>
-        <li>Segal: 9 anuncios desde ~2-oct-2026, título repetido "Defensoría del deudor" (variaciones de texto → prueba de copy). 1 anuncio de feb-2022.</li>
-        <li>Lexy: legaltech (salud y deudas). Sin Ads Library ni RRSS según tu dato; tráfico llega con fbclid → viene de Facebook.</li>
-        <li>No comparables para electrónica. Confirma si fueron un error de copia.</li>
+        <li>Todos tienen producto, precio y audiencia.</li>
+        <li>Ninguno del mayoreo de San Alfonso tiene un <b>catálogo con formato publicitario</b>: foto estandarizada, título con búsqueda, precio detalle y mayor, stock y feed.</li>
+        <li>El que lo tiene (Fernapet) es el que anuncia y el que más tráfico capta.</li>
       </ul>
     </div>
   </div>
@@ -191,166 +191,213 @@ footer{padding:30px 0 60px;color:var(--mut);font-size:13px}
 <section id="presencia" class="fade">
   <h2>¿Quién es el más fuerte?</h2>
   <div class="grid g2">
-    <div class="card"><h3>Score de presencia (0–50)</h3><div class="chart-box"><canvas id="cPres"></canvas></div>
-      <p class="mut" style="font-size:12px">Heurístico sobre evidencia pública: alcance social, canales de venta, paid activo, web propia, distribución retail (0–10 c/u).</p></div>
-    <div class="card"><h3>LIFT estimado</h3><div class="chart-box"><canvas id="cLift"></canvas></div>
-      <p class="mut" style="font-size:12px">Ansiedad y Distracción invertidas (10 = sin fricción). Estimado desde mensajes públicos, no desde sesión en vivo.</p></div>
+    <div class="card"><h3>Score de presencia online (0–50)</h3><div class="chart-box"><canvas id="cPres"></canvas></div>
+      <p class="mut" style="font-size:12px">Suma de 5 ejes de 0 a 10: alcance social, canales de venta, publicidad activa, catálogo/web propia y distribución.</p></div>
+    <div class="card"><h3>Madurez de catálogo (0–10)</h3><div class="chart-box"><canvas id="cCat"></canvas></div>
+      <p class="mut" style="font-size:12px">Fotos estandarizadas, precio visible, stock, compra online, feed conectable a Meta/Google.</p></div>
   </div>
-  <div class="grid g2" style="margin-top:16px">
-    <div class="card gl"><h3><span class="rank">1</span>Haomai: atención</h3>
-      <p>192K en TikTok y una ancla de precio memorable. <b>Por qué funciona</b>: Fogg B=MAP, motivación alta (precio shock) + capacidad alta (ir al local). <b>Por qué es vulnerable</b>: no escala fuera de Santiago centro y no captura datos.</p></div>
-    <div class="card gl"><h3><span class="rank">2</span>Motomo: potencial de marca</h3>
-      <p>Está en la góndola de SP Digital, Lider y otros. <b>Por qué importa</b>: compite contigo en la misma búsqueda ("audífonos bluetooth"). <b>Débil</b>: comunidad casi nula, sin paid propio.</p></div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card gl"><h3><span class="rank">1</span>Fernapet</h3><p>Más fuerte online: catálogo + Meta Ads + 283K visitas. Es la prueba de que el catálogo convierte la publicidad en tráfico.</p></div>
+    <div class="card gl"><h3><span class="rank">2</span>Haomai</h3><p>Más fuerte en atención: 192K en TikTok. Su techo es el local: sin catálogo, no puede cobrar esa atención fuera de Sazie.</p></div>
+    <div class="card gl"><h3><span class="rank">3</span>KBOD / Motomo</h3><p>Más fuertes en distribución retail. Tienen web, pero la publicidad la hacen otros (SP Digital) con sus productos.</p></div>
   </div>
 </section>
 
-<section id="pixel" class="fade">
-  <h2>Meta Pixel y medición</h2>
-  <div class="tbl"><table>
-    <tr><th>Marca</th><th>Web</th><th>Ads Meta</th><th>Pixel</th><th>Lectura</th></tr>
-    <tr><td>KBOD</td><td>kbod.cl</td><td>0</td><td><span class="tag t-y">No verificado</span></td><td>Sin ads → aunque tenga pixel, no lo explota.</td></tr>
-    <tr><td>Motomo</td><td>motomo.cl</td><td>0 (page) · 1 (lastarria, a IG)</td><td><span class="tag t-y">No verificado</span></td><td>El único anuncio iba a Instagram, no a la web → no optimiza conversiones.</td></tr>
-    <tr><td>Meidimake</td><td>Sin web</td><td>0</td><td><span class="tag t-r">No aplica</span></td><td>Sin web = sin pixel. Ventas por WhatsApp sin medición.</td></tr>
-    <tr><td>Haomai</td><td>haomaitechnology.com</td><td>0 verificados</td><td><span class="tag t-y">No verificado</span></td><td>Page ID entregado no corresponde. Funnel es físico.</td></tr>
-    <tr><td>Fernapet</td><td>fernapet.cl</td><td>9 (oct-26)</td><td><span class="tag t-g">Probable</span></td><td>Rotación constante de anuncios = típica de campañas de ventas con pixel.</td></tr>
-  </table></div>
-  <div class="card" style="margin-top:16px">
-    <h3>Verificación en 2 minutos</h3>
-    <ul>
-      <li>Chrome → extensión <b>Meta Pixel Helper</b> → abrir cada web → ver ID y eventos (PageView, ViewContent, AddToCart, Purchase).</li>
-      <li>Alternativa: <code>Ctrl+U</code> → buscar <code>fbevents.js</code> o <code>fbq('init'</code>. Para TikTok: <code>analytics.tiktok.com</code>. Google: <code>gtag</code> / <code>GTM-</code>.</li>
-      <li>Tu marca: Pixel + <b>API de Conversiones</b> (Shopify la integra nativo) desde el día 1. Sin eso Meta no aprende y Advantage+ no optimiza.</li>
-    </ul>
+<section id="catalogo" class="fade">
+  <h2>Por qué el catálogo es obligatorio</h2>
+  <div class="vs">
+    <div class="no">
+      <h3>✕ Sin catálogo (hoy, todo San Alfonso)</h3>
+      <ul>
+        <li>Solo se puede "promocionar publicación" → campaña de interacción, likes sin ventas.</li>
+        <li>Meta no sabe qué productos vendes ni a qué precio.</li>
+        <li>No hay retargeting: el que vio un cargador y no compró se pierde.</li>
+        <li>No apareces en Google Shopping ni en Instagram Shopping.</li>
+        <li>El cliente de regiones tiene que escribir al WhatsApp y esperar respuesta.</li>
+        <li>Cada venta depende de que alguien conteste a tiempo.</li>
+      </ul>
+    </div>
+    <div class="si">
+      <h3>✓ Con catálogo conectado</h3>
+      <ul>
+        <li>Campañas de <b>Ventas con catálogo (Advantage+)</b>: Meta muestra el producto correcto a cada persona.</li>
+        <li><b>Anuncios dinámicos</b>: quien vio un producto lo vuelve a ver con su precio.</li>
+        <li>Etiquetas de producto en Instagram y Facebook.</li>
+        <li>El mismo feed alimenta <b>Google Shopping / Performance Max</b> y <b>anuncios de catálogo en TikTok</b>.</li>
+        <li>Precio detalle y por mayor visibles: el revendedor compra sin llamar.</li>
+        <li>Medición real: Pixel + API de Conversiones muestran qué anuncio vendió.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="grid g3" style="margin-top:16px">
+    <div class="card gl"><h3>Qué lleva un catálogo listo para anunciar</h3>
+      <ul>
+        <li>Foto fondo blanco + foto en uso, mismo tamaño.</li>
+        <li>Título con lo que la gente busca: "Cargador 20W USB-C carga rápida".</li>
+        <li>Precio detalle, precio por mayor y cantidad mínima.</li>
+        <li>Stock y SKU por producto.</li>
+        <li>Categoría y marca.</li>
+        <li>Feed que se actualiza solo (Shopify o similar).</li>
+      </ul></div>
+    <div class="card gl"><h3>Qué desbloquea por plataforma</h3>
+      <ul>
+        <li><b>Meta</b>: Advantage+ con catálogo, anuncios dinámicos, Instagram Shopping.</li>
+        <li><b>Google</b>: Shopping y Performance Max vía Merchant Center.</li>
+        <li><b>TikTok</b>: anuncios de catálogo y videos con producto etiquetado.</li>
+        <li><b>OpenAI Ads</b>: aún sin disponibilidad confirmada en Chile. El mismo feed servirá cuando abra.</li>
+      </ul></div>
+    <div class="card gl"><h3>Principio detrás</h3>
+      <ul>
+        <li><b>Fogg (B=MAP)</b>: la motivación ya existe (precio bajo). El catálogo da la <b>capacidad</b> (comprar desde el celular) y el <b>disparador</b> (anuncio dinámico).</li>
+        <li><b>MECLABS</b>: el catálogo sube la claridad de la oferta (v) y baja la fricción (f) de preguntar precio por chat.</li>
+      </ul></div>
   </div>
 </section>
 
 <section id="funnel" class="fade">
-  <h2>Funnels de conversión</h2>
+  <h2>Funnel actual vs funnel con catálogo</h2>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--red)">Hoy (Haomai, Meidimake)</h3>
+    <div class="flow bad"><span>Video TikTok</span><i>→</i><span>"Escríbenos al WhatsApp"</span><i>→</i><span>Esperar catálogo PDF</span><i>→</i><span>Preguntar stock</span><i>→</i><span>Transferencia o ir al local</span></div>
+    <p class="mut">5 pasos, 2 dependen de que alguien responda. Cada paso pierde compradores.</p>
+  </div>
+  <div class="card" style="margin-bottom:16px">
+    <h3 style="color:var(--g)">Con catálogo</h3>
+    <div class="flow good"><span>Anuncio de catálogo (Meta/TikTok/Google)</span><i>→</i><span>Ficha con precio detalle y mayor</span><i>→</i><span>Pago online o WhatsApp con el producto ya elegido</span></div>
+    <p class="mut">3 pasos. El que no compra vuelve a ver el producto en un anuncio dinámico.</p>
+  </div>
   <div class="tbl"><table>
-    <tr><th>Marca</th><th>Entrada</th><th>Paso medio</th><th>Conversión</th><th>Fuga principal</th><th>Campaña inferida</th></tr>
-    <tr><td>Haomai</td><td>TikTok orgánico (precio shock, tour de local)</td><td>Dirección + metro en caption</td><td>Compra presencial</td><td>Quien no vive en Santiago centro</td><td>Ninguna paga verificada</td></tr>
-    <tr><td>Meidimake</td><td>TikTok orgánico (unboxing, embalando pedidos, trends)</td><td>WhatsApp → catálogo</td><td>Transferencia / local; envío solo &gt;$150K</td><td>Comprador unitario online</td><td>Ninguna (orgánico + mensajes)</td></tr>
-    <tr><td>KBOD</td><td>Google / Falabella / Sodimac</td><td>Ficha de producto</td><td>Checkout web o marketplace</td><td>Sin retargeting: el que no compra se pierde</td><td>Ninguna en Meta</td></tr>
-    <tr><td>Motomo</td><td>Retail (SP Digital, Lider) + catálogo de SP Digital</td><td>motomo.cl / tienda Providencia</td><td>Checkout del retailer</td><td>La marca no es dueña del cliente</td><td>Tráfico/interacción (1 ad a IG)</td></tr>
-    <tr><td>Fernapet <span class="tag t-y">bench</span></td><td>Meta Ads rotativos</td><td>E-commerce</td><td>Checkout propio</td><td>Operación (reclamos de entrega)</td><td>Ventas (probable)</td></tr>
+    <tr><th>Competidor</th><th>Entrada</th><th>Conversión</th><th>Dónde pierde ventas</th><th>Campaña que usa</th></tr>
+    <tr><td>Fernapet</td><td>Meta Ads + Google</td><td>Checkout web</td><td>Operación: entregas incompletas</td><td>Ventas (anuncios rotativos)</td></tr>
+    <tr><td>Haomai</td><td>TikTok orgánico</td><td>Compra presencial en Sazie</td><td>Todo el que no puede ir al local</td><td>Sin publicidad pagada</td></tr>
+    <tr><td>Meidimake</td><td>TikTok orgánico</td><td>WhatsApp → transferencia / local</td><td>Comprador de un producto (envío &gt;$150K)</td><td>Sin publicidad pagada</td></tr>
+    <tr><td>KBOD</td><td>Google, Falabella, Sodimac</td><td>Checkout web / marketplace</td><td>Sin retargeting</td><td>Sin publicidad en Meta</td></tr>
+    <tr><td>Motomo</td><td>Retail (SP Digital, Lider)</td><td>Checkout del retailer</td><td>La marca no es dueña del cliente</td><td>Interacción (1 anuncio a Instagram)</td></tr>
+  </table></div>
+  <div class="tbl" style="margin-top:16px"><table>
+    <tr><th>Competidor</th><th>Meta Pixel</th><th>Base</th></tr>
+    <tr><td>Fernapet</td><td><span class="tag t-g">En uso</span></td><td>Campañas activas que rotan cada semana</td></tr>
+    <tr><td>Haomai</td><td><span class="tag t-r">Sin uso</span></td><td>0 anuncios: no hay campaña que lo aproveche</td></tr>
+    <tr><td>Meidimake</td><td><span class="tag t-r">Sin web</span></td><td>Vende por WhatsApp: no hay dónde instalarlo</td></tr>
+    <tr><td>KBOD</td><td><span class="tag t-r">Sin uso</span></td><td>0 anuncios</td></tr>
+    <tr><td>Motomo</td><td><span class="tag t-r">Sin uso</span></td><td>Único anuncio iba a Instagram, no a la web</td></tr>
   </table></div>
 </section>
 
 <section id="ads" class="fade">
-  <h2>Publicidad del nicho (Ads Library CL)</h2>
-  <p class="mut">"tienda de electronica": ~80 activos · "electronica": ~2.175 activos (incluye ruido: autos, música, SaaS). Muestra clasificada: 31 anuncios relevantes por título y página.</p>
+  <h2>Publicidad del nicho</h2>
+  <p class="mut">Ads Library Chile: "tienda de electronica" ~80 anuncios activos. Los que anuncian electrónica con constancia son retailers con catálogo: SP Digital, PhoneClick, TuGadget, Impulzo, Casa Royal, Fernapet.</p>
   <div class="grid g2">
-    <div class="card"><h3>Tipo de anuncio en la muestra</h3><div class="chart-box"><canvas id="cTipo"></canvas></div></div>
-    <div class="card"><h3>Brand vs creadores</h3><div class="chart-box"><canvas id="cPart"></canvas></div>
-      <p class="mut" style="font-size:12px">0 anuncios "with @handle" detectados entre competidores y muestra. UGC solo orgánico (ej. creador que reseña Meidimake en TikTok).</p></div>
-    <div class="card"><h3>Días desde inicio del anuncio</h3><div class="chart-box"><canvas id="cAge"></canvas></div>
-      <p class="mut" style="font-size:12px">Motomo.lastarria: estado actual no confirmado. Segal 2022: histórico.</p></div>
+    <div class="card"><h3>Tipo de anuncio de quienes sí anuncian</h3><div class="chart-box"><canvas id="cTipo"></canvas></div>
+      <p class="mut" style="font-size:12px">Muestra de 31 anuncios de electrónica en Chile, clasificados por título. 2 de cada 5 usan producto + precio o catálogo multiproducto: los dos formatos que exigen catálogo.</p></div>
+    <div class="card"><h3>Marca vs creadores</h3><div class="chart-box"><canvas id="cPart"></canvas></div>
+      <p class="mut" style="font-size:12px">0 anuncios "with @creador" en el nicho. Los creadores solo aparecen en orgánico (ej. reseñas de Meidimake en TikTok). Espacio libre.</p></div>
+    <div class="card"><h3>Días activos de los anuncios</h3><div class="chart-box"><canvas id="cAge"></canvas></div>
+      <p class="mut" style="font-size:12px">Nadie mantiene un anuncio ganador más de 3 semanas: rotan promociones.</p></div>
     <div class="card">
       <h3>Formatos orgánicos</h3>
       <div class="tbl" style="border:none"><table style="min-width:0">
-        <tr><th>Marca</th><th>Video corto</th><th>Imagen</th><th>Carrusel</th></tr>
+        <tr><th>Competidor</th><th>Video corto</th><th>Imagen</th><th>Carrusel</th></tr>
         <tr><td>Haomai</td><td class="dots">●●●●●</td><td class="dots">●</td><td class="dots">○</td></tr>
         <tr><td>Meidimake</td><td class="dots">●●●●●</td><td class="dots">●</td><td class="dots">○</td></tr>
+        <tr><td>Fernapet</td><td class="dots">●●●</td><td class="dots">●●●</td><td class="dots">●●</td></tr>
         <tr><td>Motomo</td><td class="dots">●</td><td class="dots">●●</td><td class="dots">●</td></tr>
         <tr><td>KBOD</td><td class="dots">○</td><td class="dots">○</td><td class="dots">○</td></tr>
       </table></div>
-      <p class="mut" style="font-size:12px">Intensidad cualitativa desde perfiles públicos (sin conteo exacto).</p>
+      <p class="mut" style="font-size:12px">El mayoreo domina el video corto en TikTok. Ese mismo video, con producto etiquetado desde un catálogo, se convierte en anuncio de venta.</p>
     </div>
   </div>
-
   <div class="grid g3" style="margin-top:16px">
     <div class="card gl"><h3>Mensajes que repiten</h3>
       <span class="tag t-o">"desde $200"</span><span class="tag t-o">"más barata"</span><span class="tag t-p">"por mayor"</span><span class="tag t-p">"importación directa"</span><span class="tag t-m">"envío gratis"</span><span class="tag t-m">"carga rápida"</span><span class="tag t-g">"Bluetooth"</span><span class="tag t-g">"mismo día"</span>
-      <p>Quieren grabar: <b>barato</b>. Nadie quiere grabar: <b>confiable</b>.</p></div>
+      <p>Lo que quieren que quede grabado: <b>barato</b>. Lo que nadie comunica: <b>confiable y fácil de comprar</b>.</p></div>
     <div class="card gl"><h3>A quién le hablan</h3>
       <ul>
-        <li><b>Cazador de precio / revendedor</b>: Haomai, Meidimake.</li>
+        <li><b>Revendedor / emprendedor</b> que compra por mayor para revender: Meidimake, Haomai.</li>
+        <li><b>Cazador de precio</b> que va a Estación Central: Haomai.</li>
         <li><b>Reemplazo urgente</b> (cargador o audífono roto): KBOD, Motomo.</li>
-        <li><b>Gamer budget</b> (RGB): KBOD.</li>
-        <li><b>Regalo / lifestyle</b> (deporte, música): PhoneClick (fuera del set, pero gana ese ángulo).</li>
+        <li><b>Gamer con poco presupuesto</b> (RGB): KBOD, Haomai.</li>
       </ul></div>
-    <div class="card gl"><h3>Ángulos del nicho</h3>
+    <div class="card gl"><h3>Ángulos que usan los que anuncian</h3>
       <ul>
-        <li>Precio en el titular (Impulzo: "Donner DED-70 a $279.990").</li>
+        <li>Precio en el titular: "Donner DED-70 a $279.990" (Impulzo).</li>
         <li>Catálogo multiproducto (SP Digital, TuGadget).</li>
-        <li>Beneficio de uso ("Hasta 10 horas de tu música favorita").</li>
-        <li>Estacional + % dcto (Casa Royal: Halloween, "hasta 57%").</li>
+        <li>Beneficio de uso: "Hasta 10 horas de tu música favorita" (PhoneClick).</li>
+        <li>Ocasión + % dcto: "Hasta 57% dcto." (Casa Royal).</li>
       </ul></div>
   </div>
 </section>
 
 <section id="top" class="fade">
-  <h2>Top 10 anuncios observados</h2>
-  <p class="mut">Orden por relevancia para tu nicho (Meta no publica impresiones en CL). Abre cada ID en la Ads Library para ver el creativo.</p>
+  <h2>Top 10 anuncios de electrónica en Chile</h2>
+  <p class="mut">Seleccionados por relevancia para el mayoreo. Abre cada ID en la Ads Library para ver el creativo.</p>
   <div class="tbl"><table>
-    <tr><th>#</th><th>Anunciante · ID</th><th>Qué dice</th><th>Formato inferido</th><th>Por qué funciona</th></tr>
-    <tr><td>1</td><td>SP Digital · <a href="https://www.facebook.com/ads/library/?id=1095481989906670">1095481989906670</a></td><td>Logitech, Razer, AirPods 4 y Motomo Microbuds en el mismo anuncio</td><td>Catálogo / carrusel dinámico</td><td>Prestigio prestado: Motomo junto a Apple. Cialdini, asociación + anclaje.</td></tr>
-    <tr><td>2</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=1090943200435672">1090943200435672</a></td><td>"Hasta 10 horas de tu música favorita"</td><td>Imagen/video de beneficio</td><td>Vende resultado, no especificación. LIFT: claridad.</td></tr>
-    <tr><td>3</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=4757982554468310">4757982554468310</a></td><td>"El regalo perfecto está aquí"</td><td>Imagen/video</td><td>Ocasión de compra → urgencia natural (Fogg: prompt).</td></tr>
-    <tr><td>4</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=1685317113192427">1685317113192427</a></td><td>"Dale ritmo a tu entrenamiento"</td><td>Video lifestyle</td><td>Segmenta por identidad (deportista), no por precio.</td></tr>
-    <tr><td>5</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=1482570083698573">1482570083698573</a></td><td>Sport Buds de diseño abierto: música + conversación en ruta</td><td>Copy múltiple (variantes de texto)</td><td>Varias versiones del texto en un anuncio → Meta elige la ganadora.</td></tr>
-    <tr><td>6</td><td>Impulzo · <a href="https://www.facebook.com/ads/library/?id=1760930498533279">1760930498533279</a></td><td>"Donner DED-70 a $279.990"</td><td>Producto + precio</td><td>Precio en el titular filtra curiosos → mejor tasa de conversión.</td></tr>
-    <tr><td>7</td><td>Impulzo · <a href="https://www.facebook.com/ads/library/?id=2665651943865960">2665651943865960</a></td><td>6 productos (Arturia, Pioneer, Audio-Technica…)</td><td>Catálogo / carrusel</td><td>Variedad + retargeting dinámico por producto visto.</td></tr>
-    <tr><td>8</td><td>TuGadget · <a href="https://www.facebook.com/ads/library/?id=1508099708081560">1508099708081560</a></td><td>Kindle Oasis "OPEN BOX NUEVO", estabilizadores Hohem</td><td>Catálogo</td><td>"Open box" = precio bajo con justificación → baja ansiedad.</td></tr>
-    <tr><td>9</td><td>Casa Royal · <a href="https://www.facebook.com/ads/library/?id=1791972702118612">1791972702118612</a></td><td>"Hasta 57% dcto. para tu fiesta en casa 🔥"</td><td>Promo estacional</td><td>Escasez temporal + ocasión. Cialdini, escasez.</td></tr>
-    <tr><td>10</td><td>Casa Royal · <a href="https://www.facebook.com/ads/library/?id=1090989940366046">1090989940366046</a></td><td>"Royal Halloween: enciende la diversión ⚡"</td><td>Estacional temático</td><td>Contexto cultural del momento → relevancia (LIFT).</td></tr>
+    <tr><th>#</th><th>Anunciante · ID</th><th>Qué dice</th><th>Formato</th><th>Por qué funciona</th></tr>
+    <tr><td>1</td><td>SP Digital · <a href="https://www.facebook.com/ads/library/?id=1095481989906670">1095481989906670</a></td><td>Logitech, Razer, AirPods 4 y Motomo Microbuds en el mismo anuncio</td><td>Catálogo dinámico</td><td>Vende productos de otras marcas gracias a su catálogo. Prestigio por asociación.</td></tr>
+    <tr><td>2</td><td>Fernapet · <a href="https://www.facebook.com/ads/library/?id=1003330138833529">1003330138833529</a></td><td>Anuncio más reciente de su rotación semanal</td><td>Ventas</td><td>Catálogo + pixel: Meta optimiza hacia compradores.</td></tr>
+    <tr><td>3</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=1090943200435672">1090943200435672</a></td><td>"Hasta 10 horas de tu música favorita"</td><td>Imagen/video de beneficio</td><td>Vende el resultado, no la ficha técnica.</td></tr>
+    <tr><td>4</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=4757982554468310">4757982554468310</a></td><td>"El regalo perfecto está aquí"</td><td>Imagen/video</td><td>Ocasión de compra: urgencia natural.</td></tr>
+    <tr><td>5</td><td>PhoneClick · <a href="https://www.facebook.com/ads/library/?id=1482570083698573">1482570083698573</a></td><td>Sport Buds: música + conversación en ruta</td><td>Variantes de texto</td><td>Varias versiones en un anuncio: Meta elige la ganadora.</td></tr>
+    <tr><td>6</td><td>Impulzo · <a href="https://www.facebook.com/ads/library/?id=1760930498533279">1760930498533279</a></td><td>"Donner DED-70 a $279.990"</td><td>Producto + precio</td><td>Precio en el titular filtra curiosos y sube la conversión.</td></tr>
+    <tr><td>7</td><td>Impulzo · <a href="https://www.facebook.com/ads/library/?id=2665651943865960">2665651943865960</a></td><td>6 productos (Arturia, Pioneer, Audio-Technica…)</td><td>Carrusel de catálogo</td><td>Variedad + retargeting por producto visto.</td></tr>
+    <tr><td>8</td><td>TuGadget · <a href="https://www.facebook.com/ads/library/?id=1508099708081560">1508099708081560</a></td><td>Kindle "OPEN BOX NUEVO", estabilizadores Hohem</td><td>Catálogo</td><td>"Open box" justifica el precio bajo y quita la duda de calidad.</td></tr>
+    <tr><td>9</td><td>Casa Royal · <a href="https://www.facebook.com/ads/library/?id=1791972702118612">1791972702118612</a></td><td>"Hasta 57% dcto. para tu fiesta en casa 🔥"</td><td>Promo estacional</td><td>Escasez temporal + ocasión.</td></tr>
+    <tr><td>10</td><td>Casa Royal · <a href="https://www.facebook.com/ads/library/?id=1090989940366046">1090989940366046</a></td><td>"Royal Halloween: enciende la diversión ⚡"</td><td>Estacional temático</td><td>Se cuelga del momento cultural: más relevancia.</td></tr>
   </table></div>
-  <div class="card" style="margin-top:16px"><h3>Longevidad: qué dice</h3>
+  <div class="card" style="margin-top:16px"><h3>Anuncios más longevos</h3>
     <ul>
-      <li>Ningún anuncio del nicho supera ~3 semanas. Fernapet: todos ≤8 días. PhoneClick: ~11 días. Lectura: <b>rotación de creativos sin un ganador estable</b>.</li>
-      <li>El anuncio más longevo encontrado (Segal, feb-2022) es de otro nicho y está en el histórico.</li>
-      <li>Oportunidad: construir <b>1–2 creativos evergreen</b> de demostración y escalarlos, en vez de rotar promos.</li>
+      <li>Ningún anuncio del nicho supera ~3 semanas. Fernapet: ≤8 días. PhoneClick: ~11 días. TuGadget: ~19 días.</li>
+      <li>Lectura: rotan promociones sin un creativo ganador estable.</li>
+      <li>Oportunidad: con catálogo, el anuncio dinámico no se gasta. Se renueva solo con cada producto y precio del feed.</li>
     </ul></div>
 </section>
 
 <section id="cliche" class="fade">
   <h2>Clichés vs espacio en blanco</h2>
   <div class="grid g2">
-    <div class="card" style="border-color:var(--red)"><h3>En qué se parecen (y compiten entre ellos)</h3>
+    <div class="card" style="border-color:var(--red)"><h3>En qué se parecen todos</h3>
       <ul>
         <li>Precio como único argumento.</li>
-        <li>Producto chino genérico, intercambiable.</li>
-        <li>Catálogo infinito sin curaduría.</li>
-        <li>Foto de producto sin contexto de uso.</li>
-        <li>Cero garantía visible.</li>
-        <li>Nombre sin significado (KBOD, Haomai, Meidimake).</li>
-        <li>Barrio Meiggs / Estación Central como origen implícito.</li>
+        <li>Producto importado genérico, intercambiable.</li>
+        <li>Catálogo en WhatsApp, PDF o fotos sueltas.</li>
+        <li>Foto de producto sin estándar ni contexto de uso.</li>
+        <li>Sin garantía visible.</li>
+        <li>Nombres sin significado (KBOD, Haomai, Meidimake).</li>
+        <li>Todo termina en "ven al local".</li>
       </ul></div>
     <div class="card" style="border-color:var(--g)"><h3>Lo que ninguno tiene</h3>
       <ul>
+        <li><b>Catálogo digital con precio detalle y mayor</b>, conectado a publicidad.</li>
+        <li><b>Venta a regiones</b> sin pasar por el chat.</li>
+        <li><b>Retargeting dinámico</b>.</li>
         <li><b>Garantía explícita</b> con cambio rápido.</li>
-        <li><b>Prueba medida</b>: vatímetro, test de batería, test de caída.</li>
-        <li><b>Curaduría</b>: "20 productos que sí funcionan".</li>
-        <li><b>Paid social + pixel + retargeting</b>.</li>
-        <li><b>Creadores / UGC pagado</b> (Spark Ads, branded content).</li>
-        <li><b>Bundles por situación</b>: "kit auto", "kit viaje", "kit estudiante".</li>
-        <li><b>Marca con nombre que comunica</b> beneficio en español chileno.</li>
+        <li><b>Creadores en anuncios pagados</b>.</li>
+        <li><b>Kits por situación</b>: auto, viaje, gamer, revendedor.</li>
       </ul></div>
   </div>
 </section>
 
 <section id="cro" class="fade">
-  <h2>Auditoría CRO: problemas del nicho → ventaja de tu marca</h2>
-  <p class="mut">Fórmula MECLABS: C = 4m + 3v + 2(i−f) − 2a. Mobile = 80% del tráfico. Basado en evidencia pública; la verificación visual en vivo queda pendiente.</p>
+  <h2>Auditoría CRO: dónde pierde ventas el nicho</h2>
+  <p class="mut">Fórmula MECLABS: C = 4m + 3v + 2(i−f) − 2a. El 80% del tráfico llega desde el celular.</p>
   <div class="tbl"><table>
-    <tr><th>Problema</th><th>Ubicación</th><th>Principio</th><th>Sev.</th><th>Recomendación para tu marca</th><th>Hipótesis de test</th><th>Métrica</th></tr>
-    <tr><td>Propuesta = solo precio</td><td>Todos · hero/caption</td><td>MECLABS v (valor)</td><td class="sev s-a">Alta</td><td>Hero: "Probado. Garantizado. Llega hoy."</td><td>Si el hero promete garantía + rapidez, ↑ CR vs hero de precio</td><td>CR home→PDP</td></tr>
-    <tr><td>Sin garantía visible</td><td>Todos · ficha</td><td>MECLABS −2a, Cialdini compromiso</td><td class="sev s-a">Alta</td><td>Sello "12 meses · cambio en 24 h" junto al botón</td><td>Sello junto al CTA ↑ add-to-cart</td><td>ATC rate</td></tr>
-    <tr><td>Funnel offline / WhatsApp sin medir</td><td>Haomai, Meidimake</td><td>Fogg (capacidad)</td><td class="sev s-a">Alta</td><td>Checkout de invitado en 1 página + WhatsApp solo como soporte</td><td>Invitado vs cuenta obligatoria ↑ checkout completion</td><td>Checkout CR</td></tr>
-    <tr><td>Envío mínimo alto ($150K)</td><td>Meidimake</td><td>Fricción (f)</td><td class="sev s-a">Alta</td><td>Envío gratis desde ticket promedio +20%; barra de progreso en carrito</td><td>Barra "te faltan $X" ↑ AOV</td><td>AOV</td></tr>
-    <tr><td>Sin retargeting</td><td>KBOD, Motomo</td><td>Fogg (prompt)</td><td class="sev s-m">Media</td><td>Pixel + CAPI + catálogo dinámico</td><td>Retargeting 7 días ↑ ROAS combinado</td><td>ROAS / CPA</td></tr>
-    <tr><td>Foto sin contexto</td><td>Todos · ficha</td><td>LIFT relevancia</td><td class="sev s-m">Media</td><td>Video 10 s en ficha: el producto funcionando</td><td>Video en PDP ↑ CR móvil</td><td>CR PDP móvil</td></tr>
-    <tr><td>Catálogo infinito</td><td>Haomai, Meidimake</td><td>LIFT distracción</td><td class="sev s-m">Media</td><td>≤30 SKUs curados + kits por situación</td><td>Kits ↑ items/pedido</td><td>Items/order</td></tr>
-    <tr><td>Nombre sin significado</td><td>KBOD, Haomai, Meidimake</td><td>Procesamiento fluido</td><td class="sev s-m">Media</td><td>Nombre en español con beneficio implícito (ver nombres)</td><td>Nombre-beneficio ↑ CTR del anuncio</td><td>CTR</td></tr>
-    <tr><td>Sin prueba social visible</td><td>KBOD, Motomo web</td><td>Cialdini prueba social</td><td class="sev s-m">Media</td><td>Reseñas con foto + "X vendidos este mes"</td><td>Reseñas sobre el pliegue ↑ CR</td><td>CR</td></tr>
-    <tr><td>Medios de pago poco visibles</td><td>Nicho general</td><td>Ansiedad (a)</td><td class="sev s-b">Baja</td><td>Logos Webpay / Mercado Pago / cuotas bajo el CTA</td><td>Logos bajo CTA ↓ abandono</td><td>Abandono checkout</td></tr>
-    <tr><td>CTA no fijo en móvil</td><td>Probable en webs</td><td>Fogg capacidad</td><td class="sev s-b">Baja</td><td>Botón sticky "Comprar · llega hoy"</td><td>Sticky CTA ↑ ATC móvil</td><td>ATC móvil</td></tr>
+    <tr><th>Problema</th><th>Ubicación</th><th>Principio</th><th>Sev.</th><th>Recomendación</th><th>Hipótesis de test</th><th>Métrica</th></tr>
+    <tr><td>Catálogo en WhatsApp/PDF</td><td>Meidimake, Haomai</td><td>Fogg (capacidad)</td><td class="sev s-a">Alta</td><td>Catálogo web con compra en 1 página y precio por mayor visible</td><td>Catálogo web ↑ pedidos vs WhatsApp</td><td>Pedidos / sesión</td></tr>
+    <tr><td>Sin feed para anuncios</td><td>Todo San Alfonso</td><td>Fogg (disparador)</td><td class="sev s-a">Alta</td><td>Feed conectado a Meta Commerce Manager + Pixel + API de Conversiones</td><td>Advantage+ catálogo ↓ costo por compra vs promocionar post</td><td>CPA / ROAS</td></tr>
+    <tr><td>Propuesta = solo precio</td><td>Todos</td><td>MECLABS v</td><td class="sev s-a">Alta</td><td>Hero: "Precio mayorista, compra desde tu celular, despacho a todo Chile"</td><td>Hero con conveniencia ↑ clic a catálogo</td><td>CTR hero</td></tr>
+    <tr><td>Envío mínimo alto ($150K)</td><td>Meidimake</td><td>Fricción (f)</td><td class="sev s-a">Alta</td><td>Escala: detalle con envío pagado, mayor con envío gratis; barra de progreso en carrito</td><td>Barra "te faltan $X" ↑ ticket</td><td>Ticket promedio</td></tr>
+    <tr><td>Sin garantía visible</td><td>Todos</td><td>MECLABS −2a</td><td class="sev s-m">Media</td><td>Sello de garantía junto al botón</td><td>Sello ↑ agregar al carro</td><td>Add-to-cart</td></tr>
+    <tr><td>Fotos sin estándar</td><td>Todos</td><td>LIFT claridad</td><td class="sev s-m">Media</td><td>Fondo blanco + foto en uso + video de 10 s</td><td>Video en ficha ↑ conversión móvil</td><td>CR ficha móvil</td></tr>
+    <tr><td>Catálogo infinito sin orden</td><td>Haomai, Meidimake</td><td>LIFT distracción</td><td class="sev s-m">Media</td><td>Categorías claras + colección "más vendidos" + kits</td><td>Kits ↑ productos por pedido</td><td>Items / pedido</td></tr>
+    <tr><td>Sin retargeting</td><td>KBOD, Motomo</td><td>Fogg (disparador)</td><td class="sev s-m">Media</td><td>Anuncios dinámicos a quien vio producto en 7 días</td><td>Retargeting ↑ ROAS total</td><td>ROAS</td></tr>
+    <tr><td>Sin prueba social</td><td>Webs del nicho</td><td>Cialdini</td><td class="sev s-b">Baja</td><td>Reseñas con foto + "X vendidos este mes"</td><td>Reseñas visibles ↑ CR</td><td>CR</td></tr>
+    <tr><td>CTA no fijo en móvil</td><td>Webs del nicho</td><td>Fogg capacidad</td><td class="sev s-b">Baja</td><td>Botón fijo "Comprar · precio mayor desde 3 un."</td><td>Botón fijo ↑ add-to-cart móvil</td><td>ATC móvil</td></tr>
   </table></div>
-  <div class="card" style="margin-top:16px"><h3>Flujo de checkout recomendado (mobile)</h3>
+  <div class="card" style="margin-top:16px"><h3>Flujo de compra recomendado (celular)</h3>
     <ul>
-      <li>PDP → <b>Agregar</b> (sticky) → carrito lateral con barra de envío gratis + upsell 1 clic → checkout invitado 1 página (email, dirección con autocompletar, pago) → confirmación con WhatsApp de seguimiento.</li>
-      <li>Shopify: Shop Pay / checkout nativo + Webpay o Mercado Pago. Mostrar despacho y fecha de entrega <b>antes</b> del pago.</li>
-      <li>No aplica reserva: es e-commerce. Si haces retiro en tienda, agrégalo como opción de envío, no como flujo aparte.</li>
+      <li>Anuncio de catálogo → ficha con precio detalle y precio por mayor → <b>Agregar</b> (botón fijo) → carrito con barra de envío gratis + kit sugerido → checkout invitado en 1 página → confirmación con seguimiento por WhatsApp.</li>
+      <li>Pagos: Webpay o Mercado Pago, visibles bajo el botón. Fecha de entrega antes de pagar.</li>
+      <li>Retiro en local de Estación Central como opción de envío.</li>
     </ul></div>
 </section>
 
@@ -360,13 +407,13 @@ footer{padding:30px 0 60px;color:var(--mut);font-size:13px}
     <div class="card"><div class="chart-box" style="height:380px"><canvas id="cIce"></canvas></div></div>
     <div class="tbl"><table style="min-width:0">
       <tr><th>Iniciativa</th><th>I</th><th>C</th><th>E</th><th>ICE</th></tr>
-      <tr><td>Sello garantía junto al CTA</td><td>9</td><td>8</td><td>10</td><td><b>27</b></td></tr>
-      <tr><td>Pixel + CAPI + catálogo</td><td>9</td><td>9</td><td>8</td><td><b>26</b></td></tr>
-      <tr><td>Video demo en ficha y anuncio</td><td>9</td><td>8</td><td>7</td><td><b>24</b></td></tr>
-      <tr><td>Checkout invitado 1 página</td><td>8</td><td>8</td><td>8</td><td><b>24</b></td></tr>
-      <tr><td>Barra envío gratis</td><td>7</td><td>8</td><td>9</td><td><b>24</b></td></tr>
-      <tr><td>Kits por situación</td><td>8</td><td>7</td><td>7</td><td><b>22</b></td></tr>
-      <tr><td>Spark Ads con creadores</td><td>8</td><td>6</td><td>6</td><td><b>20</b></td></tr>
+      <tr><td>Catálogo digital con feed</td><td>10</td><td>9</td><td>8</td><td><b>27</b></td></tr>
+      <tr><td>Pixel + API de Conversiones</td><td>9</td><td>9</td><td>8</td><td><b>26</b></td></tr>
+      <tr><td>Campaña Advantage+ con catálogo</td><td>9</td><td>8</td><td>8</td><td><b>25</b></td></tr>
+      <tr><td>Precio por mayor visible</td><td>8</td><td>8</td><td>9</td><td><b>25</b></td></tr>
+      <tr><td>Fotos estandarizadas + video</td><td>8</td><td>8</td><td>7</td><td><b>23</b></td></tr>
+      <tr><td>Kits por situación</td><td>7</td><td>7</td><td>8</td><td><b>22</b></td></tr>
+      <tr><td>Creadores en Spark Ads</td><td>8</td><td>6</td><td>6</td><td><b>20</b></td></tr>
     </table></div>
   </div>
 </section>
@@ -374,37 +421,38 @@ footer{padding:30px 0 60px;color:var(--mut);font-size:13px}
 <section id="qw" class="fade">
   <h2>Quick wins</h2>
   <div class="grid g2">
-    <div class="card qw"><div class="n">1</div><div><h3>Garantía como titular</h3>"12 meses · si falla, cambio en 24 h". <b>Por qué</b>: el nicho no responde la duda #1 (¿dura?). −2a en MECLABS.</div></div>
-    <div class="card qw"><div class="n">2</div><div><h3>Video "test real"</h3>Cargador midiendo vatios reales vs genérico de Meiggs. <b>Por qué</b>: autoridad + demostración; ningún competidor lo hace.</div></div>
-    <div class="card qw"><div class="n">3</div><div><h3>Meta Ventas con catálogo desde el día 1</h3>Advantage+ con pixel + CAPI. <b>Por qué</b>: 0/4 competidores en la subasta → menos competencia directa por tu público.</div></div>
-    <div class="card qw"><div class="n">4</div><div><h3>Kits por situación</h3>"Kit Auto", "Kit U", "Kit Viaje". <b>Por qué</b>: sube AOV y saca la comparación por precio unitario.</div></div>
-    <div class="card qw"><div class="n">5</div><div><h3>Creadores en Spark Ads / branded content</h3>3 micro-creadores tech chilenos. <b>Por qué</b>: 0% del nicho usa creadores pagados → atención barata.</div></div>
-    <div class="card qw"><div class="n">6</div><div><h3>Llega hoy + tracking WhatsApp</h3>Igualar KBOD (antes de 14:00) y mostrar fecha exacta. <b>Por qué</b>: urgencia del comprador de reemplazo.</div></div>
-    <div class="card qw"><div class="n">7</div><div><h3>Ángulo estacional con calendario</h3>CyberDay, Black Friday, Navidad, vuelta a clases. <b>Por qué</b>: Casa Royal y PhoneClick ganan atención con ocasión, no con precio.</div></div>
+    <div class="card qw"><div class="n">1</div><div><h3>Catálogo digital profesional</h3>Fotos estandarizadas, títulos con búsqueda, precio detalle y mayor, stock. <b>Por qué</b>: es la pieza que falta para que exista cualquier campaña de ventas.</div></div>
+    <div class="card qw"><div class="n">2</div><div><h3>Conectar el catálogo a Meta</h3>Commerce Manager + Pixel + API de Conversiones. <b>Por qué</b>: sin datos, Meta no aprende a quién venderle.</div></div>
+    <div class="card qw"><div class="n">3</div><div><h3>Campaña Advantage+ con catálogo</h3>Prospección + retargeting dinámico. <b>Por qué</b>: ningún mayorista de San Alfonso compite hoy en esa subasta.</div></div>
+    <div class="card qw"><div class="n">4</div><div><h3>Reciclar los videos de TikTok</h3>Los mismos videos de local y unboxing, con producto etiquetado, como anuncios. <b>Por qué</b>: el formato que ya funciona en orgánico, ahora con botón de compra.</div></div>
+    <div class="card qw"><div class="n">5</div><div><h3>Precio por mayor como gancho</h3>"Desde 3 unidades: precio mayorista" en anuncio y ficha. <b>Por qué</b>: habla al revendedor de regiones que hoy no puede venir.</div></div>
+    <div class="card qw"><div class="n">6</div><div><h3>Garantía visible</h3>"Si falla, se cambia". <b>Por qué</b>: es la duda que nadie del nicho responde.</div></div>
+    <div class="card qw"><div class="n">7</div><div><h3>Google Shopping con el mismo feed</h3>Merchant Center + Performance Max. <b>Por qué</b>: captura al que busca "cargador 20W por mayor" en Google.</div></div>
   </div>
-  <div class="card gl" style="margin-top:16px"><h3>3 quick wins CRO para lanzar con tu branding</h3>
+  <div class="card gl" style="margin-top:16px"><h3>3 quick wins CRO para el lanzamiento</h3>
     <ol>
-      <li><b>CTA sticky en móvil</b> con micro-copy de beneficio: "Comprar · llega hoy · 12 meses garantía".</li>
-      <li><b>Bloque de confianza bajo el CTA</b>: logos de pago, garantía, reseñas con foto.</li>
-      <li><b>Carrito con barra de envío gratis + kit sugerido</b> (1 clic).</li>
+      <li><b>Botón fijo en celular</b>: "Comprar · precio mayor desde 3 un.".</li>
+      <li><b>Bloque de confianza bajo el botón</b>: medios de pago, garantía, reseñas con foto.</li>
+      <li><b>Carrito con barra de envío gratis y kit sugerido</b> en 1 clic.</li>
     </ol></div>
 </section>
 
 <section id="nombres" class="fade">
   <h2>12 nombres de marca</h2>
-  <p class="mut">Criterio: el nombre comunica beneficio sin explicar (fluidez de procesamiento), suena chileno y es corto para el logo en móvil. <b>Disponibilidad no verificada</b>: revisa INAPI (marca) y nic.cl (dominio).</p>
+  <p class="mut">El nombre comunica el beneficio sin explicarlo, suena chileno y se lee bien en un logo de celular. Antes de elegir, revisa disponibilidad en INAPI (marca) y nic.cl (dominio).</p>
   <div class="grid g3" id="brands"></div>
 </section>
 
 <section id="final" class="fade">
   <div class="hero-op">
-    <div class="kick">Tu oportunidad para destacar</div>
-    <h2>El nicho vende <span class="grad-txt">barato</span>. Tú vendes <span class="grad-txt">tranquilidad</span> a precio justo.</h2>
+    <div class="kick">La oportunidad</div>
+    <h2>El mayoreo de San Alfonso tiene producto, precio y audiencia. <span class="grad-txt">Le falta el catálogo.</span></h2>
     <ul>
-      <li><b>Posicionamiento</b>: "accesorios probados, garantizados y que llegan hoy". Nadie ocupa ese lugar.</li>
-      <li><b>Top 3 nombres</b>: <b>PILAS</b> (chilenismo, energía), <b>CERO DRAMA</b> (garantía en el nombre), <b>AL TIRO</b> (velocidad en el nombre).</li>
-      <li><b>360°</b>: Meta Ventas con catálogo (1) → Google Shopping / Performance Max para la búsqueda de reemplazo (2) → TikTok con creadores y Spark Ads, para competir con Haomai en su propio terreno (3) → anuncios de OpenAI/ChatGPT: confirma disponibilidad en Chile antes de presupuestar (4).</li>
-      <li><b>No compitas</b> contra Haomai en "más barato": pierdes por estructura de costos. Compite en confianza y conveniencia.</li>
+      <li><b>Por qué nadie anuncia</b>: sin catálogo digital no se puede activar ninguna campaña de ventas por catálogo en Meta, Google ni TikTok.</li>
+      <li><b>Prueba</b>: el único del grupo con catálogo online y anuncios (Fernapet) es el que más tráfico web capta. Los retailers que anuncian electrónica en Chile (SP Digital, TuGadget, Impulzo) lo hacen con catálogo.</li>
+      <li><b>Qué hacer</b>: catálogo profesional → feed conectado → Advantage+ en Meta → Google Shopping → TikTok con los videos que ya existen.</li>
+      <li><b>Ventaja de llegar primero</b>: hoy la subasta del mayoreo de electrónica está vacía. El primero aprende con datos propios mientras los demás siguen en WhatsApp.</li>
+      <li><b>Nombres recomendados</b>: <b>PILAS</b>, <b>AL TIRO</b>, <b>CERO DRAMA</b>.</li>
     </ul>
   </div>
 </section>
@@ -412,63 +460,59 @@ footer{padding:30px 0 60px;color:var(--mut);font-size:13px}
 </main>
 
 <footer class="wrap">
-  Fuentes: Meta Ads Library (consulta API, CL, 24-oct-2026) · Semrush (fernapet.cl) · TikTok @haomaioficial, @meidimake.chile · kbod.cl · spdigital.cl/landing/motomo · facebook.com/motomostore · reclamos.cl. Cifras de seguidores según snapshots públicos sin fecha exacta.
+  Fuentes: Meta Ads Library (Chile, 24-oct-2026) · Semrush (fernapet.cl) · TikTok @haomaioficial, @meidimake.chile · kbod.cl · spdigital.cl/landing/motomo · facebook.com/motomostore · reclamos.cl.
 </footer>
 
 <script>
 const brands=[
  ["PILAS","Ponte las pilas.","Chilenismo de energía. El nombre ya promete que tu tech no te deja botado.",["#0B0B10","#FF7A18","#FFD166","#FFFFFF"]],
- ["CERO DRAMA","Si falla, se cambia. Punto.","Garantía hecha nombre. Ataca directo la ansiedad que el nicho ignora.",["#09090F","#FF2D95","#8B5CF6","#F5F5F7"]],
- ["AL TIRO","Llega hoy. Funciona siempre.","Velocidad chilena. Para el comprador que reemplaza algo roto.",["#050507","#22F5A0","#00C2FF","#FFFFFF"]],
- ["PRENDIDO","Tu tech, siempre encendida.","Slang de energía y fiesta. Funciona para audio y gamer RGB.",["#0A0612","#FF2D95","#FF7A18","#FFE3F1"]],
- ["VATIO","Potencia que se mide, no que se promete.","Autoridad técnica: cada producto con su test medido.",["#07080C","#FFD166","#3A3F55","#FFFFFF"]],
+ ["AL TIRO","Llega hoy. Funciona siempre.","Velocidad chilena. Para el revendedor y el comprador que no puede esperar.",["#050507","#22F5A0","#00C2FF","#FFFFFF"]],
+ ["CERO DRAMA","Si falla, se cambia. Punto.","Garantía hecha nombre. Ataca la duda que el nicho ignora.",["#09090F","#FF2D95","#8B5CF6","#F5F5F7"]],
+ ["PRENDIDO","Tu tech, siempre encendida.","Energía y fiesta. Funciona para audio y gamer RGB.",["#0A0612","#FF2D95","#FF7A18","#FFE3F1"]],
+ ["VATIO","Potencia que se mide, no que se promete.","Autoridad técnica: cada producto con su prueba medida.",["#07080C","#FFD166","#3A3F55","#FFFFFF"]],
  ["CIEN","Todo al 100.","Batería llena como metáfora: carga, sonido y garantía al 100%.",["#06060A","#22F5A0","#8B5CF6","#EDEBFF"]],
  ["NODO","Todo lo que conecta tu día.","Ecosistema: cables, carga, audio. Ideal para vender kits.",["#08070F","#8B5CF6","#22F5A0","#FFFFFF"]],
  ["CHISPA","La energía que te faltaba.","Cálido y cercano. Sirve para regalo y lifestyle.",["#0C0805","#FF7A18","#FF2D95","#FFF4E8"]],
- ["ONDA","Sonido con onda, precio sin vueltas.","Para liderar audio: audífonos, parlantes, ANC.",["#05060D","#00C2FF","#8B5CF6","#FFFFFF"]],
- ["BATERÍA SOCIAL","Nunca te quedes fuera.","Gen Z: tu celular es tu vida social. Muy compartible en TikTok.",["#0B0710","#FF2D95","#22F5A0","#FFFFFF"]],
- ["LATIDO","El pulso de tu música.","Emocional, para audio y smartwatch con monitoreo.",["#0A0509","#FF2D55","#FF7A18","#FFE9EE"]],
- ["NEÓN 56","Tech chilena con luz propia.","+56 = Chile. Estética neón, identidad local para destacar frente a la importación genérica.",["#04040A","#B26BFF","#FF2D95","#22F5A0"]]
+ ["ONDA","Sonido con onda, precio sin vueltas.","Para liderar audio: audífonos, parlantes, cancelación de ruido.",["#05060D","#00C2FF","#8B5CF6","#FFFFFF"]],
+ ["BATERÍA SOCIAL","Nunca te quedes fuera.","Gen Z: el celular es su vida social. Muy compartible en TikTok.",["#0B0710","#FF2D95","#22F5A0","#FFFFFF"]],
+ ["MAYOR 56","Precio mayorista, a todo Chile.","+56 = Chile. Dice mayoreo y alcance nacional en dos palabras.",["#04040A","#FF7A18","#22F5A0","#FFFFFF"]],
+ ["NEÓN 56","Tech chilena con luz propia.","Estética neón e identidad local frente a la importación genérica.",["#04040A","#B26BFF","#FF2D95","#22F5A0"]]
 ];
+const light=c=>{const n=parseInt(c.slice(1),16);return ((n>>16)*299+((n>>8)&255)*587+(n&255)*114)/1000>150};
 document.getElementById('brands').innerHTML=brands.map((b,i)=>`
  <div class="card brand">
   <div class="top"><div class="kick">#${i+1}</div><div class="nm" style="background:linear-gradient(90deg,${b[3][1]},${b[3][2]});-webkit-background-clip:text;background-clip:text;color:transparent">${b[0]}</div>
   <div class="sl">"${b[1]}"</div><div class="mut" style="font-size:13.5px">${b[2]}</div></div>
-  <div class="sw">${b[3].map(c=>`<span style="background:${c};color:${c==='#FFFFFF'||c.startsWith('#F')||c.startsWith('#E')||c.startsWith('#FF')?'#0009':'#fff9'}">${c}</span>`).join('')}</div>
+  <div class="sw">${b[3].map(c=>`<span style="background:${c};color:${light(c)?'#000a':'#fffa'}">${c}</span>`).join('')}</div>
  </div>`).join('');
 
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.08});
 document.querySelectorAll('.fade').forEach(el=>io.observe(el));
 
 if(window.Chart){
- Chart.defaults.color='#cfc8e6';Chart.defaults.borderColor='#2a2142';Chart.defaults.font.family='Inter';
+ Chart.defaults.color='#cfc8e6';Chart.defaults.borderColor='#2a2142';Chart.defaults.font.family='Inter, system-ui, sans-serif';
  const C={o:'#ff7a18',p:'#ff2d95',m:'#8b5cf6',g:'#22f5a0',y:'#ffd166'};
- new Chart(cPres,{type:'bar',data:{labels:['Haomai','Motomo','KBOD','Meidimake'],datasets:[
-  {label:'Social',data:[10,2,0,6],backgroundColor:C.p},
-  {label:'Canales',data:[6,8,8,6],backgroundColor:C.m},
-  {label:'Paid',data:[0,2,0,0],backgroundColor:C.o},
-  {label:'Web',data:[4,6,7,0],backgroundColor:C.g},
-  {label:'Retail',data:[2,9,8,3],backgroundColor:C.y}]},
+ new Chart(cPres,{type:'bar',data:{labels:['Fernapet','Haomai','Motomo','KBOD','Meidimake'],datasets:[
+  {label:'Social',data:[5,10,2,0,6],backgroundColor:C.p},
+  {label:'Canales',data:[7,6,8,8,6],backgroundColor:C.m},
+  {label:'Publicidad',data:[9,0,2,0,0],backgroundColor:C.o},
+  {label:'Catálogo/web',data:[9,2,6,7,0],backgroundColor:C.g},
+  {label:'Distribución',data:[6,2,9,8,3],backgroundColor:C.y}]},
   options:{maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,max:50}},plugins:{legend:{position:'bottom'}}}});
- const rl=['Valor','Relevancia','Claridad','Urgencia','Ansiedad (inv)','Distracción (inv)'];
- new Chart(cLift,{type:'radar',data:{labels:rl,datasets:[
-  {label:'Haomai',data:[6,7,7,5,3,3],borderColor:C.p,backgroundColor:'#ff2d9522'},
-  {label:'Motomo',data:[5,6,6,3,5,6],borderColor:C.m,backgroundColor:'#8b5cf622'},
-  {label:'KBOD',data:[5,6,6,6,5,5],borderColor:C.g,backgroundColor:'#22f5a022'},
-  {label:'Meidimake',data:[5,6,5,4,2,2],borderColor:C.o,backgroundColor:'#ff7a1822'}]},
-  options:{maintainAspectRatio:false,scales:{r:{min:0,max:10,ticks:{display:false},grid:{color:'#2a2142'},angleLines:{color:'#2a2142'}}},plugins:{legend:{position:'bottom'}}}});
- new Chart(cTipo,{type:'doughnut',data:{labels:['Producto + precio','Sin título (video/mensajes)','Beneficio / lifestyle','Catálogo multiproducto','Promo estacional'],
+ new Chart(cCat,{type:'bar',data:{labels:['Fernapet','KBOD','Motomo','Haomai','Meidimake'],datasets:[{label:'Madurez de catálogo',data:[9,7,6,2,1],backgroundColor:[C.g,C.m,C.m,C.p,C.p]}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,scales:{x:{min:0,max:10}},plugins:{legend:{display:false}}}});
+ new Chart(cTipo,{type:'doughnut',data:{labels:['Producto + precio','Video / mensajes','Beneficio / lifestyle','Catálogo multiproducto','Promo estacional'],
   datasets:[{data:[10,8,8,3,2],backgroundColor:[C.o,'#5b4a86',C.p,C.m,C.g],borderColor:'#0f0d17',borderWidth:3}]},
   options:{maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom'}}}});
- new Chart(cPart,{type:'doughnut',data:{labels:['Brand ads','Con creadores'],datasets:[{data:[100,0.0001],backgroundColor:[C.m,C.g],borderColor:'#0f0d17',borderWidth:3}]},
+ new Chart(cPart,{type:'doughnut',data:{labels:['Anuncios de marca','Con creadores'],datasets:[{data:[100,0.0001],backgroundColor:[C.m,C.g],borderColor:'#0f0d17',borderWidth:3}]},
   options:{maintainAspectRatio:false,cutout:'70%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>c.label+': '+(c.raw<1?0:c.raw)+'%'}}}}});
- new Chart(cAge,{type:'bar',data:{labels:['Fernapet (más viejo)','Impulzo','SP Digital','PhoneClick','TuGadget','Segal','Motomo.lastarria'],
-  datasets:[{label:'Días',data:[8,3,3,11,19,23,216],backgroundColor:[C.y,C.o,C.o,C.p,C.m,C.y,C.g]}]},
-  options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}}}});
- new Chart(cIce,{type:'bar',data:{labels:['Sello garantía','Pixel+CAPI+catálogo','Video demo','Checkout invitado','Barra envío','Kits','Spark Ads creadores'],
-  datasets:[{label:'ICE',data:[27,26,24,24,24,22,20],backgroundColor:[C.g,C.g,C.m,C.m,C.m,C.p,C.o]}]},
+ new Chart(cAge,{type:'bar',data:{labels:['Fernapet','Impulzo','SP Digital','PhoneClick','TuGadget'],
+  datasets:[{label:'Días',data:[8,3,3,11,19],backgroundColor:[C.g,C.o,C.o,C.p,C.m]}]},
+  options:{indexAxis:'y',maintainAspectRatio:false,scales:{x:{min:0,max:25}},plugins:{legend:{display:false}}}});
+ new Chart(cIce,{type:'bar',data:{labels:['Catálogo con feed','Pixel + API Conv.','Advantage+ catálogo','Precio mayor visible','Fotos + video','Kits','Creadores'],
+  datasets:[{label:'ICE',data:[27,26,25,25,23,22,20],backgroundColor:[C.g,C.g,C.g,C.m,C.m,C.p,C.o]}]},
   options:{indexAxis:'y',maintainAspectRatio:false,scales:{x:{min:0,max:30}},plugins:{legend:{display:false}}}});
 }
 </script>
-</body>
+
 </html>
