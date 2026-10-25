@@ -203,7 +203,7 @@ footer a{color:var(--muted);word-break:break-word}
   <p class="lead">Revisamos uno por uno sus webs, catálogos, WhatsApp, TikTok y la Biblioteca de Anuncios de Meta. Tienen producto y tienen seguidores. Lo que casi ninguno tiene es <b>dónde venderle a esa gente desde el celular</b>.</p>
   <div class="stats">
     <div class="panel stat"><span class="n g">0<small>/13</small></span><p>anuncian hoy accesorios tecnológicos en Meta. Solo 2 tienen anuncios activos, y venden decoración navideña y botas de pesca.</p></div>
-    <div class="panel stat"><span class="n o">200<small> mil</small></span><p>personas siguen a Haomai en TikTok. Para ver su catálogo hay que crear una cuenta en otra app.</p></div>
+    <div class="panel stat"><span class="n o">200<small> mil</small></span><p>personas siguen a Haomai en TikTok. Para ver su catálogo hay que descargar otra app, crear un usuario y conseguir un código que solo dan en la tienda o en sus redes.</p></div>
     <div class="panel stat"><span class="n r">4</span><p>tienen la venta rota hoy: 2 webs que no cargan y 2 WhatsApp que no reciben mensajes.</p></div>
     <div class="panel stat"><span class="n p">29<small>+</small></span><p>anuncios activos tiene LifeMax, el mayorista que más invierte del rubro. 26 de 29 llevan a su tienda online.</p></div>
   </div>
@@ -241,7 +241,7 @@ footer a{color:var(--muted);word-break:break-word}
     <div class="loss"><h3>El cliente de regiones no existe para ti</h3><p>Si para comprarte hay que ir al local, tu mercado termina donde termina el metro.</p></div>
     <div class="loss"><h3>Tu WhatsApp es un cuello de botella</h3><p>Cada cotización depende de que alguien esté mirando el teléfono. Una persona atiende una conversación a la vez. Una tienda atiende a cien.</p></div>
     <div class="loss"><h3>Compites solo por precio</h3><p>Si vendes el mismo cargador que el local de al lado y no muestras nada más, el cliente compara precio y nada más.</p></div>
-    <div class="loss"><h3>Tus seguidores no se convierten en ventas</h3><p>Haomai tiene 200 mil seguidores en TikTok y ninguna tienda propia donde comprar. La atención sin un lugar para pagar se pierde.</p></div>
+    <div class="loss"><h3>Tus seguidores no se convierten en ventas</h3><p>Haomai tiene 200 mil seguidores en TikTok. Su catálogo existe, pero para verlo hay que descargar la app Yollgo, crear un usuario y conseguir un código que solo dan en la tienda o en sus redes. Cada paso extra es un cliente que se va.</p></div>
   </div>
   <div class="panel calc" aria-labelledby="calc-t">
     <div class="stack" style="gap:16px">
@@ -277,7 +277,7 @@ footer a{color:var(--muted);word-break:break-word}
       <div class="panel ins">
         <div class="donut" style="--v:69.2" data-label="9/13"></div>
         <h3>Sin tienda web propia funcionando</h3>
-        <p>Venden por chat, PDF, catálogo de WhatsApp, apps que piden iniciar sesión o marketplaces. Dos tienen la web caída hoy.</p>
+        <p>Venden por chat, PDF, catálogo de WhatsApp, apps donde hay que registrarse y pedir un código, o marketplaces. Dos tienen la web caída hoy.</p>
       </div>
       <div class="panel ins">
         <h3>Seguidores en TikTok, sin tienda propia</h3>
@@ -286,7 +286,7 @@ footer a{color:var(--muted);word-break:break-word}
           <div class="tbar"><span>Meidimake</span><span class="t"><i style="width:26.1%"></i></span><b>52K</b></div>
           <div class="tbar"><span>Inkax</span><span class="t"><i style="width:17.4%"></i></span><b>35K</b></div>
         </div>
-        <p style="margin-top:8px">Casi 290 mil personas siguen a tres mayoristas que no tienen tienda propia donde pagar.</p>
+        <p style="margin-top:8px">Casi 290 mil personas siguen a tres mayoristas sin tienda propia. Haomai y Meidimake muestran su catálogo solo dentro de la app Yollgo, con registro previo.</p>
       </div>
       <div class="panel ins">
         <h3>El que más invierte tiene tienda</h3>
@@ -433,7 +433,7 @@ const rows=[
  ['El cliente encuentra el producto en segundos desde el celular','n','h','h'],
  ['Precio por mayor visible en cada producto','n','h','h'],
  ['El pedido llega armado, con detalle y total','n','h','h'],
- ['Se ve sin crear cuenta ni iniciar sesión','y','n','y'],
+ ['Se ve sin descargar apps, crear cuenta ni pedir códigos','y','n','y'],
  ['Dominio propio .cl que verificas en Meta y Google','n','n','y'],
  ['Píxel de Meta + API de Conversiones registrando ventas','n','n','h'],
  ['Catálogo conectado a Instagram y Facebook para anuncios','n','n','h'],
@@ -443,7 +443,7 @@ const rows=[
 const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata'};
 const verdicts={
  pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
- ext:'<b>App de terceros o link en bio</b>: el catálogo de Yollgo que usan Haomai y Meidimake pide iniciar sesión antes de mostrar un solo producto, y Cosashop manda a Taplink. El dominio no es tuyo: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
+ ext:'<b>App de terceros o link en bio</b>: Haomai y Meidimake usan Yollgo: hay que descargar la app y crear un usuario, y en Haomai además ingresar un código que solo se consigue en la tienda o en sus redes, antes de ver un solo producto. Cosashop manda a Taplink. El dominio no es tuyo: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
  cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin píxel configurado, sin API de Conversiones, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.'};
 const idx={pdf:1,ext:2,cheap:3};
 function cmp(k){const i=idx[k];let s=0;
