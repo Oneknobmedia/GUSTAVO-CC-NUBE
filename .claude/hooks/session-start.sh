@@ -3,6 +3,8 @@ set -euo pipefail
 
 [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] || exit 0
 
+echo '{"async": true, "asyncTimeout": 600000}'
+
 GHIDRA_VER=12.1.4
 GHIDRA_DATE=20260921
 GHIDRA_DIR=/opt/ghidra/ghidra_${GHIDRA_VER}_PUBLIC
