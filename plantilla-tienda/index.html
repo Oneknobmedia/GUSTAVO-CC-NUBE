@@ -26,7 +26,7 @@ svg{width:20px;height:20px;flex:none}
 /* aviso y cabecera */
 .ann{background:var(--dark);color:#fff;text-align:center;font-weight:700;font-size:14px;padding:11px 16px;line-height:1.3}
 .ann:empty{display:none}
-.hd{position:sticky;top:0;z-index:30;background:var(--bg);transition:box-shadow .2s}
+.hd{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--bg);transition:box-shadow .2s}
 .hd.sc{box-shadow:0 6px 18px -12px rgba(0,0,0,.3)}
 .hd-row{display:flex;align-items:center;gap:20px;min-height:80px}
 .logo{display:flex;flex-direction:column;line-height:1;flex:none;max-width:260px}
@@ -132,7 +132,7 @@ svg{width:20px;height:20px;flex:none}
 .soc svg{width:15px;height:15px}
 .news{display:flex;border:1px solid var(--fg);border-radius:14px;padding:6px;background:var(--card);margin-top:22px}
 .news input{flex:1;min-width:0;border:0;outline:0;background:none;padding:0 12px}
-.news button{background:var(--dark);color:#fff;border-radius:8px;padding:10px 16px;display:flex;gap:8px;align-items:center;font-size:15px}
+.news a{text-decoration:none;background:var(--dark);color:#fff;border-radius:8px;padding:10px 16px;display:flex;gap:8px;align-items:center;font-size:15px}
 .news svg{width:14px}
 .copy{border-top:1px solid var(--line);margin-top:60px;padding:22px 0 30px;text-align:center;color:#424245;font-size:15px}
 
@@ -453,7 +453,7 @@ ${safeUrl(s.maps) ? `<p style="margin-top:18px"><a href="${esc(s.maps)}" target=
 ${soc.length ? `<div class="soc">${soc.map(([k, v]) => `<a href="${esc(/^https?:/.test(v) ? v : k === 'whatsapp' ? waLink('Hola') : '#')}" target="_blank" rel="noopener" aria-label="${k}">${I[k]}</a>`).join('')}</div>` : ''}</div>
 <div><h4>Menú</h4><ul>${D.cats.map(c => `<li><a href="#" data-cat="${esc(c.id)}">${esc(c.name)}</a></li>`).join('')}</ul></div>
 <div><h4>Atención al Cliente</h4><ul>${(s.help || []).filter(Boolean).map(h => { const [t, u] = String(h).split('|'); return `<li><a href="${esc(safeUrl(u) || '#')}" ${u ? 'target="_blank" rel="noopener"' : ''}>${esc(t)}</a></li>`; }).join('')}</ul></div>
-<div><h4>${esc(s.newsTitle || 'Escríbenos')}</h4><p>${esc(s.newsText || '')}</p><form class="news" data-f="news"><input name="m" placeholder="Escribe tu consulta…" aria-label="Consulta"><button>Enviar ${I.arrow}</button></form></div>`;
+<div><h4>${esc(s.newsTitle || 'Escríbenos')}</h4><p>${esc(s.newsText || '')}</p>${waLink('Hola') ? `<div class="news"><input id="newsmsg" placeholder="Escribe tu consulta…" aria-label="Consulta"><a id="newsgo" href="${esc(waLink('Hola'))}" target="_blank" rel="noopener">Enviar ${I.arrow}</a></div>` : ''}</div>`;
   $('.copy').textContent = s.copy || '';
 }
 
@@ -592,9 +592,7 @@ document.addEventListener('submit', e => {
   const f = e.target.dataset.f; if (!f) return;
   e.preventDefault();
   if (f === 'search') { const q = e.target.q.value.trim(); close(); go({q, fav: false}); $('main').scrollIntoView(); }
-  if (f === 'news') { const m = e.target.m.value.trim(), wl = waLink(m || 'Hola'); if (wl) open_(wl); }
 });
-const open_ = u => window.open(u, '_blank', 'noopener');
 document.addEventListener('change', e => {
   const t = e.target;
   if (t.closest('.sort')) { st.sort = t.value; grid(); }
@@ -683,6 +681,9 @@ ${fld(`cats.${ci}.products.${i}.desc`, 'Descripción', 'area')}
 <hr style="border:0;border-top:1px solid var(--line)">
 <b>Exportar</b>
 <div class="ebtns"><button class="eb pri" data-e="exp">${I.dl}Descargar catálogo (editable)</button><button class="eb pri" data-e="expf">${I.dl}Descargar versión final (sin editor)</button></div>
+<div class="ebtns"><button class="eb" data-e="copyf">Copiar código HTML final</button><button class="eb" data-e="copyj">Copiar respaldo</button></div>
+<textarea id="expout" class="ef" readonly hidden style="min-height:120px;font-size:12px" aria-label="Código copiado"></textarea>
+<div class="ehint">Si la descarga no funciona (por ejemplo, abierto como artefacto compartido), usa <b>Copiar</b> y pega el código en un archivo .html.</div>
 <div class="ebtns"><button class="eb" data-e="json">${I.dl}Respaldo .json</button><label class="eb">Cargar respaldo .json<input type="file" accept=".json" data-bak hidden></label></div>
 <div class="ehint">Los cambios se guardan como borrador en este navegador. Descarga el catálogo para conservarlos en un archivo.</div>
 <div class="ebtns"><button class="eb dng" data-e="drop">Descartar borrador</button></div>`;
@@ -691,6 +692,7 @@ function setPath(path, v) { const ks = path.split('.'), last = ks.pop(); const o
 
 document.addEventListener('input', e => {
   const t = e.target;
+  if (t.id === 'newsmsg') { $('#newsgo').href = waLink(t.value.trim() || 'Hola'); return; }
   if (t.dataset.path) {
     let v = t.dataset.arr ? t.value.split('\n').map(x => x.trim()).filter(Boolean) : t.type === 'number' ? num(t.value) : t.value;
     if (t.dataset.path === 'grid') { v = num(v); st.cols = v; }
@@ -723,16 +725,18 @@ document.addEventListener('click', e => {
     case 'open': ecat = st.cat; epanel(); open('ded'); break;
     case 'addcat': { const n = {id: uid(), name: 'Nueva colección', desc: '', hero: '', heroM: '', products: []}; D.cats.push(n); ecat = n.id; go({cat: n.id}); break; }
     case 'catup': { const i = D.cats.indexOf(c); [D.cats[i - 1], D.cats[i]] = [D.cats[i], D.cats[i - 1]]; break; }
-    case 'delcat': if (D.cats.length < 2) return toast('Debe quedar al menos una colección'); if (!confirm(`¿Eliminar “${c.name}” y sus ${c.products.length} productos?`)) return; D.cats = D.cats.filter(x => x !== c); ecat = D.cats[0].id; go({cat: ecat}); break;
+    case 'delcat': if (D.cats.length < 2) return toast('Debe quedar al menos una colección'); if (!sure(t, `¿Eliminar ${c.products.length} productos? Toca de nuevo`)) return; D.cats = D.cats.filter(x => x !== c); ecat = D.cats[0].id; go({cat: ecat}); break;
     case 'addp': c.products.unshift({id: uid(), title: 'Nuevo producto', vendor: '', price: 0, old: 0, img: '', imgs: [], badge: '', stock: true, pills: [], desc: ''}); break;
     case 'pup': [c.products[pi - 1], c.products[pi]] = [c.products[pi], c.products[pi - 1]]; break;
     case 'pdup': c.products.splice(pi + 1, 0, Object.assign(JSON.parse(JSON.stringify(c.products[pi])), {id: uid()})); break;
-    case 'pdel': if (!confirm('¿Eliminar este producto?')) return; c.products.splice(pi, 1); break;
+    case 'pdel': if (!sure(t, 'Toca de nuevo para eliminar')) return; c.products.splice(pi, 1); break;
     case 'resetTheme': D.theme = {bg: '#f5f5f7', fg: '#1d1d1f', card: '#ffffff', accent: '#4d5cf9', sale: '#ff463b', ph: '#e5e5e5', dark: '#1d1d1f', flash: '#43b99f', exp: '#aeb4bd', r: 16}; break;
     case 'imp': importShopify($('#impjson').value, $('#impname').value); return;
     case 'exp': case 'expf': exportHTML(a === 'expf'); return;
     case 'json': download(JSON.stringify(D, null, 1), slug(D.store.name) + '.json', 'application/json'); return;
-    case 'drop': if (!confirm('¿Descartar el borrador y volver al catálogo guardado en el archivo?')) return; lsDel(KEY + 'draft'); location.reload(); return;
+    case 'copyf': copyTxt(buildHTML(true), 'Código del catálogo'); return;
+    case 'copyj': copyTxt(JSON.stringify(D), 'Respaldo'); return;
+    case 'drop': if (!sure(t, 'Toca de nuevo para descartar')) return; lsDel(KEY + 'draft'); location.reload(); return;
     default: return;
   }
   persist(); epanel();
@@ -752,16 +756,33 @@ function importShopify(txt, name) {
   D.cats.push(c); ecat = c.id; go({cat: c.id, q: '', fav: false}); persist(); epanel();
   toast(`${c.products.length} productos importados`);
 }
-function exportHTML(final) {
+function buildHTML(final) {
   const d = JSON.parse(JSON.stringify(D)); d.editable = !final; d.stamp = uid();
   d.cats.forEach(c => c.products.forEach(p => delete p._c));
   const json = JSON.stringify(d).replace(/</g, '\\u003c');
-  const html = TPL.replace(/(<script id="catdata" type="application\/json">)[\s\S]*?(<\/script>)/, (m, a, b) => a + json + b).replace(/<title>[\s\S]*?<\/title>/, () => '<title>' + esc(D.store.name) + '</title>');
-  download(html, slug(D.store.name) + (final ? '' : '-editable') + '.html', 'text/html');
-  if (!final) { lsDel(KEY + 'draft'); }
-  toast('Catálogo descargado');
+  return TPL.replace(/(<script id="catdata" type="application\/json">)[\s\S]*?(<\/script>)/, (m, a, b) => a + json + b).replace(/<title>[\s\S]*?<\/title>/, () => '<title>' + esc(D.store.name) + '</title>');
 }
-function download(txt, name, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], {type})); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
+function exportHTML(final) {
+  download(buildHTML(final), slug(D.store.name) + (final ? '' : '-editable') + '.html', 'text/html');
+}
+function copyTxt(txt, label) {
+  const fb = () => { const o = $('#expout'); o.hidden = false; o.value = txt; o.focus(); o.select(); toast('Copia el texto seleccionado'); };
+  try { navigator.clipboard.writeText(txt).then(() => toast(label + ' copiado'), fb); } catch (e) { fb(); }
+}
+function sure(b, m) {
+  if (b.dataset.sure) return true;
+  const o = b.innerHTML; b.dataset.sure = 1; b.textContent = m;
+  setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.innerHTML = o; } }, 3000);
+  return false;
+}
+/* dentro de un artefacto de claude.ai la descarga pasa por la capacidad downloads; fuera, por un enlace blob */
+let dlNS = null;
+if (window.claude && typeof window.claude.use === 'function') window.claude.use('downloads').then(n => { dlNS = n; }, () => {});
+function download(txt, name, type) {
+  if (dlNS) { dlNS.save({filename: name, data: txt}).then(() => toast('Archivo guardado'), e => { if (!e || e.code !== 'declined') toast('No se pudo descargar: usa Copiar'); }); return; }
+  blobSave(txt, name, type); toast('Archivo descargado');
+}
+function blobSave(txt, name, type) { const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([txt], {type})); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1000); }
 function readImg(file, max) {
   return new Promise((ok, ko) => { const fr = new FileReader(); fr.onerror = ko; fr.onload = () => { const im = new Image(); im.onerror = ko; im.onload = () => {
     const k = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas');
