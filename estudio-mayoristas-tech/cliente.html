@@ -155,47 +155,64 @@ td.tt.big{color:var(--orange);font-weight:700}
 .sp .t i{display:block;height:100%;border-radius:99px}
 .sp b{font-family:var(--f-mono);text-align:right}
 
+.cmpHead{display:grid;gap:20px;grid-template-columns:minmax(0,1fr);align-items:start}
+.cmpHead .tl{display:flex;flex-direction:column;gap:16px}
+.cmpHead h2{font-size:clamp(24px,4vw,40px);font-weight:700;line-height:1.15}
+.score{padding:22px;display:flex;flex-direction:column;gap:14px;border-radius:18px;background:var(--surface);border:1px solid var(--line-soft);box-shadow:0 10px 30px rgba(20,39,94,.08)}
+.score .k{font:700 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.cmpFoot{display:grid;gap:20px;grid-template-columns:minmax(0,1fr);align-items:start}
+@media(min-width:860px){.cmpHead{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px}.cmpFoot{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px}}
+.pick{font:700 15px var(--f-body);color:var(--navy);margin:4px 0 -6px}
 .seg{display:flex;flex-direction:column;gap:10px}
-.seg .opt{display:grid;grid-template-columns:minmax(0,1fr) 122px;align-items:center;gap:10px}
-.seg .opt button{width:100%;border-radius:16px;padding:8px 14px;line-height:1.25}
-.seg button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 14px var(--f-body);cursor:pointer;text-align:left}
-.seg .ads{display:flex;align-items:center;gap:6px;font-size:12px;line-height:1.25;font-weight:700;color:var(--muted)}
-.seg .d{flex:none;width:20px;height:20px;min-width:20px;aspect-ratio:1/1;border-radius:50%;padding:0;font-size:11px;line-height:1}
-.seg .ads{flex-direction:row-reverse;justify-content:flex-end}
-.seg .d.n{background:rgba(220,38,38,.1);color:#dc2626;box-shadow:inset 0 0 0 1px #dc2626}
-.seg .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
-.seg button.pro{border-color:#16a34a;color:#15803d}
-.seg button.pro[aria-pressed="true"]{border-color:#16a34a;background:rgba(22,163,74,.12);color:#15803d}
-.cmp.two{grid-template-columns:minmax(0,1fr) 108px!important}
-.seg button[aria-pressed="true"]{border-color:var(--pink);color:var(--fg);background:rgba(238,122,20,.12)}
-.cmp{display:grid;grid-template-columns:minmax(0,1fr) 108px 108px;font-size:15px}
-.cmp>div{padding:12px 10px;border-bottom:1px solid rgba(47,74,154,.14);display:flex;align-items:center}
-.cmp .hd{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);justify-content:center;text-align:center}
-.cmp .hd:first-child{justify-content:flex-start}
-.cmp .c{justify-content:center}
-.cmp .pro{background:rgba(22,163,74,.08)}
-.cmp .hd.pro{color:#15803d;font-weight:800;background:rgba(22,163,74,.14)}
-.cmp .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
-.cmp .lst{margin:6px 0 0;padding-left:18px;font-size:13px;font-weight:600;line-height:1.35;display:flex;flex-direction:column;gap:3px}
-.cmp .c1,.cmp .c1h{background:#e5e7eb;color:#1f2937;font-weight:700}
-.cmp .c1h{font-weight:800}
-.cmp .hd{font-family:var(--f-body);font-weight:800;font-size:12px;letter-spacing:.02em;line-height:1.2;padding:14px 4px;min-width:0;overflow-wrap:anywhere}
-.cmp .hd.c1h{font-size:13px;letter-spacing:0;justify-content:flex-start;text-align:left;padding-left:10px}
-@media(min-width:480px){.cmp .hd.c1h{font-size:15px}}
-@media(max-width:420px){.cmp{grid-template-columns:minmax(0,1fr) 92px 92px!important}.cmp .hd{font-size:11px;letter-spacing:0;padding-inline:2px}}
-@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+.seg .opt{display:grid;grid-template-columns:minmax(0,1fr) 128px;align-items:center;gap:12px}
+@media(min-width:860px){.seg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 28px}}
+.seg button{width:100%;min-height:48px;padding:8px 16px;border-radius:12px;border:1.5px solid var(--line-soft);background:var(--surface);color:var(--navy);font:700 15px/1.25 var(--f-body);cursor:pointer;text-align:left;transition:background .2s,color .2s,border-color .2s,box-shadow .2s}
+.seg button:hover{border-color:var(--blue)}
+.seg button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 6px 16px rgba(20,39,94,.25)}
+.seg button.pro{border-color:var(--blue);color:var(--blue)}
+.seg button.pro[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.seg .ads{display:flex;flex-direction:row-reverse;justify-content:flex-end;align-items:center;gap:6px;font-size:12px;line-height:1.25;font-weight:700;color:var(--muted)}
+.seg .d,.cmp .d{flex:none;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;padding:0;line-height:1;aspect-ratio:1/1;font-style:normal;font-weight:800}
+.seg .d{width:20px;height:20px;min-width:20px;font-size:11px}
+.cmp .d{width:26px;height:26px;font-size:13px}
+.d.y{background:rgba(22,163,74,.12);color:#15803d;box-shadow:inset 0 0 0 1.5px #16a34a}
+.d.n{background:rgba(220,38,38,.09);color:#dc2626;box-shadow:inset 0 0 0 1.5px #dc2626}
+.d.h{background:rgba(242,138,30,.14);color:#c2640a;box-shadow:inset 0 0 0 1.5px #f28a1e}
+.tbl{border-radius:18px;overflow:hidden;background:var(--surface);border:1px solid var(--line-soft);box-shadow:0 10px 30px rgba(20,39,94,.08)}
 #cmp{position:relative}
-.cmp .hl{position:absolute;left:0;pointer-events:none;border-radius:10px;padding:3px;z-index:2;background:conic-gradient(from var(--a),transparent 0deg,transparent 200deg,rgba(242,138,30,.15) 240deg,#f28a1e 320deg,#ff9f40 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:hlspin 7s linear infinite;filter:drop-shadow(0 0 4px rgba(242,138,30,.55))}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) 116px 116px;font-size:15px}
+.cmp.two{grid-template-columns:minmax(0,1fr) 116px}
+.cmp>div{padding:14px;border-bottom:1px solid rgba(47,74,154,.12);display:flex;align-items:center;background:var(--surface)}
+.cmp>div:last-of-type{border-bottom:0}
+.cmp .hd{background:var(--navy);color:#fff;font:800 12px/1.2 var(--f-body);letter-spacing:.04em;text-transform:uppercase;justify-content:center;text-align:center;border-bottom:0;padding:16px 6px;min-width:0;overflow-wrap:anywhere}
+.cmp .hd.c1h{justify-content:flex-start;text-align:left;padding-left:16px;font-size:13px}
+.cmp .hd.pro{background:var(--blue)}
+.cmp .gh{grid-column:1/-1;background:var(--surface-2);font:700 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--blue);padding:10px 16px}
+.cmp .c1{font-weight:600;color:var(--fg);line-height:1.35}
+.cmp .c{justify-content:center}
+.cmp .c.pro{background:rgba(47,85,200,.07)}
+.cmp .f{padding-block:24px;background:#f1f5ff}
+.cmp .c1.f{font-size:17px;font-weight:800;color:var(--navy)}
+.cmp .c.pro.f{background:rgba(47,85,200,.12)}
+.cmp .lst{margin:8px 0 0;padding-left:18px;font-size:13.5px;font-weight:600;line-height:1.4;display:flex;flex-direction:column;gap:3px;color:var(--muted)}
+.cmp .c1 b{color:var(--navy)}
+@media(max-width:420px){.cmp{grid-template-columns:minmax(0,1fr) 84px 84px}.cmp.two{grid-template-columns:minmax(0,1fr) 84px}.cmp>div{padding:12px 10px}.cmp .hd{font-size:10.5px;letter-spacing:0;padding-inline:3px}.cmp .hd.c1h{font-size:12px;padding-left:10px}.cmp .c1{font-size:14px}.cmp .c1.f{font-size:15px}.seg .opt{grid-template-columns:minmax(0,1fr) 112px}}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+.cmp .hl{position:absolute;left:0;pointer-events:none;border-radius:12px;padding:2.5px;z-index:2;background:conic-gradient(from var(--a),transparent 0deg,transparent 200deg,rgba(242,138,30,.15) 240deg,#f28a1e 320deg,#ff9f40 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:hlspin 7s linear infinite}
 @keyframes hlspin{to{--a:360deg}}
 @media(prefers-reduced-motion:reduce){.cmp .hl{animation:none;background:#f28a1e}}
-.cmp .d.n{background:rgba(220,38,38,.1);color:#dc2626;box-shadow:inset 0 0 0 1px #dc2626}
-.cmp .pro .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
-.scorebar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px}
-.scorebar .track{height:12px;border-radius:99px;background:rgba(47,74,154,.18);overflow:hidden}
+.scorebar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px;color:var(--fg)}
+.scorebar .track{height:12px;border-radius:99px;background:rgba(47,74,154,.14);overflow:hidden}
 .scorebar .fill{height:100%;border-radius:99px;transition:width .5s ease}
 .scorebar b{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
-.verdict{padding:18px;border-radius:14px;border:1px dashed var(--line);font-size:15px;color:var(--muted)}
+.verdict{padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--line-soft);border-left:4px solid var(--blue);font-size:15px;color:var(--muted)}
 .verdict b{color:var(--fg)}
+.bridge{padding:24px;border-radius:18px;background:linear-gradient(135deg,#0c1735,#16296b);color:#fff;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.bridge .k{font:700 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--orange)}
+.bridge h3{color:#fff;font-size:clamp(17px,2.2vw,21px);line-height:1.25}
+.bridge p{font-size:15px;color:#c3cdea}
+.bridge p b{color:#fff}
+.bridge a{margin-top:auto;display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:var(--orange);color:#14275e;font:800 14px var(--f-body);text-decoration:none}
 
 .flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));gap:10px}
 .step{padding:16px 14px;border-radius:14px;border:1px solid var(--line-soft);background:var(--surface);display:flex;flex-direction:column;gap:6px;transition:border-color .3s,box-shadow .3s,transform .3s}
@@ -424,27 +441,40 @@ footer a{color:var(--muted);word-break:break-word}
 </div></section>
 
 <!-- DESEO: CATÁLOGO VS TIENDA -->
-<section id="comparar"><div class="wrap stack">
-  <span class="eyebrow">Catálogo barato vs. tienda que vende</span>
-  <h2>Un catálogo muestra productos. Una tienda profesional <span class="grad-text">cierra ventas y alimenta tu publicidad</span>.</h2>
-  <p class="lead">Una tienda online profesional incluye herramientas de medición de resultados y performance, como el <b>Meta Pixel</b> y el <b>Google Tag</b>. Con ellas vas armando una base de clientes fieles cada vez más grande y alimentas tu base de datos, para que los motores de publicidad se acerquen cada vez más a mostrar tus anuncios a tu cliente ideal.</p>
-  <p class="lead">¿Algún catálogo de tu competencia sirve para hacer publicidad que venda? Elige uno y compáralo.</p>
+<section id="comparar"><div class="wrap stack" style="gap:28px">
+  <div class="cmpHead">
+    <div class="tl">
+      <span class="eyebrow">Catálogo barato vs. tienda que vende</span>
+      <h2>Un catálogo muestra productos. Una tienda profesional <span class="grad-text">cierra ventas</span>.</h2>
+      <p class="lead">Un PDF o un catálogo de WhatsApp solo muestran. Una tienda profesional <b>recibe el pedido armado, muestra tu precio por mayor y vende de noche y a regiones</b> sin que estés conectado.</p>
+    </div>
+    <div class="score">
+      <span class="k">Puntaje de capacidades</span>
+      <div class="scorebar"><span id="lblA">PDF / WhatsApp</span><div class="track"><div class="fill" id="barA" style="background:var(--orange);width:5%"></div></div><b id="scA">0,5</b></div>
+      <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--blue);width:100%"></div></div><b>11</b></div>
+    </div>
+  </div>
+  <p class="pick">¿Cómo se compara el catálogo de tu competencia? Elige uno:</p>
   <div class="seg" role="group" aria-label="Elegir contra qué comparar">
     <div class="opt"><button type="button" id="seg-pdf" data-k="pdf" aria-pressed="true"><span class="t">PDF o catálogo de WhatsApp</span></button><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></div>
     <div class="opt"><button type="button" id="seg-ext" data-k="ext" aria-pressed="false"><span class="t">App de terceros o link en bio</span></button><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></div>
     <div class="opt"><button type="button" id="seg-cheap" data-k="cheap" aria-pressed="false"><span class="t">Tienda barata de plantilla</span></button><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></div>
     <div class="opt"><button type="button" id="seg-pro" class="pro" data-k="pro" aria-pressed="false"><span class="t">Tienda online profesional</span></button><span class="ads">Sirve para publicidad: <i class="d y">✓</i></span></div>
   </div>
-  <div class="panel" style="padding:6px 8px 10px;overflow:hidden"><div class="cmp" id="cmp"></div></div>
-  <div class="panel" style="padding:18px;display:flex;flex-direction:column;gap:10px">
-    <div class="scorebar"><span id="lblA">PDF / WhatsApp</span><div class="track"><div class="fill" id="barA" style="background:var(--pink);width:5%"></div></div><b id="scA">0,5</b></div>
-    <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--green);width:100%"></div></div><b>11</b></div>
+  <div class="tbl"><div class="cmp" id="cmp"></div></div>
+  <div class="cmpFoot">
+    <div class="verdict" id="verdict"></div>
+    <div class="bridge">
+      <span class="k">El siguiente paso</span>
+      <h3>Cuando tu tienda ya vende sola, tu publicidad rinde más.</h3>
+      <p>Una tienda online profesional incluye herramientas de medición de resultados y performance, como el <b>Meta Pixel</b> y el <b>Google Tag</b>. Con ellas vas armando una base de clientes fieles cada vez más grande y alimentas tu base de datos, para que los motores de publicidad se acerquen cada vez más a mostrar tus anuncios a tu cliente ideal.</p>
+      <a href="#ecosistema">Ver cómo se conecta <span aria-hidden="true">↓</span></a>
+    </div>
   </div>
-  <div class="verdict" id="verdict"></div>
 </div></section>
 
 <!-- DESEO: ECOSISTEMA + QUICK WINS -->
-<section><div class="wrap stack">
+<section id="ecosistema"><div class="wrap stack">
   <span class="eyebrow">Cómo se ve cuando funciona</span>
   <h2>Tu tienda pasa a ser el centro. Todo lo demás le trae clientes.</h2>
   <div class="flow" id="flow">
@@ -517,12 +547,13 @@ const rows=[
  ['Precio por mayor visible en cada producto','y','y','y'],
  ['El pedido llega armado, con detalle y total','h','h','h'],
  ['Se ve sin descargar apps, crear cuenta ni pedir códigos','y','n','y'],
+ ['Vende de noche y a regiones sin que estés conectado','n','n','n'],
  ['Dominio propio .cl que verificas en Meta y Google','n','n','y'],
  ['Herramientas de medición y CRM registrando cada venta','n','n','h'],
  ['Catálogo conectado a Instagram y Facebook para anuncios','n','n','h'],
  ['<div><b>Aparece en:</b><ul class="lst"><li>Google Shopping</li><li>Marketplace</li><li>YouTube Shop</li><li>Feed de Instagram y Facebook</li><li>Historias de Instagram y Facebook</li><li>Sugerencias de ChatGPT</li></ul></div>','n','n','h'],
- ['Remarketing a quien vio un producto y no compró','n','n','h'],
- ['Vende de noche y a regiones sin que estés conectado','n','n','n']];
+ ['Remarketing a quien vio un producto y no compró','n','n','h']];
+const grp={0:'Primero: vender mejor desde el celular',6:'Después: que más clientes te encuentren y vuelvan'};
 const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata',pro:'Tienda online profesional'};
 const verdicts={
  pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
@@ -530,11 +561,11 @@ const verdicts={
  cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.',
  pro:'<b>Tienda online profesional</b>: cumple las 11 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
 const idx={pdf:1,ext:2,cheap:3,pro:0};
-function hl(){const e=$('cmp'),c=e.querySelector('.c1'),b=e.querySelector('.hl');if(!c||!b)return;b.style.top=c.offsetTop+'px';b.style.height=c.offsetHeight+'px';b.style.width=e.clientWidth+'px'}
+function hl(){const e=$('cmp'),c=e.querySelector('.c1'),b=e.querySelector('.hl');if(!c||!b)return;b.style.top=(c.offsetTop+2)+'px';b.style.left='2px';b.style.height=(c.offsetHeight-4)+'px';b.style.width=(e.clientWidth-4)+'px'}
 addEventListener('resize',()=>hl());
 function cmp(k){const i=idx[k],P=k==='pro';let s=0;$('cmp').classList.toggle('two',P);
  let h='<div class="hd c1h">Capacidad y oportunidad de venta</div>'+(P?'<div class="hd pro">Tienda online profesional</div>':'<div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>');
- rows.forEach((r,ri)=>{const v=P?'y':r[i],x='';s+=v==='y'?1:v==='h'?.5:0;h+='<div class="c1">'+r[0]+'</div>'+(P?'<div class="c pro"><span class="d y">✓</span></div>':'<div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>');});
+ rows.forEach((r,ri)=>{const v=P?'y':r[i],f=ri===0?' f':'';s+=v==='y'?1:v==='h'?.5:0;if(grp[ri])h+='<div class="gh">'+grp[ri]+'</div>';h+='<div class="c1'+f+'">'+r[0]+'</div>'+(P?'':'<div class="c'+f+'"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div>')+'<div class="c pro'+f+'"><span class="d y">✓</span></div>';});
  $('cmp').innerHTML=h+'<i class="hl"></i>';hl();$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*100/rows.length)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>cmp(b.dataset.k)));cmp('pdf');
