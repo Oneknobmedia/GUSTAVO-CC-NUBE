@@ -143,6 +143,7 @@ td.tt.big{color:var(--orange);font-weight:700}
 @media(min-width:860px){.gs{grid-template-columns:1fr 1fr}}
 .gs .panel{padding:20px;display:flex;flex-direction:column;gap:12px}
 .have,.miss{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.sug{display:block;margin-top:4px;font-size:12.5px;line-height:1.4;color:#cc5e00;font-weight:600}
 .have li,.miss li{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:start;font-size:15.5px}
 .miss li span{color:var(--muted)}
 .pieces{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
@@ -371,8 +372,8 @@ footer a{color:var(--muted);word-break:break-word}
     <div class="panel">
       <h3 style="color:var(--green)">Lo que ya tienes</h3>
       <ul class="have">
-        <li><i class="d y">✓</i><div><b>Catálogo de 140 productos</b> en 8 categorías: celular, cargadores, cables, audio, computación y gamer, auto, almacenamiento y pilas.</div></li>
-        <li><i class="d y">✓</i><div><b>Precio detalle y por mayor:</b> 15 % de descuento desde 8 unidades.</div></li>
+        <li><i class="d y">✓</i><div><b>Catálogo de 140 productos</b> en 8 categorías: celular, cargadores, cables, audio, computación y gamer, auto, almacenamiento y pilas.<small class="sug">Sugerencia · ejemplo: poner primero las categorías que más te piden por WhatsApp y un botón "Ver precio por mayor" en cada una.</small></div></li>
+        <li><i class="d y">✓</i><div><b>Precio detalle y por mayor:</b> 15 % de descuento desde 8 unidades.<small class="sug">Sugerencia · ejemplo: mostrar el precio detalle tachado, el precio mayorista destacado y la etiqueta "−15 % desde 8 u." en cada producto.</small></div></li>
         <li><i class="d y">✓</i><div><b>Pedido armado a WhatsApp</b> con el detalle de lo que el cliente eligió.</div></li>
         <li><i class="d y">✓</i><div><b>Rápido en el celular:</b> el contenido principal aparece en 1,5 segundos.</div></li>
       </ul>
