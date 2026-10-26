@@ -1,0 +1,592 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Estudio Mayoristas Tech</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Figtree:wght@400;500;700;800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* Layout: informe técnico de una columna con índice sticky; tablas densas en contenedores con scroll propio; estado codificado por color semántico */
+:root{
+  --bg:#07060c; --surface:#100d19; --surface-2:#18122a; --line:#8b5cf6; --line-soft:rgba(139,92,246,.30);
+  --fg:#f6f4fb; --muted:#a9a1c3; --dim:#5d5578;
+  --orange:#ff7a1a; --pink:#ff2e88; --purple:#a855f7; --green:#2dff9b; --red:#ff4d5e; --amber:#ffb800;
+  --grad:linear-gradient(90deg,var(--orange),var(--pink) 35%,var(--purple) 68%,var(--green));
+  --f-display:'Unbounded','Arial Black',system-ui,sans-serif;
+  --f-body:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(44px,6vw,72px);border-top:1px solid var(--line-soft)}
+h1,h2,h3{font-family:var(--f-display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(26px,4.6vw,46px);font-weight:900}
+h2{font-size:clamp(21px,3vw,30px);font-weight:700}
+h3{font-size:16px;font-weight:700}
+p{margin:0;max-width:75ch}
+.stack{display:flex;flex-direction:column;gap:18px}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.eyebrow b{color:var(--pink);font-weight:700}
+.grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.muted{color:var(--muted)}
+.small{font-size:13.5px}
+.panel{background:var(--surface);border:1px solid var(--line-soft);border-radius:14px}
+.pad{padding:18px}
+a{color:var(--green);word-break:break-word}
+:focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+ul,ol{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+code{font-family:var(--f-mono);font-size:.86em;background:var(--surface-2);padding:1px 6px;border-radius:5px;color:var(--orange)}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:rgba(7,6,12,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;gap:8px;overflow-x:auto;padding-block:10px;scrollbar-width:none}
+.top a{flex:none;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:99px;border:1px solid var(--line-soft)}
+.top a:hover{color:var(--fg);border-color:var(--pink)}
+
+.hero{padding-block:clamp(32px,5vw,56px);border-top:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr));gap:12px}
+.kpi{padding:16px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kpi .n{font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1;font-variant-numeric:tabular-nums}
+.kpi p{font-size:13.5px;color:var(--muted)}
+.c-o{color:var(--orange)}.c-p{color:var(--pink)}.c-g{color:var(--green)}.c-r{color:var(--red)}.c-v{color:var(--purple)}.c-a{color:var(--amber)}
+
+.cols{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:880px){.cols.two{grid-template-columns:1fr 1fr}.cols.three{grid-template-columns:repeat(3,1fr)}}
+.cols>*{min-width:0}
+.callout{padding:18px 20px;border-radius:14px;border:1px solid var(--green);background:linear-gradient(135deg,rgba(45,255,155,.08),rgba(168,85,247,.06));display:flex;flex-direction:column;gap:8px}
+.callout.warn{border-color:var(--amber);background:rgba(255,184,0,.06)}
+.callout h3{font-size:15px}
+
+.scroll{overflow-x:auto;border-radius:14px;border:1px solid var(--line-soft);background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{padding:9px 11px;text-align:left;border-bottom:1px solid rgba(139,92,246,.13);vertical-align:top}
+th{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--surface-2);white-space:nowrap}
+td.nw,th.nw{white-space:nowrap}
+td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+tbody tr:hover td{background:rgba(139,92,246,.06)}
+tr.you td{background:rgba(45,255,155,.06)}
+.st{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-size:12.5px}
+.st::before{content:"";width:9px;height:9px;border-radius:50%;flex:none}
+.st.y::before{background:var(--green)}.st.n::before{background:transparent;box-shadow:inset 0 0 0 1.5px var(--dim)}
+.st.w::before{background:var(--red)}.st.h::before{background:var(--orange)}.st.u::before{background:var(--dim)}
+.st.n{color:var(--muted)}.st.u{color:var(--dim)}
+.sev{font-family:var(--f-mono);font-size:11px;padding:2px 8px;border-radius:99px;white-space:nowrap}
+.sev.c{background:rgba(255,77,94,.15);color:var(--red);border:1px solid var(--red)}
+.sev.a{background:rgba(255,122,26,.12);color:var(--orange);border:1px solid var(--orange)}
+.sev.m{background:rgba(255,184,0,.1);color:var(--amber);border:1px solid var(--amber)}
+.pend{font-family:var(--f-mono);font-size:11px;color:var(--amber);border:1px dashed var(--amber);padding:1px 7px;border-radius:99px;white-space:nowrap}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters button{min-height:38px;padding:0 14px;border-radius:99px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 13px var(--f-body);cursor:pointer}
+.filters button[aria-pressed="true"]{border-color:var(--pink);color:var(--fg);background:rgba(255,46,136,.12)}
+
+.bars{display:flex;flex-direction:column;gap:8px}
+.bar{display:grid;grid-template-columns:minmax(100px,160px) 1fr 54px;gap:10px;align-items:center;font-size:13.5px}
+.bar .t{height:16px;border-radius:5px;background:rgba(139,92,246,.14);position:relative;overflow:hidden}
+.bar .f{position:absolute;inset:0 auto 0 0;border-radius:5px;background:var(--grad)}
+.bar b{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
+.axis{display:grid;grid-template-columns:minmax(100px,160px) 1fr 54px;gap:10px;font-family:var(--f-mono);font-size:10.5px;color:var(--dim)}
+.axis .ticks{display:flex;justify-content:space-between}
+.stackbar{display:flex;height:30px;border-radius:8px;overflow:hidden;font-family:var(--f-mono);font-size:11.5px;font-weight:700}
+.stackbar div{display:grid;place-items:center;color:#0b0812;min-width:0;overflow:hidden;white-space:nowrap}
+.lg{display:flex;flex-wrap:wrap;gap:10px;font-size:12.5px;color:var(--muted)}
+.lg span{display:inline-flex;gap:6px;align-items:center}
+.lg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+.funnel{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px}
+.funnel span{padding:5px 10px;border-radius:8px;background:var(--surface-2);border:1px solid var(--line-soft)}
+.funnel i{font-style:normal;color:var(--dim)}
+.funnel span.end-bad{border-color:var(--red);color:var(--red)}
+.funnel span.end-ok{border-color:var(--green);color:var(--green)}
+.fcard{padding:16px;display:flex;flex-direction:column;gap:10px}
+.fcard .who{font-size:13px;color:var(--muted)}
+.badge{font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:99px;border:1px solid var(--green);color:var(--green);width:max-content}
+
+.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.nm{padding:16px;display:flex;flex-direction:column;gap:6px}
+.nm .w{font-family:var(--f-display);font-weight:900;font-size:24px;letter-spacing:.02em}
+.nm .sl{font-size:14.5px}
+.nm .meta{font-size:13px;color:var(--muted)}
+.sw{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.sw i{width:20px;height:20px;border-radius:5px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)}
+.sw code{font-size:10.5px;color:var(--muted);background:transparent;padding:0}
+.meter{display:grid;grid-template-columns:96px 1fr 26px;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
+.meter .t{height:6px;border-radius:9px;background:rgba(139,92,246,.18);overflow:hidden}
+.meter .t i{display:block;height:100%;background:var(--green)}
+.meter b{font-family:var(--f-mono);color:var(--fg);text-align:right}
+
+.qwl{display:flex;flex-direction:column;gap:10px}
+.qwi{display:grid;grid-template-columns:1fr;gap:10px;padding:16px}
+@media(min-width:880px){.qwi{grid-template-columns:1.3fr 1fr}}
+.qwi .ice{display:flex;flex-direction:column;gap:6px}
+.icebar{display:grid;grid-template-columns:20px 1fr 22px;gap:8px;align-items:center;font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.icebar .t{height:8px;border-radius:9px;background:rgba(139,92,246,.18);overflow:hidden}
+.icebar .t i{display:block;height:100%}
+.icebar b{color:var(--fg);text-align:right}
+.qwi .total{font-family:var(--f-display);font-weight:900;font-size:22px}
+
+.steps{counter-reset:s;display:flex;flex-direction:column;gap:10px;padding:0;list-style:none}
+.steps li{counter-increment:s;display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start}
+.steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-family:var(--f-mono);font-weight:700;font-size:13px;color:#0b0812;background:var(--grad)}
+.obj{display:grid;grid-template-columns:1fr;gap:10px}
+.obj details{padding:14px 16px}
+.obj summary{cursor:pointer;font-weight:700}
+.obj details p{margin-top:8px;color:var(--muted)}
+.check{list-style:none;padding:0}
+.check li{display:flex;gap:10px;align-items:flex-start}
+.check input{width:18px;height:18px;accent-color:var(--green);margin-top:3px;flex:none}
+.persona{padding:16px;display:flex;flex-direction:column;gap:8px}
+.persona .who{font-family:var(--f-mono);font-size:11px;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
+footer{padding-block:36px 56px;color:var(--dim);font-size:13px;border-top:1px solid var(--line-soft)}
+footer a{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body>
+
+<nav class="top" aria-label="Índice"><div class="wrap">
+<a href="#resumen">Resumen</a><a href="#metodo">Método</a><a href="#matriz">Matriz</a><a href="#ranking">Ranking</a><a href="#patrones">Patrones</a><a href="#funnel">Funnels</a><a href="#tracking">Píxel/Tags</a><a href="#ads">Ads intel</a><a href="#gs">GS Electronic</a><a href="#cro">CRO</a><a href="#branding">Branding</a><a href="#quickwins">Quick wins</a><a href="#pitch">Pitch</a><a href="#next">Próximos pasos</a>
+</div></nav>
+
+<main>
+<section class="hero"><div class="wrap stack">
+  <span class="eyebrow">Uso interno · One Knob Media · Cliente: GS Electronic · datos al 25 oct 2026 · <b>No compartir con el cliente</b></span>
+  <h1>Mayoristas de accesorios tecnológicos, Santiago: <span class="grad-text">13 competidores, tienda online vs. sin tienda</span></h1>
+  <p class="muted">Nicho: electrónica y computación, venta al por mayor, retail de tecnología (accesorios de celular). Objetivo comercial: vender a GS Electronic la tienda online profesional como producto de entrada y abrir la puerta a planes de publicidad.</p>
+  <div class="kpis">
+    <div class="panel kpi"><span class="n c-g">0/13</span><p>anuncian accesorios hoy en Meta</p></div>
+    <div class="panel kpi"><span class="n c-p">9/13</span><p>sin web propia funcionando</p></div>
+    <div class="panel kpi"><span class="n c-o">200K</span><p>TikTok Haomai; catálogo con app + registro + código</p></div>
+    <div class="panel kpi"><span class="n c-v">1/13</span><p>con Google Ads activo: Kolm (16 anuncios)</p></div>
+    <div class="panel kpi"><span class="n c-r">2</span><p>webs caídas hoy (Seros, CPC)</p></div>
+    <div class="panel kpi"><span class="n c-a">29+</span><p>anuncios activos LifeMax (benchmark)</p></div>
+  </div>
+</div></section>
+
+<section id="resumen"><div class="wrap stack">
+  <span class="eyebrow">01 · Resumen ejecutivo</span>
+  <h2>Subasta vacía, audiencia grande, cero captura.</h2>
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:10px">
+      <h3>Diagnóstico</h3>
+      <ul>
+        <li><b>Nadie del set anuncia accesorios hoy en Meta.</b> 7 páginas verificadas por ID sin anuncios activos (Kolm, CDC, Seros, Nexora, Meidimake, Munditel, Movilcell). KBOD, Inkax, CPC y Haomai: ninguno detectado por palabra clave. Solo Fernapet (bazar) y Cosashop (botas de pesca) tienen anuncios activos.</li>
+        <li><b>La audiencia existe y está en TikTok:</b> Haomai 200K, Meidimake 52,2K, Kolm 48,5K, Inkax 34,7K. Ninguno de los tres mayores tiene tienda online propia. Haomai (Sazié 2893) y Meidimake (San Alfonso 458) tienen local físico propio, pero para ver el catálogo hay que ir al local, pedir un registro y crear usuario en la app Yollgo (en Haomai, además, un código que solo dan en tienda o redes): oportunidad de tienda online 24/7.</li>
+        <li><b>En Google sí hay pauta:</b> Kolm muestra 16 anuncios en los últimos 30 días (Centro de Transparencia de Anuncios, Chile). CDC tuvo 6 y hoy 0; CPC tuvo 2. El resto, 0. TikTok no publica biblioteca para Chile: solo se ve el píxel (KBOD, Fernapet).</li>
+        <li><b>Producto y plaza idénticos:</b> LDNIO, Hoco, Borofone, Motomo, Inkax. Monjitas, San Alfonso, Sazie, Antúnez.</li>
+        <li><b>El benchmark que sí invierte es LifeMax</b> (distribuidor, fuera del set): 29+ anuncios activos, Shopify con píxel y Google Ads, oferta B2B sin fricción.</li>
+      </ul>
+    </div>
+    <div class="callout">
+      <span class="eyebrow">Oportunidad #1</span>
+      <h3>GS Electronic como primer mayorista del cluster con tienda medible + anuncios de catálogo.</h3>
+      <p>GS ya tiene catálogo de 140 productos con precio por mayor (15 % desde 8 u.), pedido a WhatsApp y LCP móvil 1,5 s. Faltan dominio propio, píxel + CAPI, catálogo en Meta/Merchant Center y medición. Con eso entra a una subasta de Meta donde sus 13 competidores no están; en Google solo compite Kolm.</p>
+      <p class="muted small">Principios: MECLABS <code>v</code> (único con compra online + despacho) y <code>f↓</code>; Fogg <code>Ability↑</code> (pedir sin cotizar ni registrarse); LIFT propuesta de valor en un mercado indiferenciado. Ventana: KBOD ya tiene los tres píxeles instalados; si enciende pauta, recorta la ventaja.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="metodo"><div class="wrap stack">
+  <span class="eyebrow">02 · Método, fuentes y límites</span>
+  <h2>Qué se midió, cómo y qué no se pudo.</h2>
+  <div class="cols three">
+    <div class="panel pad stack" style="gap:8px"><h3 class="c-g">Medido (25 oct 2026)</h3><ul class="muted small"><li>Biblioteca de Anuncios con navegador: vista por página (país = todos) para 8 IDs del brief; búsquedas por palabra clave en Chile para el resto y para el nicho</li><li>Píxeles y etiquetas: peticiones de red reales en Chromium emulando iPhone 13 (Meta, GTM, GA4, Google Ads, TikTok)</li><li>Google Ads: Centro de Transparencia de Anuncios, región Chile, por dominio y por nombre (histórico y últimos 30 días)</li><li>Velocidad: LCP móvil por sitio</li><li>TikTok: seguidores, likes, videos y bio de cada perfil</li><li>Catálogo GS Electronic: datos del propio catálogo publicado</li></ul></div>
+    <div class="panel pad stack" style="gap:8px"><h3 class="c-a">Reglas de la fuente</h3><ul class="muted small"><li>Fuera de la UE, la Biblioteca muestra anuncios comerciales <b>solo mientras están activos</b>. No hay historial de inactivos ni cifras de impresiones o gasto para Chile.</li><li>"Top por impresiones" = orden de la propia Biblioteca (<code>sort_data[mode]=total_impressions</code>), sin cifras.</li><li>La vista por página con <code>country=CL</code> devuelve vacío sin sesión; con <code>country=ALL</code> funciona.</li><li>Google guarda histórico: "activo" = anuncios mostrados en los últimos 30 días.</li></ul></div>
+    <div class="panel pad stack" style="gap:8px"><h3 class="c-p">Límites</h3><ul class="muted small"><li>Sin ID de página para KBOD, Inkax, CPC, Haomai, Cosashop y GS: búsqueda por palabra clave (puede omitir anuncios sin el nombre en el texto)</li><li>Instagram exige sesión: seguidores no medidos</li><li>TikTok no tiene biblioteca pública de anuncios para Chile (solo EEE, Suiza y Reino Unido): el píxel es la única señal</li><li>Similarweb no conectado: sin tráfico web</li></ul></div>
+  </div>
+  <div class="callout warn">
+    <h3>Correcciones al brief (verificadas)</h3>
+    <ol class="muted small">
+      <li>"Ad Library general del nicho 1" busca <code>q=DEUDAS</code>: es el nicho deudas. Reemplazado por búsquedas exactas: <code>precio mayorista</code>, <code>por mayor y detalle</code>, <code>para revender</code>, <code>cargador</code>, <code>audífonos</code>, <code>mayorista</code>.</li>
+      <li>Haomai: web del brief es <code>seroschile.com</code> (copiado). No tiene web; catálogo en app Yollgo: descargar, crear usuario e ingresar código que dan en tienda o redes (dato del equipo).</li>
+      <li>Nexora y Seros comparten TikTok <code>@ldniochile</code> (229 seg.; bio "Monjitas 843 Local#34"). Seros además tiene <code>@seros.chile</code> (30 seg.; bio "Monjitas 817").</li>
+      <li>CPC Center: <code>cpccenter.cl</code> responde 502 hoy. Seros: <code>seroschile.com</code> no conecta.</li>
+      <li>Inkax Chile: dirección en bio TikTok, Conferencia 166 local 28 (Galería Antúnez). <code>inkax.hk</code> es el sitio de la fábrica en Shenzhen.</li>
+      <li>Cosashop: su bio de TikTok enlaza catálogo de WhatsApp (<code>wa.me/c/56971023547</code>); el brief decía que no tenía.</li>
+      <li>Fernapet: bazar con 4 sucursales (Pudahuel, Maipú, Ñuñoa, Curauma), VTEX. Fuera del rubro mayorista de accesorios.</li>
+      <li>Kolm: bio TikTok "3 sucursales en Stgo". Dos "Competidor 12" en el brief: total 13.</li>
+    </ol>
+  </div>
+</div></section>
+
+<section id="matriz"><div class="wrap stack">
+  <span class="eyebrow">03 · Matriz de presencia</span>
+  <h2>GS Electronic + 13 competidores: quién publicita y dónde</h2>
+  <div class="filters" role="group" aria-label="Filtrar matriz">
+    <button type="button" id="f-all" data-f="all" aria-pressed="true">Todos</button>
+    <button type="button" id="f-web" data-f="web" aria-pressed="false">Con web propia funcionando</button>
+    <button type="button" id="f-noweb" data-f="noweb" aria-pressed="false">Sin web propia</button>
+    <button type="button" id="f-px" data-f="px" aria-pressed="false">Con publicidad activa</button>
+    <button type="button" id="f-tt" data-f="tt" aria-pressed="false">TikTok ≥ 30K</button>
+  </div>
+  <div class="scroll"><table aria-label="Matriz de presencia digital">
+    <thead><tr><th>Competidor</th><th>Publicidad Meta (hoy)</th><th>Publicidad Google (30 d)</th><th>Publicidad TikTok</th><th>Etiquetas instaladas</th><th>Web</th><th>Catálogo</th><th>TikTok seg.</th><th>WhatsApp</th><th>LCP móvil</th><th>Zona</th><th class="nw">Score /16</th></tr></thead>
+    <tbody id="mx"></tbody>
+  </table></div>
+  <p class="muted small"><b>Fuentes de publicidad:</b> Meta = Biblioteca de Anuncios (activos hoy) · Google = Centro de Transparencia de Anuncios, Chile (últimos 30 días; entre paréntesis, histórico) · TikTok = sin biblioteca pública para Chile, solo se puede ver si el píxel está instalado.<br><b>Rúbrica (0–16):</b> publicidad activa en Meta 2 y en Google 2 · web propia funcionando 3, sitio no transaccional 1 · etiquetas: píxel Meta, Google Ads y píxel TikTok, 1 c/u · TikTok ≥100K 4, ≥30K 3, ≥1K 1 · catálogo fuera de web 1 · WhatsApp con bot +1, roto −1.</p>
+</div></section>
+
+<section id="ranking"><div class="wrap stack">
+  <span class="eyebrow">04 · Ranking y competidor más fuerte</span>
+  <h2>Tres líderes distintos según qué se mida.</h2>
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:12px">
+      <div class="bars" id="bars"></div>
+      <div class="axis"><span></span><span class="ticks"><span>0</span><span>8</span><span>16</span></span><span></span></div>
+    </div>
+    <div class="stack" style="gap:12px">
+      <div class="panel pad stack" style="gap:8px"><span class="badge">MÁS PREPARADO · KBOD · 9</span><p class="muted small">Web propia con LCP 0,7 s, píxel Meta, Google Ads y TikTok, catálogo web + PDF + WhatsApp, bot. Audiencia chica (4,1K), 0 anuncios en Meta y nunca anunció en Google. <b style="color:var(--fg)">Mayor amenaza:</b> puede encender pauta optimizada mañana.</p></div>
+      <div class="panel pad stack" style="gap:8px"><span class="badge">MÁS FUERTE HOY · KOLM · 10</span><p class="muted small">Único mayorista del set con pauta activa: 16 anuncios en Google en los últimos 30 días. 3 sucursales, 48,5K en TikTok (707 videos, 288K likes), píxel de Meta instalado pero 0 anuncios en Meta. Débil: manda tráfico pagado a una web con LCP de 5,3–7,5 s.</p></div>
+      <div class="panel pad stack" style="gap:8px"><span class="badge" style="border-color:var(--orange);color:var(--orange)">MÁS AUDIENCIA · HAOMAI · 5</span><p class="muted small">200K en TikTok, 569K likes, Sazie 2893. Sin web, sin píxel; catálogo solo en app Yollgo con usuario y código de tienda. Atención máxima, captura mínima: el caso para el pitch.</p></div>
+      <div class="panel pad stack" style="gap:8px"><span class="badge" style="border-color:var(--purple);color:var(--purple)">BENCHMARK FUERA DEL SET · LIFEMAX</span><p class="muted small">Dos Shopify (<code>lifemaxstore.cl</code>, <code>lifemaxdistribuidora.cl</code>) con píxel Meta y Google Ads. 29+ anuncios activos. Es lo que GS debe parecer en 90 días.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="patrones"><div class="wrap stack">
+  <span class="eyebrow">05 · Puntos en común vs. espacio vacío</span>
+  <h2>Dónde compiten entre ellos y dónde nadie está.</h2>
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:10px">
+      <h3 class="c-p">Clichés (océano rojo)</h3>
+      <ol class="small">
+        <li><b>Mismo surtido</b> de marcas chinas → guerra de precio por SKU idéntico.</li>
+        <li><b>Misma plaza</b>: Monjitas 817–874 (Seros, Nexora, KBOD, CDC, CPC), San Alfonso (Kolm, Meidimake, Munditel), Sazie (Haomai), Antúnez (Inkax).</li>
+        <li><b>WhatsApp como caja</b>: 13/13 cierran por chat.</li>
+        <li><b>TikTok orgánico como vitrina</b>: 12/13 con perfil. Bios repiten "venta por mayor y detalle" + dirección.</li>
+        <li><b>Nombres de siglas, genéricos o prestados</b> (KBOD, CDC, CPC, Munditel, Movilcell, LDNIO, Inkax).</li>
+        <li><b>Pauta apagada en Meta</b>: las 7 páginas con historial en el brief hoy no tienen anuncios activos. En Google solo pauta Kolm; CDC y CPC lo intentaron y pararon.</li>
+      </ol>
+    </div>
+    <div class="panel pad stack" style="gap:10px;border-color:var(--green)">
+      <h3 class="c-g">Espacio vacío (océano azul)</h3>
+      <ol class="small">
+        <li><b>Anuncios de accesorios en Meta</b>: 0/13 hoy. Subasta del cluster vacía. En Google, 1/13 (Kolm).</li>
+        <li><b>Anuncios de catálogo</b>: en todo el nicho solo se vio uno (Technosun, sur de Chile).</li>
+        <li><b>Catálogo sin fricción</b>: Yollgo exige app + usuario (+ código en Haomai), KBOD usa PDF, Cosashop usa Taplink.</li>
+        <li><b>Captura de audiencia TikTok</b>: 287K seguidores entre Haomai, Meidimake e Inkax sin tienda online propia (Haomai y Meidimake con local físico; catálogo solo vía local + registro en Yollgo).</li>
+        <li><b>Creator marketing</b>: 0 anuncios con creador en 64 anuncios del nicho.</li>
+        <li><b>Marca con beneficio en el nombre</b>: 0/13.</li>
+      </ol>
+    </div>
+  </div>
+</div></section>
+
+<section id="funnel"><div class="wrap stack">
+  <span class="eyebrow">06 · Estructura de funnel (verificada por canal)</span>
+  <h2>Seis funnels. Solo dos pueden medir una compra.</h2>
+  <div class="cols two">
+    <div class="panel fcard"><h3>A · TikTok → app → registro → código</h3><div class="funnel"><span>TikTok</span><i>→</i><span>Descargar Yollgo</span><i>→</i><span>Crear usuario</span><i>→</i><span>Código de tienda/redes</span><i>→</i><span class="end-bad">Recién ve el catálogo</span></div><p class="who">Haomai (200K), Meidimake (52,2K). La mayor audiencia del set choca con 3 pasos antes de ver un producto (código confirmado por el equipo en Haomai).</p></div>
+    <div class="panel fcard"><h3>B · TikTok / IG → WhatsApp manual</h3><div class="funnel"><span>TikTok / IG</span><i>→</i><span>WhatsApp</span><i>→</i><span>Cotización</span><i>→</i><span class="end-bad">Retiro / transferencia</span></div><p class="who">Inkax, Movilcell, Munditel (WA no recibe), Seros y Nexora. Sin evento de compra medible.</p></div>
+    <div class="panel fcard"><h3>C · Orgánico → web con píxel → WhatsApp</h3><div class="funnel"><span>TikTok / IG</span><i>→</i><span>Web</span><i>→</i><span>Bot WA</span><i>→</i><span class="end-ok">Medible si hay evento</span></div><p class="who">Kolm (píxel, sin pauta) y KBOD (Meta + Google + TikTok, sin pauta). Infraestructura lista, motor apagado.</p></div>
+    <div class="panel fcard"><h3>D · Web con Google Ads, sin Meta</h3><div class="funnel"><span>Google</span><i>→</i><span>cdctecno.cl</span><i>→</i><span class="end-bad">WA sin bot</span></div><p class="who">CDC Tecno. Etiqueta <code>AW-17881583385</code>, sin píxel de Meta ni GA4. TikTok 117 seg.</p></div>
+    <div class="panel fcard"><h3>E · Redes → link-in-bio → marketplace</h3><div class="funnel"><span>IG / TikTok</span><i>→</i><span>Taplink / cat. WA</span><i>→</i><span>MercadoLibre / Falabella</span><i>→</i><span class="end-bad">Cliente del marketplace</span></div><p class="who">Cosashop. 1 anuncio activo (carrusel → WhatsApp, botas de pesca).</p></div>
+    <div class="panel fcard" style="border-color:var(--green)"><h3 class="c-g">F · Benchmark LifeMax = funnel propuesto para GS</h3><div class="funnel"><span>Meta (imagen/video)</span><i>→</i><span>Shopify con precio mayorista</span><i>→</i><span>Cuenta con nombre + WA</span><i>→</i><span class="end-ok">Compra con píxel</span></div><p class="who">GS: anuncio de catálogo → ficha con precio detalle/mayor → carrito → pago o pedido a WA (bot) → Purchase vía píxel + CAPI → remarketing dinámico.</p></div>
+  </div>
+</div></section>
+
+<section id="tracking"><div class="wrap stack">
+  <span class="eyebrow">07 · Etiquetas y velocidad (medido)</span>
+  <h2>3 con píxel de Meta y ninguno pauta en Meta hoy. Kolm pauta en Google sin etiqueta de Google Ads visible.</h2>
+  <div class="scroll"><table aria-label="Estado de tracking">
+    <thead><tr><th>Sitio</th><th>Plataforma</th><th>Meta Pixel</th><th>GA4 / GTM</th><th>Google Ads</th><th>TikTok</th><th>LCP móvil</th><th>Lectura</th></tr></thead>
+    <tbody id="trk"></tbody>
+  </table></div>
+  <p class="muted small">Detección por peticiones de red reales (iPhone 13 emulado). En Shopify el píxel carga en sandbox: se confirma por <code>fbevents.js</code>, sin ID visible. Umbral LCP "bueno" &lt; 2,5 s (web.dev).</p>
+</div></section>
+
+<section id="ads"><div class="wrap stack">
+  <span class="eyebrow">08 · Ads intelligence (Biblioteca de Anuncios, 25 oct 2026)</span>
+  <h2>En Meta los 13 están fuera. En Google solo pauta Kolm.</h2>
+  <div class="scroll"><table aria-label="Anuncios activos por competidor">
+    <thead><tr><th>Competidor</th><th>Método</th><th>Anuncios activos</th><th>Detalle</th></tr></thead>
+    <tbody id="adsC"></tbody>
+  </table></div>
+
+  <h3 style="margin-top:8px">Google Ads (Centro de Transparencia de Anuncios, Chile)</h3>
+  <div class="scroll"><table aria-label="Publicidad en Google por anunciante">
+    <thead><tr><th>Anunciante</th><th>Cuenta verificada</th><th>Últimos 30 días</th><th>Histórico</th><th>Lectura</th></tr></thead>
+    <tbody>
+      <tr><td class="nw"><b>Kolm</b> · kolm.cl</td><td>Electronica Kolm Limitada</td><td class="num">16</td><td class="num">17</td><td class="muted">Pauta sostenida. Único del set.</td></tr>
+      <tr><td class="nw"><b>Fernapet</b> · fernapet.cl</td><td>FYP Inversiones SpA</td><td class="num">4</td><td class="num">4</td><td class="muted">Bazar, fuera del rubro.</td></tr>
+      <tr><td class="nw"><b>CDC Tecno</b> · cdctecno.cl</td><td>CDC TECNO SpA</td><td class="num">0</td><td class="num">6</td><td class="muted">Probó y paró.</td></tr>
+      <tr><td class="nw"><b>CPC Center</b> · cpccenter.cl</td><td>—</td><td class="num">0</td><td class="num">2</td><td class="muted">Probó y paró; web caída hoy.</td></tr>
+      <tr><td class="nw"><b>KBOD</b> · kbod.cl</td><td>—</td><td class="num">0</td><td class="num">0</td><td class="muted">Etiqueta instalada, nunca anunció.</td></tr>
+      <tr><td class="nw">Haomai, Meidimake, Munditel, Movilcell, Inkax, Seros, Nexora, Cosashop</td><td>—</td><td class="num">0</td><td class="num">0</td><td class="muted">Sin resultados por nombre ni dominio ("Nexora Digital SpA" es otra empresa).</td></tr>
+      <tr class="you"><td class="nw"><b>GS Electronic</b></td><td>—</td><td class="num">0</td><td class="num">0</td><td class="muted">Sin dominio propio aún.</td></tr>
+      <tr><td class="nw">Benchmark · LifeMax</td><td>Rosillo compañía SpA</td><td class="num">40</td><td class="num">86</td><td class="muted">lifemaxdistribuidora.cl 31/31 + lifemaxstore.cl 9/55.</td></tr>
+      <tr><td class="nw">Benchmark · SLEVE</td><td>Sleeve Tech SpA</td><td class="num">20</td><td class="num">20</td><td class="muted">Meta + Google en paralelo.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="muted small">TikTok: su biblioteca pública (Commercial Content Library) solo cubre anuncios del EEE, Suiza y Reino Unido. Para Chile no se puede ver quién pauta; el píxel instalado (KBOD, Fernapet) es la única señal.</p>
+
+  <h3 style="margin-top:8px">Nicho: 64 anuncios activos de 11 anunciantes de accesorios y tecnología en Chile</h3>
+  <div class="cols three">
+    <div class="panel pad stack" style="gap:10px"><b class="small">Formato</b>
+      <div class="stackbar" role="img" aria-label="Video 35, imagen 28, catálogo 1"><div style="flex:35;background:var(--pink)">35</div><div style="flex:28;background:var(--orange)">28</div><div style="flex:1;background:var(--green)"></div></div>
+      <div class="lg"><span><i style="background:var(--pink)"></i>Video 55 %</span><span><i style="background:var(--orange)"></i>Imagen 44 %</span><span><i style="background:var(--green)"></i>Catálogo 1</span></div></div>
+    <div class="panel pad stack" style="gap:10px"><b class="small">Destino del clic</b>
+      <div class="stackbar" role="img" aria-label="Web 33, Messenger/IG/FB 19, WhatsApp 10, sin destino 2"><div style="flex:33;background:var(--green)">33</div><div style="flex:19;background:var(--purple)">19</div><div style="flex:10;background:var(--orange)">10</div><div style="flex:2;background:var(--dim)"></div></div>
+      <div class="lg"><span><i style="background:var(--green)"></i>Web 52 %</span><span><i style="background:var(--purple)"></i>Messenger/IG 30 %</span><span><i style="background:var(--orange)"></i>WhatsApp 16 %</span></div></div>
+    <div class="panel pad stack" style="gap:10px"><b class="small">Creadores y variantes</b>
+      <div class="stackbar" role="img" aria-label="Con varias versiones 18 de 64"><div style="flex:18;background:var(--purple)">18</div><div style="flex:46;background:rgba(139,92,246,.25);color:var(--muted)">46</div></div>
+      <div class="lg"><span><i style="background:var(--purple)"></i>Con varias versiones 28 %</span><span><b style="color:var(--fg)">0</b> partnership "con @creador"</span></div></div>
+  </div>
+  <p class="muted small">Anunciantes: LifeMax 29, Technosun 16, SLEVE 5, tiomayorista.cl 4, Kova.tech 3, UnionX 2, Jean Contreras, Impo.TechMayorista, Nayvor, DoctorSmart y Belkin 1 c/u. La web concentra el 52 % porque LifeMax y SLEVE tienen Shopify; los chicos mandan a chat.</p>
+
+  <h3>Top 10 del nicho</h3>
+  <p class="muted small">Anuncios activos mejor ubicados en búsquedas ordenadas por impresiones totales, desempatados por días en circulación. Chile no publica cifras de impresiones. Cada ID abre el anuncio en la Biblioteca.</p>
+  <div class="scroll"><table aria-label="Top 10 anuncios del nicho">
+    <thead><tr><th>#</th><th>Anunciante · ID</th><th>Formato</th><th class="nw">Días</th><th>CTA / destino</th><th>Qué dice</th><th>Persona</th><th>Por qué funciona</th></tr></thead>
+    <tbody id="top10"></tbody>
+  </table></div>
+
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:10px">
+      <h3>Más longevos (señal de ganador)</h3>
+      <div class="bars" id="longevos"></div>
+      <p class="muted small">Tendencia: los longevos son servicio técnico y marca (DoctorSmart, Belkin) o producto con precio cerrado (SLEVE). LifeMax y Technosun no dejan correr: lanzan lotes completos el mismo día (26–28 sep y 24 sep) y rotan cada ~30 días.</p>
+    </div>
+    <div class="panel pad stack" style="gap:10px">
+      <h3>Mensajes que se repiten (menciones en 64 anuncios)</h3>
+      <div class="bars" id="msgs"></div>
+      <p class="muted small">Lo que quieren grabar: precio mayorista sin barrera de entrada + rapidez (envío flash, retiro en 30 min) + garantía. Casi nadie habla de regiones (4) ni de catálogo (4): hueco para GS.</p>
+    </div>
+  </div>
+
+  <h3>A quién le hablan (inferido de copy, visual y CTA)</h3>
+  <div class="cols three">
+    <div class="panel persona"><span class="who">Persona 1 · Servicio técnico</span><b>Dueño o técnico de local de reparación</b><p class="muted small">LifeMax, DoctorSmart, Technosun. Compra repuestos y accesorios. Valora velocidad (entrega en horas), garantía y no hacer trámites ("sin inicio de actividades").</p></div>
+    <div class="panel persona" style="border-color:var(--green)"><span class="who">Persona 2 · Revendedor · ← GS</span><b>Emprendedor o local que revende</b><p class="muted small">Jean Contreras, Nayvor, Impo.Tech, Kova.tech, tiomayorista. Quiere margen, pedido mínimo claro, lo más vendido en stock y envío a regiones. Es el comprador natural de GS (15 % desde 8 u.).</p></div>
+    <div class="panel persona"><span class="who">Persona 3 · Consumidor final</span><b>Comprador de audio y carga</b><p class="muted small">SLEVE, Belkin, Technosun. Responde a specs, precio con descuento y despacho. Es la segunda línea de GS (precio detalle).</p></div>
+  </div>
+  <div class="panel pad stack" style="gap:8px">
+    <h3>Tipos de campaña (inferidos por CTA y destino)</h3>
+    <ul class="muted small">
+      <li><b style="color:var(--fg)">Mensajes / interacción</b> (CTA "Enviar mensaje de WhatsApp", "Enviar mensaje", "Contactarnos"): Kova.tech, Impo.Tech, tiomayorista, DoctorSmart, Technosun, Jean Contreras, Cosashop. Optimizan conversaciones, no compras.</li>
+      <li><b style="color:var(--fg)">Ventas o tráfico a web</b> (CTA "Comprar" + dominio): LifeMax, SLEVE, Belkin. Requieren tienda con píxel.</li>
+      <li><b style="color:var(--fg)">Catálogo</b> (tarjetas de producto con precio y "Shop Now"): Technosun (1 anuncio). Formato casi sin uso en el nicho.</li>
+    </ul>
+  </div>
+</div></section>
+
+<section id="gs"><div class="wrap stack">
+  <span class="eyebrow">09 · Auditoría GS Electronic</span>
+  <h2>Activo listo al 50 %. Las piezas que faltan son las que venden la Fase 2.</h2>
+  <div class="scroll"><table aria-label="Estado GS Electronic">
+    <thead><tr><th>Pieza</th><th>Estado</th><th>Dato</th><th>Acción</th></tr></thead>
+    <tbody>
+      <tr><td><b>Catálogo</b></td><td><span class="st y">Listo</span></td><td>140 productos, 8 categorías (celular 19, cargadores 12, cables 16, audio 17, computación/gamer 23, auto 19, almacenamiento 16, pilas 18)</td><td>Revisar nombres como la gente busca; stock.</td></tr>
+      <tr><td><b>Precio mayorista</b></td><td><span class="st y">Listo</span></td><td>15 % desde 8 unidades, precio detalle y por mayor por producto</td><td>Mostrar tramos en ficha y en anuncio.</td></tr>
+      <tr><td><b>Pedido</b></td><td><span class="st h">Parcial</span></td><td>Carrito → WhatsApp +56 9 9572 3911 con mensaje "AL POR MAYOR"</td><td>Agregar pago en línea opcional y bot de saludo.</td></tr>
+      <tr><td><b>Velocidad</b></td><td><span class="st y">Listo</span></td><td>LCP móvil 1,5 s (Kolm 5,3–7,5 s, CDC 3,9 s)</td><td>Mantener al pasar a dominio.</td></tr>
+      <tr><td><b>Dominio</b></td><td><span class="st n">Falta</span></td><td><code>gselectroniccatalogo.vercel.app</code></td><td>Dominio .cl + verificación en Meta Business.</td></tr>
+      <tr><td><b>Medición</b></td><td><span class="st n">Falta</span></td><td>Sin píxel Meta, GA4, Google Ads ni TikTok</td><td>Píxel + CAPI, GA4, Google Ads, TikTok; eventos ViewContent, AddToCart, Lead (pedido WA), Purchase.</td></tr>
+      <tr><td><b>Catálogo en plataformas</b></td><td><span class="st n">Falta</span></td><td>No conectado a Meta Commerce ni Merchant Center</td><td>Feed de 140 productos con URL por ficha.</td></tr>
+      <tr><td><b>Datos de tienda</b></td><td><span class="st w">Incompleto</span></td><td>Dirección "Dirección de la tienda", correo "correo@tienda.cl" (placeholders)</td><td>Completar antes de publicar: ansiedad (MECLABS <code>a</code>).</td></tr>
+      <tr><td><b>Anuncios</b></td><td><span class="st n">0</span></td><td>Sin anuncios con "GS Electronic" o "gselectronic" en la Biblioteca</td><td>Fase 2.</td></tr>
+      <tr><td><b>TikTok / IG</b></td><td><span class="st u">Sin dato</span></td><td>No se encontró perfil confirmado (<code>@gs.electronic</code> existe con 14 seg. y 0 videos, sin confirmar)</td><td>Pedir handles al cliente.</td></tr>
+    </tbody>
+  </table></div>
+</div></section>
+
+<section id="cro"><div class="wrap stack">
+  <span class="eyebrow">10 · Auditoría CRO (LIFT · MECLABS · Fogg · Cialdini)</span>
+  <h2>Problemas medidos en la competencia → cómo los usa GS para destacar.</h2>
+  <p class="muted small"><code>C = 4m + 3v + 2(i − f) − 2a</code> · m motivación, v propuesta de valor, i incentivo, f fricción, a ansiedad. Fogg <code>B = MAP</code>. Mobile 80 %. Ordenado por ICE.</p>
+  <div class="scroll"><table aria-label="Auditoría CRO">
+    <thead><tr><th>Problema</th><th>Ubicación</th><th>Principio</th><th>Sev.</th><th>Recomendación para GS</th><th>Hipótesis de test</th><th>Métrica</th><th class="nw">ICE</th></tr></thead>
+    <tbody id="croT"></tbody>
+  </table></div>
+</div></section>
+
+<section id="branding"><div class="wrap stack">
+  <span class="eyebrow">11 · Branding</span>
+  <h2>Ningún nombre del cluster comunica un beneficio. GS Electronic tampoco.</h2>
+  <div class="scroll"><table aria-label="Análisis de nombres">
+    <thead><tr><th>Patrón</th><th>Marcas</th><th>Problema</th><th>Principio</th></tr></thead>
+    <tbody>
+      <tr><td><b>Siglas</b></td><td>KBOD, CDC, CPC, <b style="color:var(--green)">GS Electronic</b></td><td>Sin significado, baja recordación; CDC/CPC en la misma cuadra se confunden.</td><td>Fluidez de procesamiento; distintividad</td></tr>
+      <tr><td><b>Genérico telecom</b></td><td>Munditel, Movilcell, CDC Tecno, Nexora</td><td>Fórmula "tel/cell/tecno/-ora": intercambiables.</td><td>LIFT propuesta de valor</td></tr>
+      <tr><td><b>Marca prestada</b></td><td>Seros→LDNIO, CDC→Hoco/Borofone, CPC→Motomo, Inkax, Haomai</td><td>El equity es del fabricante. Lealtad al SKU, no a la tienda.</td><td>Cialdini autoridad prestada</td></tr>
+      <tr><td><b>Nombre opaco</b></td><td>Kolm, Meidimake, Fernapet</td><td>No evoca rubro ni beneficio.</td><td>Distintividad sin relevancia</td></tr>
+      <tr><td><b>Descriptivo vago</b></td><td>Cosashop</td><td>"Cosas" diluye especialización.</td><td>LIFT claridad</td></tr>
+    </tbody>
+  </table></div>
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:8px"><h3>Recomendación</h3><p class="muted small">Mantener GS Electronic como razón social y marca detalle. Crear marca para la línea mayorista online (ej. <b style="color:var(--fg)">ALTIRO by GS</b>, con <code>altiromayorista.cl</code> libre): no se pierde la base actual y la tienda nueva nace con una promesa. Ofrecerlo como opcional: el cliente compra ventas, no nombre.</p></div>
+    <div class="panel pad stack" style="gap:8px"><h3>Sistema de marca mínimo</h3><ul class="muted small"><li>Horizontal (header, firma de anuncios) · vertical (sticker, bolsa) · isotipo (avatar WhatsApp/IG, favicon 32 px) · monocromo (etiqueta térmica de despacho)</li><li>1 display geométrica pesada + 1 texto legible a 14 px</li><li>Paleta con roles; el color del CTA no se usa para nada más</li><li>NIC Chile (26 oct): los 10 .cl exactos están ocupados. Libres: <code>-mayorista.cl</code> en los 10 y <code>-tech.cl</code> en 9 (<code>nodotech.cl</code> ocupado). <code>enchufe.cl</code> es de una importadora: riesgo de conflicto.</li><li>INAPI clase 35: <span class="pend">pendiente</span> (ion.inapi.cl no respondió desde el entorno; revisar a mano)</li></ul></div>
+  </div>
+  <div class="names" id="namesT"></div>
+</div></section>
+
+<section id="quickwins"><div class="wrap stack">
+  <span class="eyebrow">12 · Quick wins (ICE 1–10)</span>
+  <h2>7 quick wins. Los 3 primeros van en la versión cliente.</h2>
+  <div class="qwl" id="qwT"></div>
+</div></section>
+
+<section id="pitch"><div class="wrap stack">
+  <span class="eyebrow">13 · Cómo plantear la idea a GS Electronic</span>
+  <h2>Vender la tienda como herramienta de ventas, no como "página web".</h2>
+  <div class="cols two">
+    <div class="panel pad stack" style="gap:10px"><h3>Secuencia de reunión (PAS → AIDA)</h3>
+      <ol class="steps small">
+        <li><div><b>Anclaje:</b> "¿Cuántas consultas te llegan por WhatsApp a la semana y cuántas alcanzas a contestar?"</div></li>
+        <li><div><b>Problema:</b> la revendedora de Talca a las 23:40.</div></li>
+        <li><div><b>Agitación:</b> calculadora con sus números. Silencio después del total.</div></li>
+        <li><div><b>Interés:</b> "0 de 13 anuncian hoy". Mostrar Haomai: 200K seguidores y un catálogo que exige app, usuario y código.</div></li>
+        <li><div><b>Su activo:</b> abrir su catálogo en el celular del cliente (1,5 s) y luego Kolm (5–7 s).</div></li>
+        <li><div><b>Deseo:</b> las 4 piezas que faltan + LifeMax como prueba de que el modelo funciona en Chile.</div></li>
+        <li><div><b>Acción:</b> Fase 1 tienda medible. Fase 2 pauta cuando haya eventos.</div></li>
+        <li><div><b>Compromiso pequeño:</b> que elija sus 3 nombres favoritos (Cialdini: compromiso y coherencia).</div></li>
+      </ol>
+    </div>
+    <div class="stack" style="gap:10px">
+      <h3>Objeciones</h3>
+      <div class="obj">
+        <details class="panel"><summary>"Ya tengo el catálogo."</summary><p>Sí, y es rápido. Pero vive en una dirección de prueba, sin píxel ni conexión a Meta o Google. Hoy muestra; no aprende ni vende solo.</p></details>
+        <details class="panel"><summary>"Ya vendo por WhatsApp."</summary><p>Se mantiene. La tienda arma el pedido y lo manda a tu WhatsApp con detalle y total. Atiendes más con el mismo equipo.</p></details>
+        <details class="panel"><summary>"La publicidad no funciona en este rubro."</summary><p>LifeMax sostiene 29+ anuncios activos con tienda y píxel. Los que dicen que no funciona anunciaban sin tienda, optimizando mensajes.</p></details>
+        <details class="panel"><summary>"Mis clientes vienen al local."</summary><p>Los que pueden venir. Los de regiones y los que compran de noche hoy le compran a otro.</p></details>
+        <details class="panel"><summary>"Es caro."</summary><p>Volver a la calculadora con sus números.</p></details>
+      </div>
+      <div class="panel pad stack" style="gap:6px"><h3>Escalera de oferta</h3><ol class="muted small"><li>Tienda medible: dominio, píxel + CAPI, catálogo en Meta y Merchant Center, bot WA.</li><li>Meta Ads: ventas con catálogo + remarketing dinámico (persona 2).</li><li>Google: Shopping / Performance Max con el feed.</li><li>TikTok Ads: video vertical, terreno donde está la audiencia del rubro.</li><li>OpenAI Ads: <span class="pend">disponibilidad en Chile no verificada</span>.</li></ol></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="next"><div class="wrap stack">
+  <span class="eyebrow">14 · Próximos pasos</span>
+  <h2>Pendientes para cerrar.</h2>
+  <ul class="check panel pad" id="chk"></ul>
+  <p class="muted small">Las casillas se guardan solo en este navegador.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap stack" style="gap:8px">
+  <b class="muted">Fuentes</b>
+  <span>Biblioteca de Anuncios: <a href="https://www.facebook.com/ads/library/" target="_blank" rel="noopener">facebook.com/ads/library</a> · Alcance (activos fuera de la UE): <a href="https://www.facebook.com/help/259468828226154" target="_blank" rel="noopener">facebook.com/help/259468828226154</a> · Herramientas: <a href="https://transparency.meta.com/researchtools/ad-library-tools/" target="_blank" rel="noopener">transparency.meta.com</a></span>
+  <span>Meta Pixel: <a href="https://developers.facebook.com/docs/meta-pixel" target="_blank" rel="noopener">developers.facebook.com/docs/meta-pixel</a> · CAPI: <a href="https://developers.facebook.com/docs/marketing-api/conversions-api" target="_blank" rel="noopener">developers.facebook.com/docs/marketing-api/conversions-api</a> · Verificación de dominio: <a href="https://developers.facebook.com/docs/sharing/domain-verification" target="_blank" rel="noopener">developers.facebook.com/docs/sharing/domain-verification</a></span>
+  <span>Centro de Transparencia de Anuncios de Google: <a href="https://adstransparency.google.com/?region=CL" target="_blank" rel="noopener">adstransparency.google.com</a> · Biblioteca de TikTok (EEE, Suiza, Reino Unido): <a href="https://library.tiktok.com/" target="_blank" rel="noopener">library.tiktok.com</a></span>
+  <span>Merchant Center: <a href="https://support.google.com/merchants/answer/176793" target="_blank" rel="noopener">support.google.com/merchants/answer/176793</a> · LCP: <a href="https://web.dev/articles/lcp" target="_blank" rel="noopener">web.dev/articles/lcp</a></span>
+  <span>Kolm importador directo: <a href="https://mercantil.com/empresa/kolm-pablo/santiago/300313233/esp" target="_blank" rel="noopener">mercantil.com</a>. Datos de TikTok, webs y catálogo GS: medición propia, 25 oct 2026.</span>
+</div></footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const S=(c,t)=>'<span class="st '+c+'">'+t+'</span>';
+const M=[
+ {n:'GS Electronic',you:1,z:'Estación Central',web:['h','Catálogo vercel.app'],cat:['y','140 productos'],ads:['n','0'],goog:['n','0'],ttk:['n','Sin píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'1,5 s',tt:'—',ttn:0,wa:['u','Pedido a WA'],s:1,ow:0},
+ {n:'Kolm Ltda',z:'San Alfonso 259 (3 suc.)',web:['y','kolm.cl'],cat:['y','Web'],ads:['n','0'],goog:['y','16 activos (17)'],ttk:['n','Sin píxel'],tg:'Meta · GA4',px:'y',gads:'n',ttp:'n',lcp:'5,3–7,5 s',tt:'48,5K',ttn:48500,wa:['y','Bot'],s:10,ow:1},
+ {n:'KBOD.cl',z:'Monjitas 843 L43',web:['y','kbod.cl'],cat:['y','Web + PDF + WA'],ads:['n','0 detectados'],goog:['n','0 (nunca)'],ttk:['h','No visible · píxel listo'],tg:'Meta · Google Ads · TikTok',px:'y',gads:'y',ttp:'y',lcp:'0,7 s',tt:'4,1K',ttn:4056,wa:['y','Bot'],s:9,ow:1},
+ {n:'Fernapet*',z:'Pudahuel (4 suc.)',web:['y','fernapet.cl (VTEX)'],cat:['y','Web'],ads:['y','~27 (bazar)'],goog:['y','4 activos'],ttk:['h','No visible · píxel listo'],tg:'Meta · GTM/GA4 · TikTok',px:'y',gads:'n',ttp:'y',lcp:'1,1 s',tt:'392K',ttn:392000,wa:['w','Número muerto'],s:12,ow:1},
+ {n:'Haomai',z:'Sazie 2893',web:['n','No'],cat:['h','App Yollgo + código'],ads:['n','0 detectados'],goog:['n','0'],ttk:['n','Sin web ni píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'200K',ttn:200000,wa:['u','Sin dato'],s:5,ow:0},
+ {n:'CDC Tecno',z:'Monjitas 843 L35/41',web:['y','cdctecno.cl'],cat:['y','Web'],ads:['n','0'],goog:['h','0 hoy (6 antes)'],ttk:['n','Sin píxel'],tg:'Google Ads',px:'n',gads:'y',ttp:'n',lcp:'3,9 s',tt:'117',ttn:117,wa:['n','Sin bot'],s:4,ow:1},
+ {n:'Cosashop.cl',z:'Est. Central',web:['h','Taplink'],cat:['h','ML + Falabella + WA'],ads:['h','1 (botas de pesca)'],goog:['n','0'],ttk:['n','Sin píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'1,1K',ttn:1104,wa:['u','2 números'],s:5,ow:0},
+ {n:'Meidimake',z:'San Alfonso 458',web:['n','No'],cat:['h','App Yollgo (registro)'],ads:['n','0'],goog:['n','0'],ttk:['n','Sin web ni píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'52,2K',ttn:52200,wa:['u','Sin dato'],s:4,ow:0},
+ {n:'Inkax Chile',z:'Conferencia 166 (Antúnez)',web:['h','inkax.hk (fábrica)'],cat:['u','Sin dato'],ads:['n','0 detectados'],goog:['n','0'],ttk:['n','Sin píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'6,1 s',tt:'34,7K',ttn:34700,wa:['n','Sin bot'],s:4,ow:0},
+ {n:'Nexora Chile SpA',z:'Monjitas 843 L6',web:['n','No'],cat:['h','Solo cat. WA'],ads:['n','0'],goog:['n','0'],ttk:['n','Sin web ni píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'229 (LDNIO)',ttn:229,wa:['y','Bot'],s:2,ow:0},
+ {n:'Movilcell SpA',z:'San Antonio 705 L13',web:['n','No'],cat:['n','No'],ads:['n','0'],goog:['n','0'],ttk:['n','Sin web ni píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'3,8K',ttn:3814,wa:['u','Sin dato'],s:1,ow:0},
+ {n:'CPC Center',z:'Monjitas 860/874',web:['w','Caída (502)'],cat:['w','Web caída'],ads:['n','0 detectados'],goog:['h','0 hoy (2 antes)'],ttk:['n','Web caída'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'—',ttn:0,wa:['y','Bot'],s:1,ow:0},
+ {n:'Munditel',z:'San Alfonso 536',web:['n','No'],cat:['n','No'],ads:['n','0'],goog:['n','0'],ttk:['n','Sin web ni píxel'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'1,0K',ttn:1044,wa:['w','No recibe'],s:0,ow:0},
+ {n:'Seros Chile',z:'Monjitas 817 / 843 L34',web:['w','Caída'],cat:['n','No'],ads:['n','0'],goog:['n','0'],ttk:['n','Web caída'],tg:'Ninguna',px:'n',gads:'n',ttp:'n',lcp:'—',tt:'30 + 229',ttn:259,wa:['n','Sin bot'],s:0,ow:0}];
+const yn={y:'Sí',n:'No',w:'Roto',h:'Parcial',u:'Sin dato'};
+function renderMx(f){
+ const rows=M.filter(r=>r.you||f==='all'||(f==='web'&&r.ow)||(f==='noweb'&&!r.ow)||(f==='px'&&(r.ads[0]==='y'||r.goog[0]==='y'))||(f==='tt'&&r.ttn>=30000));
+ $('mx').innerHTML=rows.map(r=>'<tr'+(r.you?' class="you"':'')+'><td class="nw"><b>'+r.n+'</b></td><td>'+S(r.ads[0],r.ads[1])+'</td><td>'+S(r.goog[0],r.goog[1])+'</td><td>'+S(r.ttk[0],r.ttk[1])+'</td><td class="muted" style="font-size:12.5px">'+r.tg+'</td><td>'+S(r.web[0],r.web[1])+'</td><td>'+S(r.cat[0],r.cat[1])+'</td><td class="num">'+r.tt+'</td><td>'+S(r.wa[0],r.wa[1])+'</td><td class="num">'+r.lcp+'</td><td class="nw">'+r.z+'</td><td class="num"><b>'+r.s+'</b></td></tr>').join('')+'<tr><td colspan="12" class="muted" style="font-size:12px">*Fernapet: bazar fuera del rubro; puntúa alto por escala, no compite por el revendedor de accesorios.</td></tr>';
+ document.querySelectorAll('.filters button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.f===f));}
+document.querySelectorAll('.filters button').forEach(b=>b.addEventListener('click',()=>renderMx(b.dataset.f)));renderMx('all');
+
+$('bars').innerHTML=M.filter(r=>!r.you).sort((a,b)=>b.s-a.s).concat(M.filter(r=>r.you)).map(r=>'<div class="bar"><span'+(r.you?' style="color:var(--green)"':'')+'>'+r.n+'</span><div class="t"><div class="f" style="width:'+(r.s/16*100).toFixed(1)+'%"></div></div><b>'+r.s+'</b></div>').join('');
+
+const T=[
+ ['GS Electronic','Catálogo propio','n','n','n','n','1,5 s','Rápido, sin medición'],
+ ['kolm.cl','No identificada','y:3350594895174805','y:G-RQK2WDEZGS (+UA antiguo)','n','n','5,3–7,5 s','16 anuncios en Google; píxel Meta sin pauta; web lenta (puede medir vía GA4)'],
+ ['kbod.cl','No identificada','y:1600962544841721','n','y:AW-18533334325','y','0,7 s','El más preparado del set'],
+ ['cdctecno.cl/es','No identificada','n','n','y:AW-17881583385','n','3,9 s','Etiqueta Google Ads; 6 anuncios antes, 0 en 30 d'],
+ ['fernapet.cl','VTEX','y:430752801150495','y:GTM-WW9T6XF · G-HLXT4RJB82','n','y','1,1 s','Retail completo (fuera del rubro)'],
+ ['cpccenter.cl','—','w','w','w','w','—','HTTP 502: caído'],
+ ['seroschile.com','—','w','w','w','w','—','No conecta'],
+ ['inkax.hk','Sitio corporativo','n','n','n','n','6,1 s','Fábrica en Shenzhen, no tienda CL'],
+ ['taplink.cc/cosashop','Taplink','n','n','n','n','—','Link-in-bio sin medición'],
+ ['app.yollgo.com','Yollgo','n','n','n','n','—','Web redirige a login; Haomai pide app + usuario + código'],
+ ['lifemaxstore.cl · benchmark','Shopify','y:fbevents (sandbox)','y:G-K06Y181X46 · G-7FV1BPS3XR','y:AW-748027721 · AW-11562101419','n','4,2 s','Stack completo + 29+ anuncios'],
+ ['sleve.cl · benchmark','Shopify','y:fbevents (sandbox)','y:G-3R8K33VVGX','n','y','5,2 s','Stack completo, 5 anuncios']];
+const cellT=v=>{const [k,t]=v.split(/:(.*)/);return k==='y'?S('y',t||'Sí'):k==='w'?S('w','Caído'):S('n','No');};
+$('trk').innerHTML=T.map(r=>'<tr'+(r[0]==='GS Electronic'?' class="you"':'')+'><td class="nw"><b>'+r[0]+'</b></td><td class="nw">'+r[1]+'</td><td>'+cellT(r[2])+'</td><td>'+cellT(r[3])+'</td><td>'+cellT(r[4])+'</td><td>'+cellT(r[5])+'</td><td class="num">'+r[6]+'</td><td class="muted">'+r[7]+'</td></tr>').join('');
+
+const A=[
+ ['Kolm','Página (ID)','0','Sin anuncios en circulación (5 intentos).'],['CDC Tecno','Página (ID)','0','Sin anuncios en circulación.'],
+ ['Seros','Página (ID)','0','Sin anuncios en circulación.'],['Nexora','Página (ID)','0','Sin anuncios en circulación.'],
+ ['Meidimake','Página (ID)','0','Sin anuncios en circulación.'],['Munditel','Página (ID)','0','Sin anuncios en circulación.'],
+ ['Movilcell','Página (ID)','0','Sin anuncios en circulación.'],['Fernapet','Página (ID)','~27','15 capturados: 100 % video, 1–8 días, aniversario y Expo Navidad/Halloween; destino web o perfil.'],
+ ['Cosashop','Palabra clave','1','Carrusel → WhatsApp, 6 días: botas de pesca "detalle y mayor".'],
+ ['KBOD','Palabra clave','0','Ninguno detectado.'],['Inkax','Palabra clave','0','Ninguno detectado.'],['CPC / Motomo','Palabra clave','0','"motomo" solo trae a PhoneClick y SP Digital (revendedores de la marca).'],
+ ['Haomai','Palabra clave','0','Ninguno con "haomai" ni "@haomaioficial".'],['GS Electronic','Palabra clave','0','Ninguno con "gs electronic" ni "gselectronic".']];
+$('adsC').innerHTML=A.map(r=>'<tr'+(r[0]==='GS Electronic'?' class="you"':'')+'><td class="nw"><b>'+r[0]+'</b></td><td class="nw">'+r[1]+'</td><td class="num">'+r[2]+'</td><td class="muted">'+r[3]+'</td></tr>').join('');
+
+const LIB='https://www.facebook.com/ads/library/?id=';
+const TOP=[
+ ['DoctorSmart','550848597858842','Carrusel','521','WhatsApp','Servicio técnico de celulares y notebooks, trabajos garantizados en sucursales.','Consumidor con equipo dañado','El más longevo: garantía + sucursales bajan ansiedad; carrusel muestra varios servicios.'],
+ ['Belkin','1016745887530459','Imagen (versiones)','166','belkin.cl','Ofertas por tiempo limitado en cargadores y accesorios.','Consumidor final','Urgencia + marca reconocida; varias versiones para probar producto.'],
+ ['SLEVE Mobile','950047050713595','Imagen','74','Comprar → sleve.cl','Audífonos Pulse ANC: cancelación de ruido, 45 h de batería, BT 5.4.','Consumidor final','Specs en lista escaneable; Shopify con píxel para optimizar compra.'],
+ ['SLEVE Mobile','1550787907091559','Imagen','69','Comprar → sleve.cl','Pack de audífonos por $44.990.','Consumidor final','Bundle con precio cerrado: decisión simple.'],
+ ['Kova.tech','1587235836201636','Video 30 s','52','WhatsApp','Video de producto sin copy.','Revendedor / consumidor','Producto en mano; mucho tiempo corriendo pese a no tener texto.'],
+ ['LifeMax','1062543389969694','Imagen','48','lifemaxdistribuidora.cl','"Precio mayorista desde una unidad. Envío flash en menos de 2 h en RM. Retiro gratis en menos de 30 min."','Servicio técnico','Elimina la barrera del mínimo y promete velocidad: MECLABS f↓ e i↑.'],
+ ['Impo.TechMayorista','911046518461154','Video','39','WhatsApp','Reponer los audífonos más vendidos para tu negocio; el stock marca la diferencia.','Revendedor','Habla de rotación y stock, el miedo real del revendedor.'],
+ ['LifeMax','1450343500332163','Video','32','Comprar → lifemaxdistribuidora.cl','"Abre tu cuenta mayorista solo con tu nombre y WhatsApp. Sin inicio de actividades."','Técnico que empieza','Reduce la fricción de alta B2B a cero: Fogg Ability.'],
+ ['tiomayorista.cl','1802838074069123','Video 1:17','31','WhatsApp','Mall Mayorista Plaza Lila. "Solicita tu catálogo por WhatsApp". Envíos a todas las regiones.','Revendedor de regiones','Único que habla de regiones; pero pide el catálogo por chat (fricción).'],
+ ['Jean Contreras','2219063962369446','Imagen','28','Contactarnos','Accesorios a $3.000 por mayor. Pedido mínimo 10 u. No vende por unidad.','Revendedor','Precio único + mínimo claro: claridad LIFT; filtra minoristas.']];
+$('top10').innerHTML=TOP.map((r,i)=>'<tr><td class="num">'+(i+1)+'</td><td><b>'+r[0]+'</b><br><a href="'+LIB+r[1]+'" target="_blank" rel="noopener" style="font-family:var(--f-mono);font-size:11.5px">'+r[1]+'</a></td><td class="nw">'+r[2]+'</td><td class="num">'+r[3]+'</td><td class="nw">'+r[4]+'</td><td>'+r[5]+'</td><td>'+r[6]+'</td><td class="muted">'+r[7]+'</td></tr>').join('')+'<tr><td></td><td colspan="7" class="muted" style="font-size:12.5px">Extra: Technosun <a href="'+LIB+'39305287725781788" target="_blank" rel="noopener">39305287725781788</a> es el único anuncio de catálogo visto en el nicho (fichas con precio y "Shop Now", 8 días).</td></tr>';
+
+const LG=[['DoctorSmart',521],['Belkin',166],['SLEVE',74],['Kova.tech',52],['LifeMax',48],['Impo.Tech',39],['Technosun',31]];
+$('longevos').innerHTML=LG.map(([n,d])=>'<div class="bar"><span>'+n+'</span><div class="t"><div class="f" style="width:'+(d/521*100).toFixed(1)+'%"></div></div><b>'+d+' d</b></div>').join('');
+const MS=[['Mayor / mayorista',30],['Envío / despacho',29],['Retiro en tienda',22],['Servicio técnico',17],['Garantía',14],['WhatsApp',11],['Unidades',7],['Regiones / todo Chile',4],['Catálogo',4],['Stock',4]];
+$('msgs').innerHTML=MS.map(([n,v])=>'<div class="bar"><span>'+n+'</span><div class="t"><div class="f" style="width:'+(v/30*100).toFixed(1)+'%"></div></div><b>'+v+'</b></div>').join('');
+
+const CRO=[
+ ['Catálogo tras app + registro + código','Haomai (app Yollgo + usuario + código de tienda/redes), Meidimake (Yollgo)','Fogg Ability ≈ 0; MECLABS f↑↑','c','Catálogo abierto en web, sin app ni registro; registro solo al pagar (opcional)','Ver productos sin app ni código ↑ add-to-cart vs. muro de registro','% visitas que ven ficha, ATC',[9,9,9]],
+ ['Web caída','Seros (no conecta), CPC (502)','Fogg Ability = 0; MECLABS a↑','c','Hosting gestionado + monitoreo de uptime','Sitio estable ↑ pedidos vs. canal solo-WA','Uptime, CR',[8,9,9]],
+ ['WhatsApp no recibe / número muerto','Munditel, Fernapet','Fogg Prompt roto; MECLABS a↑','c','Número único verificado en web, bio y anuncios; saludo y catálogo automáticos','Saludo inmediato ↑ conversaciones que terminan en pedido','Tiempo 1ª respuesta, % chat→pedido',[9,9,9]],
+ ['Píxel instalado sin pauta','Kolm, KBOD','Activo sin uso; señal sin motor','a','GS entra con píxel + CAPI y campaña de catálogo antes que ellos','Primer anunciante del cluster ↓ CPM y CPA','CPM, CPA, ROAS',[9,7,6]],
+ ['Web lenta en móvil','Kolm (LCP 5,3–7,5 s), Inkax 6,1 s','LIFT fricción; Fogg Ability','a','Mantener LCP < 2,5 s (GS hoy 1,5 s)','Ficha < 2,5 s ↑ CR vs. ficha > 5 s','LCP, rebote, CR',[7,9,8]],
+ ['Catálogo en PDF','KBOD','LIFT fricción; zoom en móvil','a','Fichas web con buscador y precio por tramo','Ficha web vs. PDF ↑ ATC','ATC, tiempo a pedido',[7,8,8]],
+ ['Pedir catálogo por chat','tiomayorista, Kova.tech, Impo.Tech (anuncios)','Fogg Prompt con espera; MECLABS f','a','Anuncio de catálogo que lleva a la ficha exacta','Ficha directa vs. "pídelo por WA" ↓ costo por pedido','Costo por pedido',[8,7,7]],
+ ['Solo Google, sin Meta','CDC Tecno','Cobertura parcial del funnel','m','Píxel Meta + Google Ads + TikTok desde el día 1','Medición completa ↑ eventos para optimizar','Eventos/semana',[6,8,8]],
+ ['Propuesta indiferenciada','13/13','LIFT propuesta de valor; MECLABS v','a','"Precio mayorista desde 8 u., pedido online y despacho a todo Chile"','Prop. regional en hero y anuncio ↑ CR desde regiones','% pedidos fuera de RM',[8,7,8]],
+ ['Datos de tienda en blanco','GS Electronic (dirección y correo placeholder)','MECLABS a↑; Cialdini autoridad','a','Dirección real, correo, horario y RUT visibles','Datos reales ↑ CR vs. placeholder','CR, rebote',[7,9,10]]];
+const sev={c:'Crítica',a:'Alta',m:'Media'};
+const ice=a=>(a[0]+a[1]+a[2])/3;
+$('croT').innerHTML=CRO.sort((a,b)=>ice(b[7])-ice(a[7])).map(r=>'<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td><td>'+r[2]+'</td><td><span class="sev '+r[3]+'">'+sev[r[3]]+'</span></td><td>'+r[4]+'</td><td>'+r[5]+'</td><td>'+r[6]+'</td><td class="num">'+ice(r[7]).toFixed(1)+'<br><span class="muted" style="font-size:11px">'+r[7].join('·')+'</span></td></tr>').join('');
+
+const N=[
+ ['ALTIRO','Pides hoy. Vendes al tiro.','Chilenismo de inmediatez. Ancla la promesa de despacho rápido.',['#ff7a1a','#0b0b10','#2dff9b','#f6f4fb'],'Rayo dentro de la "A"',[5,5,4],1],
+ ['OHM','Cero resistencia para comprar.','El ohm mide resistencia. Promete comprar sin fricción (CRO en el nombre).',['#a855f7','#ff7a1a','#0b0b10','#f6f4fb'],'Ω estilizada como enchufe',[5,4,5],1],
+ ['PILAS','Ponte las pilas: stock que no se descarga.','"Ponerse las pilas" = estar atento. Batería = rubro (GS vende 18 tipos de pilas).',['#2dff9b','#0b0b10','#ff2e88','#f6f4fb'],'Batería de 3 barras',[5,4,4],1],
+ ['ENCHUFE','El enchufe que tu negocio necesitaba.','"Tener enchufe" = tener el contacto correcto.',['#a855f7','#ff7a1a','#f6f4fb','#0b0b10'],'Clavija con forma de E',[5,4,3],0],
+ ['KARGO','Stock que llega.','Carga eléctrica + carga logística. La K da registrabilidad.',['#ff2e88','#0b0b10','#2dff9b','#f6f4fb'],'K con flecha de envío',[4,4,4],0],
+ ['VOLTIO','Carga tu negocio.','Técnico y corto. Riesgo: término genérico del rubro.',['#ffb800','#0b0b10','#8b5cf6','#f6f4fb'],'V como onda',[4,3,3],0],
+ ['CHISPA','El stock que prende.','Energía + ingenio ("tener chispa").',['#ff7a1a','#ff2e88','#0b0b10','#f6f4fb'],'Chispa de 4 puntas',[4,3,3],0],
+ ['MARGEN','Compras para revender, no para guardar.','Habla al bolsillo del revendedor. Riesgo: descriptivo, registro débil.',['#2dff9b','#f6f4fb','#0b0b10','#a855f7'],'Flecha ascendente en la M',[4,5,2],0],
+ ['REVENDE','Tu proveedor con margen incluido.','El nombre es la instrucción y define a la persona 2.',['#ff2e88','#f6f4fb','#0b0b10','#ff7a1a'],'R con flecha circular',[4,5,2],0],
+ ['NODO','Conecta tu tienda al stock.','Punto de red y distribución. Riesgo: muy usado en tech.',['#8b5cf6','#2dff9b','#0b0b10','#f6f4fb'],'Nodo de 3 conexiones',[3,3,2],0]];
+const DOM=n=>{const k=n.toLowerCase();const free=k==='nodo'?[k+'mayorista.cl']:[k+'mayorista.cl',k+'tech.cl'];return k+'.cl ocupado'+(k==='enchufe'?' (importadora)':'')+' · libre: '+free.join(' · ');};
+const met=(l,v)=>'<div class="meter"><span>'+l+'</span><span class="t"><i style="width:'+(v*20)+'%"></i></span><b>'+v+'</b></div>';
+$('namesT').innerHTML=N.map(n=>'<div class="panel nm">'+(n[6]?'<span class="badge">RECOMENDADO</span>':'')+'<span class="w" style="color:'+n[3][0]+'">'+n[0]+'</span><span class="sl">'+n[1]+'</span><span class="meta">'+n[2]+'</span><span class="meta">Isotipo: '+n[4]+'</span><span class="meta" style="font-family:var(--f-mono);font-size:11.5px">'+DOM(n[0])+'</span><div class="sw">'+n[3].map(c=>'<i style="background:'+c+'"></i><code>'+c+'</code>').join('')+'</div>'+met('Recordación',n[5][0])+met('Beneficio',n[5][1])+met('Distintividad',n[5][2])+'</div>').join('');
+
+const QW=[
+ ['Primer anunciante del cluster con catálogo','Dominio + píxel + CAPI + catálogo en Meta → campaña de catálogo y remarketing dinámico. 0/13 anuncian hoy; solo 1 anuncio de catálogo en todo el nicho.','Subasta sin competencia directa; MECLABS v; base de la Fase 2.',10,8,7,'var(--green)'],
+ ['WhatsApp que responde en segundos','Saludo, menú y link a ficha; pedido llega armado. 2 competidores con WA roto, 3 sin bot.','Fogg Prompt; Cialdini reciprocidad.',8,8,9,'var(--green)'],
+ ['Catálogo abierto y rápido como diferencial','Sin app ni código (vs. Yollgo), sin PDF (vs. KBOD), LCP 1,5 s (vs. Kolm 5–7 s). Ya está construido.','Fogg Ability; LIFT fricción.',8,9,8,'var(--green)'],
+ ['"Desde 8 unidades, a todo Chile" en anuncio y hero','Solo 4 de 64 anuncios del nicho hablan de regiones. GS ya tiene la regla de mayorista.','LIFT propuesta de valor; MECLABS v.',8,7,8,'var(--orange)'],
+ ['Capturar la audiencia de TikTok del rubro','Video vertical "pedido del día" con link a ficha. 287K seguidores entre Haomai, Meidimake e Inkax sin tienda donde comprar.','Cialdini prueba social; Fogg Motivation.',7,6,7,'var(--orange)'],
+ ['Google Shopping con el feed de 140 productos','Merchant Center exige sitio verificado: 9/13 no pueden entrar.','LIFT relevancia (intención alta).',7,6,7,'var(--pink)'],
+ ['Creadores (partnership ads)','0 de 64 anuncios del nicho usan creador. Técnico o revendedor mostrando su pedido GS.','Cialdini autoridad y prueba social.',6,5,6,'var(--pink)']];
+const ic=QW.map(q=>({q,t:(q[3]+q[4]+q[5])/3})).sort((a,b)=>b.t-a.t);
+$('qwT').innerHTML=ic.map(({q,t},i)=>'<div class="panel qwi"><div class="stack" style="gap:6px"><span class="eyebrow">'+(i<3?'<b>Versión cliente</b> · ':'')+'Quick win '+(i+1)+'</span><h3>'+q[0]+'</h3><p class="muted">'+q[1]+'</p><p class="muted small"><b style="color:var(--fg)">Principio:</b> '+q[2]+'</p></div><div class="ice"><span class="total" style="color:'+q[6]+'">'+t.toFixed(1)+'</span>'+[['I',q[3]],['C',q[4]],['E',q[5]]].map(([l,v])=>'<div class="icebar"><span>'+l+'</span><span class="t"><i style="width:'+v*10+'%;background:'+q[6]+'"></i></span><b>'+v+'</b></div>').join('')+'</div></div>').join('');
+
+const CH=['Pedir a GS: handles de Instagram y TikTok, dirección real, correo, RUT, consultas WA por semana, ticket promedio, % de ventas a regiones','Completar placeholders del catálogo (dirección y correo)','Comprar dominio .cl y verificarlo en Meta Business','Instalar píxel + CAPI, GA4, Google Ads y TikTok; definir eventos (ViewContent, AddToCart, Lead por pedido WA, Purchase)','Subir feed de 140 productos a Meta Commerce y Merchant Center','Revisar los 16 anuncios de Google de Kolm: búsqueda, Shopping o Performance Max y a qué páginas llevan','Medir seguidores de Instagram con sesión','Chequear INAPI clase 35 para ALTIRO, OHM y PILAS (NIC ya revisado: altiromayorista.cl, ohmmayorista.cl y pilasmayorista.cl libres)','Repetir la revisión de la Biblioteca cada 2 semanas (solo muestra activos): vigilar KBOD y Kolm'];
+let done=[];try{done=JSON.parse(localStorage.getItem('okm-chk2')||'[]')}catch(e){}
+$('chk').innerHTML=CH.map((c,i)=>'<li><input type="checkbox" id="c'+i+'" '+(done.includes(i)?'checked':'')+'><label for="c'+i+'">'+c+'</label></li>').join('');
+$('chk').addEventListener('change',e=>{const i=+e.target.id.slice(1);done=e.target.checked?[...done,i]:done.filter(x=>x!==i);try{localStorage.setItem('okm-chk2',JSON.stringify(done))}catch(_){}});
+</script>
+</body></html>
