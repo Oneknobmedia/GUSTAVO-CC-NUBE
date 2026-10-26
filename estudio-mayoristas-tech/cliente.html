@@ -205,8 +205,10 @@ td.tt.big{color:var(--orange);font-weight:700}
 .scorebar .track{height:12px;border-radius:99px;background:rgba(47,74,154,.14);overflow:hidden}
 .scorebar .fill{height:100%;border-radius:99px;transition:width .5s ease}
 .scorebar b{font-family:var(--f-mono);text-align:right;font-variant-numeric:tabular-nums}
-.verdict{padding:20px 22px;border-radius:14px;background:var(--surface);border:1px solid var(--line-soft);border-left:4px solid var(--blue);font-size:15px;color:var(--muted)}
-.verdict b{color:var(--fg)}
+.verdict{position:relative;padding:22px 24px 24px;border-radius:16px;background:linear-gradient(180deg,#fff,#f1f5ff);border:1px solid var(--line-soft);border-left:5px solid var(--orange);box-shadow:0 10px 30px rgba(20,39,94,.08);font-size:16.5px;line-height:1.6;color:var(--fg)}
+.verdict::before{content:"Veredicto";display:block;font:700 11px var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+.verdict>b:first-of-type{display:block;font:700 clamp(17px,2.2vw,21px)/1.25 var(--f-display);color:var(--navy);margin-bottom:10px}
+.verdict mark{color:var(--navy);font-weight:800;background:linear-gradient(transparent 58%,rgba(242,138,30,.4) 58%);padding:0 2px;border-radius:2px}
 .bridge{padding:24px;border-radius:18px;background:linear-gradient(135deg,#0c1735,#16296b);color:#fff;display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .bridge .k{font:700 11px var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--orange)}
 .bridge h3{color:#fff;font-size:clamp(17px,2.2vw,21px);line-height:1.25}
@@ -451,7 +453,7 @@ footer a{color:var(--muted);word-break:break-word}
     <div class="score">
       <span class="k">Puntaje de capacidades</span>
       <div class="scorebar"><span id="lblA">PDF / WhatsApp</span><div class="track"><div class="fill" id="barA" style="background:var(--orange);width:5%"></div></div><b id="scA">0,5</b></div>
-      <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--blue);width:100%"></div></div><b>11</b></div>
+      <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:#16a34a;width:100%"></div></div><b>11</b></div>
     </div>
   </div>
   <p class="pick">¿Cómo se compara el catálogo de tu competencia? Elige uno:</p>
@@ -556,10 +558,10 @@ const rows=[
 const grp={0:'Primero: vender mejor desde el celular',6:'Después: que más clientes te encuentren y vuelvan'};
 const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata',pro:'Tienda online profesional'};
 const verdicts={
- pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
- ext:'<b>App de terceros o link en bio</b>: Haomai y Meidimake usan Yollgo: hay que descargar la app y crear un usuario, y en Haomai además ingresar un código que solo se consigue en la tienda o en sus redes, antes de ver un solo producto. Cosashop manda a Taplink. El dominio no es tuyo: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
- cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.',
- pro:'<b>Tienda online profesional</b>: cumple las 11 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
+ pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para <mark>mostrar, no para medir</mark>. En el celular hay que hacer zoom, no hay carrito y <mark>la venta no deja rastro para la publicidad</mark>.',
+ ext:'<b>App de terceros o link en bio</b> Haomai y Meidimake usan Yollgo: <mark>hay que descargar la app y crear un usuario</mark>, y en Haomai además ingresar un código que solo se consigue en la tienda o en sus redes, antes de ver un solo producto. Cosashop manda a Taplink. <mark>El dominio no es tuyo</mark>: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
+ cheap:'<b>Tienda barata de plantilla</b> Tiene la base, pero casi siempre sale <mark>sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor</mark>. <mark>Es una vitrina, no una máquina de ventas.</mark>',
+ pro:'<b>Tienda online profesional</b> Cumple las <mark>11 capacidades</mark>. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. <mark>Es la única opción que sirve para vender y para hacer publicidad.</mark>'};
 const idx={pdf:1,ext:2,cheap:3,pro:0};
 function hl(){const e=$('cmp'),c=e.querySelector('.c1'),b=e.querySelector('.hl');if(!c||!b)return;b.style.top=(c.offsetTop+2)+'px';b.style.left='2px';b.style.height=(c.offsetHeight-4)+'px';b.style.width=(e.clientWidth-4)+'px'}
 addEventListener('resize',()=>hl());
