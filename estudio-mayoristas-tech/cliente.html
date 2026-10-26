@@ -433,7 +433,7 @@ footer a{color:var(--muted);word-break:break-word}
   <div class="panel" style="padding:6px 8px 10px;overflow:hidden"><div class="cmp" id="cmp"></div></div>
   <div class="panel" style="padding:18px;display:flex;flex-direction:column;gap:10px">
     <div class="scorebar"><span id="lblA">PDF / WhatsApp</span><div class="track"><div class="fill" id="barA" style="background:var(--pink);width:5%"></div></div><b id="scA">0,5</b></div>
-    <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--green);width:100%"></div></div><b>10</b></div>
+    <div class="scorebar"><span>Tienda profesional</span><div class="track"><div class="fill" style="background:var(--green);width:100%"></div></div><b>11</b></div>
   </div>
   <div class="verdict" id="verdict"></div>
 </div></section>
@@ -507,6 +507,7 @@ function calc(){const q=+$('q').value,m=+$('miss').value,c=+$('close').value,t=+
 ['q','miss','close','tk'].forEach(i=>$(i).addEventListener('input',calc));calc();
 
 const rows=[
+ ['Ventas en automático e instantáneas','n','n','n'],
  ['El cliente encuentra el producto en segundos desde el celular','n','h','h'],
  ['Precio por mayor visible en cada producto','y','y','y'],
  ['El pedido llega armado, con detalle y total','h','h','h'],
@@ -522,12 +523,12 @@ const verdicts={
  pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
  ext:'<b>App de terceros o link en bio</b>: Haomai y Meidimake usan Yollgo: hay que descargar la app y crear un usuario, y en Haomai además ingresar un código que solo se consigue en la tienda o en sus redes, antes de ver un solo producto. Cosashop manda a Taplink. El dominio no es tuyo: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
  cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.',
- pro:'<b>Tienda online profesional</b>: cumple las 10 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
+ pro:'<b>Tienda online profesional</b>: cumple las 11 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
 const idx={pdf:1,ext:2,cheap:3,pro:0};
 function cmp(k){const i=idx[k],P=k==='pro';let s=0;$('cmp').classList.toggle('two',P);
  let h='<div class="hd c1h">Capacidad y oportunidad de venta</div>'+(P?'<div class="hd pro">Tienda online profesional</div>':'<div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>');
  rows.forEach((r,ri)=>{const v=P?'y':r[i],x='';s+=v==='y'?1:v==='h'?.5:0;h+='<div class="c1">'+r[0]+'</div>'+(P?'<div class="c pro"><span class="d y">✓</span></div>':'<div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>');});
- $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*10)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
+ $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*100/rows.length)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>cmp(b.dataset.k)));cmp('pdf');
 
