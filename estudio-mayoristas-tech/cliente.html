@@ -195,6 +195,9 @@ footer a{color:var(--muted);word-break:break-word}
 .after{max-width:340px;width:100%;margin-inline:auto;display:flex;flex-direction:column;gap:8px}
 .after .desp{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#16a34a;font-weight:700}
 .after .alt-t{margin:0 0 4px;font-family:var(--f-display);font-size:15px;font-weight:700;line-height:1.25;color:#16a34a}
+.antes .desp,.antes .alt-t{color:#dc2626}
+.antes .wa{border-color:#dc2626}
+.wd.red{background:#fee2e2;color:#b91c1c}
 .js .wd.late{opacity:0;transition:opacity .35s}.js .wd.late.show{opacity:1}
 .wa{border-radius:28px;overflow:hidden;border:2px solid #16a34a;background:#efeae2;box-shadow:0 12px 36px rgba(20,39,94,.16);display:flex;flex-direction:column}
 .wa-h{display:flex;gap:10px;align-items:center;padding:12px 14px;background:#075e54;color:#fff}
@@ -254,15 +257,21 @@ footer a{color:var(--muted);word-break:break-word}
     <p class="lead">Ese pedido no se perdió por el precio del cable. Se perdió porque <b>el negocio cierra cuando cierras tú</b>, y tu cliente compra cuando tiene tiempo: de noche, en el bus, entre clientes.</p>
   </div>
   <div class="col2">
-  <div class="phone" aria-label="Ejemplo de conversación de WhatsApp sin respuesta">
-    <span class="ante">Antes · sin tienda</span><div class="bar"><span>23:41</span><span>Mayorista · en línea hace 6 h</span></div>
-    <div class="chat">
-      <div class="msg sys">HOY</div>
-      <div class="msg out">Hola! Vi su video. Necesito 50 cables tipo C y 20 cargadores 20W. ¿Precio por mayor? ¿Envían a Talca?<span class="t">23:40 ✓✓</span></div>
-      <div class="msg out">¿Tienen catálogo?<span class="t">23:52 ✓✓</span></div>
-      <div class="msg sys">8 h 40 min después</div>
-      <div class="msg cold">hola, ¿qué necesitas?<span class="t">08:32</span></div>
+  <div class="after antes">
+    <span class="desp">Antes · sin tienda</span>
+    <span class="alt-t">WhatsApp sin respuesta hasta la mañana</span>
+    <div class="wa" id="wa0" role="img" aria-label="Simulación de WhatsApp sin tienda: el cliente escribe a las 23:40 y 23:52 y recibe respuesta a las 08:32, 8 horas y 40 minutos después.">
+      <div class="wa-h"><i class="av">M</i><div><b>Mayorista</b><small>últ. vez hoy a las 17:40</small></div></div>
+      <div class="wa-c">
+        <div class="wd">HOY</div>
+        <div class="wr cli"><div class="wm">Hola! Vi su video. Necesito 50 cables tipo C y 20 cargadores 20W. ¿Precio por mayor? ¿Envían a Talca?<span class="wt">23:40 ✓✓</span></div></div>
+        <div class="wr cli"><div class="wm">¿Tienen catálogo?<span class="wt">23:52 ✓✓</span></div></div>
+        <div class="wd late red" data-r="2">8 h 40 min después · 08:32</div>
+        <div class="wr bot"><div class="typing"><i></i><i></i><i></i></div><div class="wm">hola, ¿qué necesitas?<span class="wt">08:32</span></div></div>
+      </div>
+      <div class="wa-i"><span>Mensaje</span><i>🎙️</i></div>
     </div>
+    <p class="note">Para entonces, ya le compró a otro.</p>
   </div>
   <div class="after">
     <span class="desp">Después · con tienda</span>
@@ -274,7 +283,7 @@ footer a{color:var(--muted);word-break:break-word}
         <div class="wr cli"><div class="wm">Hola! Vi su video. Necesito 50 cables tipo C y 20 cargadores 20W. ¿Precio por mayor? ¿Envían a Talca?<span class="wt">23:40 ✓✓</span></div></div>
         <div class="wr bot"><div class="typing"><i></i><i></i><i></i></div><div class="wm">¡Hola, bienvenido! 👋 Aquí está nuestra tienda online para que puedas realizar tu pedido.
           <div class="card"><b>GS Electronic · Tienda mayorista</b><span>Precio por mayor · Carrito · Envío a todo Chile</span><em>Abrir tienda</em></div><span class="wt">23:40</span></div></div>
-        <div class="wd late">23:47 · Pedido hecho en la tienda 🛒</div>
+        <div class="wd late" data-r="2">23:47 · Pedido hecho en la tienda 🛒</div>
         <div class="wr bot"><div class="typing"><i></i><i></i><i></i></div><div class="wm">¡Gracias! ✅ Tu pedido ya fue enviado a preparación y sale mañana mismo. ¿Hay algo más en lo que podamos ayudarte?<span class="wt">23:47</span></div></div>
       </div>
       <div class="wa-i"><span>Mensaje</span><i>🎙️</i></div>
@@ -512,12 +521,14 @@ fitTitle();addEventListener('resize',fitTitle);document.fonts&&document.fonts.re
   h.style.transform='scale('+(1-.06*p).toFixed(3)+')';hint.style.opacity=p>.05?0:1;}
  addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd);}},{passive:true});addEventListener('resize',upd);upd();})();
 
-(function(){const wa=$('wa'),rows=[...wa.querySelectorAll('.wr')],late=wa.querySelector('.wd.late');
+(function(){const was=[...document.querySelectorAll('.wa')];
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
- let tk=false;function upd(){tk=false;const r=wa.getBoundingClientRect(),vh=innerHeight;
-  const p=Math.min(1,Math.max(0,(vh*.85-r.top)/(r.height*.8))),t=p*(rows.length+.5);
-  rows.forEach((w,i)=>{const m=w.querySelector('.wm'),ty=w.querySelector('.typing');
-   m.classList.toggle('show',t>=i+1);if(i===2)late.classList.toggle('show',t>=i+.35);if(ty)ty.classList.toggle('on',t>=i+.35&&t<i+1);});}
+ let tk=false;function upd(){tk=false;const vh=innerHeight;
+  was.forEach(wa=>{const rows=[...wa.querySelectorAll('.wr')],lates=[...wa.querySelectorAll('.wd.late')],r=wa.getBoundingClientRect();
+   const p=Math.min(1,Math.max(0,(vh*.85-r.top)/(r.height*.8))),t=p*(rows.length+.5);
+   rows.forEach((w,i)=>{const m=w.querySelector('.wm'),ty=w.querySelector('.typing');
+    m.classList.toggle('show',t>=i+1);if(ty)ty.classList.toggle('on',t>=i+.35&&t<i+1);});
+   lates.forEach(l=>l.classList.toggle('show',t>=+l.dataset.r+.35));});}
  addEventListener('scroll',()=>{if(!tk){tk=true;requestAnimationFrame(upd);}},{passive:true});addEventListener('resize',upd);upd();})();
 </script>
 </body></html>
