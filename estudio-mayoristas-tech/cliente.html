@@ -167,25 +167,8 @@ td.tt.big{color:var(--orange);font-weight:700}
 .ba .after{border-color:var(--green)} .ba .after h3{color:var(--green)}
 .manifesto{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,3.2vw,30px);line-height:1.25;max-width:30ch}
 
-.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:14px}
-.nm{padding:18px;border-radius:16px;background:var(--surface);border:1px solid var(--line-soft);display:flex;flex-direction:column;gap:8px;cursor:pointer;text-align:left;color:var(--fg);font:inherit;transition:border-color .2s,box-shadow .2s}
-.nm:hover,.nm[aria-pressed="true"]{border-color:var(--pink);box-shadow:0 0 22px rgba(255,46,136,.22)}
-.nm .word{font-family:var(--f-display);font-weight:900;font-size:26px;letter-spacing:.02em}
-.nm .sl{font-size:15px;color:var(--fg)}
-.nm .cp{font-size:13.5px;color:var(--muted)}
-.nm .dom{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
-.nm .dom b{color:var(--green);font-weight:700}
-.sw{display:flex;gap:6px;margin-top:4px}
-.sw i{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-.nm .fav{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
-.nm[aria-pressed="true"] .fav{color:var(--pink)}
-.top3{display:inline-block;font-family:var(--f-mono);font-size:10px;letter-spacing:.1em;padding:3px 8px;border-radius:99px;border:1px solid var(--green);color:var(--green);width:max-content}
 
 .cta{padding:clamp(24px,4vw,44px);display:flex;flex-direction:column;gap:18px;border:1px solid var(--line);background:radial-gradient(140% 100% at 0% 0%,rgba(255,122,26,.14),transparent 50%),radial-gradient(140% 100% at 100% 100%,rgba(45,255,155,.12),transparent 50%),var(--surface)}
-.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
-.ph{padding:16px;border-radius:12px;background:var(--surface-2);display:flex;flex-direction:column;gap:4px}
-.ph .k{font-family:var(--f-mono);font-size:11px;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
-.ph p{font-size:14.5px;color:var(--muted)}
 .copyrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
 .kw{font-family:var(--f-mono);font-weight:700;font-size:18px;padding:12px 16px;border-radius:12px;border:1px dashed var(--green);color:var(--green);user-select:all}
 footer{padding-block:40px 56px;color:var(--dim);font-size:13px}
@@ -376,27 +359,13 @@ footer a{color:var(--muted);word-break:break-word}
   <p class="manifesto">No hacemos "marca bonita". Hacemos lo único que importa: <span class="grad-text">que tus ventas crezcan.</span></p>
 </div></section>
 
-<!-- NOMBRES -->
-<section id="marca"><div class="wrap stack">
-  <span class="eyebrow">Sugerencias de cambio de nombre · Opcional</span>
-  <h2>Un nombre que venda antes de que digas una palabra.</h2>
-  <p class="lead">"GS Electronic" sigue el mismo patrón que KBOD, CDC o CPC: siglas más categoría. Funciona como razón social, pero no le dice al comprador qué gana. Te dejamos 10 sugerencias de cambio de nombre para tu tienda mayorista. Son ideas para conversar, no una decisión: toca las que te gusten.</p>
-  <div class="names" id="names"></div>
-  <p class="note">Dominios revisados en NIC Chile el 26 oct 2026: los 10 nombres exactos en .cl ya están tomados; las variantes indicadas en cada tarjeta están libres para inscribir. El registro de marca en INAPI queda por confirmar antes de elegir.</p>
-</div></section>
-
 <!-- ACCIÓN -->
 <section id="accion"><div class="wrap">
   <div class="cta panel">
     <span class="eyebrow">El siguiente paso</span>
-    <h2>El primer lugar online del mayoreo está libre. Ocúpalo antes que el local de al lado.</h2>
-    <p class="lead">KBOD ya tiene instaladas las etiquetas de medición de Meta, Google Ads y TikTok, aunque hoy no anuncia. El día que encienda publicidad, parte con ventaja. Cada mes sin tienda es un mes en que tu píxel no registra ninguna venta, y ese aprendizaje no se recupera después.</p>
-    <div class="phases">
-      <div class="ph"><span class="k">Fase 1 · Tienda</span><b>GS Electronic lista para vender y medir</b><p>Dominio propio, catálogo conectado, píxel y API de Conversiones, WhatsApp automático.</p></div>
-      <div class="ph"><span class="k">Fase 2 · Crecimiento</span><b>Encendemos la publicidad</b><p>Campañas de ventas en Meta, Google Shopping y TikTok, optimizadas con tus ventas reales.</p></div>
-    </div>
-    <p class="lead">Responde este mensaje con la frase:</p>
-    <div class="copyrow"><span class="kw" id="kw">QUIERO SER EL PRIMERO</span><button class="btn" type="button" id="copyBtn">Copiar</button></div>
+    <h2>Tu catálogo GS Electronic ya está hecho. Actívalo y empieza a vender desde el celular.</h2>
+    <p class="lead">Dominio propio, pedido directo a tu WhatsApp y todo listo para medir cada venta. Responde este mensaje con la frase:</p>
+    <div class="copyrow"><span class="kw" id="kw">QUIERO MI CATÁLOGO</span><button class="btn" type="button" id="copyBtn">Copiar</button></div>
     <p class="note" id="copyMsg" aria-live="polite"></p>
   </div>
 </div></section>
@@ -458,23 +427,6 @@ document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',(
 const steps=[...document.querySelectorAll('#flow .step')];let si=0;
 steps[0].classList.add('on');
 if(!matchMedia('(prefers-reduced-motion: reduce)').matches)setInterval(()=>{steps[si].classList.remove('on');si=(si+1)%steps.length;steps[si].classList.add('on');},1800);
-
-const names=[
- ['ALTIRO','Pides hoy. Vendes al tiro.','Rapidez chilena: pedido y despacho sin vueltas.',['#ff7a1a','#0b0b10','#2dff9b'],1],
- ['OHM','Cero resistencia para comprar.','El ohm mide resistencia. La promesa: comprar sin fricción.',['#a855f7','#ff7a1a','#0b0b10'],1],
- ['PILAS','Ponte las pilas: stock que no se descarga.','Chilenismo de estar atento + energía. Se recuerda solo.',['#2dff9b','#0b0b10','#ff2e88'],1],
- ['ENCHUFE','El enchufe que tu negocio necesitaba.','"Tener enchufe" es tener el contacto correcto.',['#a855f7','#ff7a1a','#f6f4fb'],0],
- ['KARGO','Stock que llega.','Carga y despacho en una palabra.',['#ff2e88','#0b0b10','#2dff9b'],0],
- ['VOLTIO','Carga tu negocio.','Técnico, corto, energético.',['#ffb800','#0b0b10','#8b5cf6'],0],
- ['CHISPA','El stock que prende.','Energía e ingenio para el revendedor.',['#ff7a1a','#ff2e88','#0b0b10'],0],
- ['MARGEN','Compras para revender, no para guardar.','Le habla directo al bolsillo del revendedor.',['#2dff9b','#f6f4fb','#0b0b10'],0],
- ['REVENDE','Tu proveedor con margen incluido.','El nombre es la instrucción.',['#ff2e88','#f6f4fb','#0b0b10'],0],
- ['NODO','Conecta tu tienda al stock.','El punto donde se cruza todo el abastecimiento.',['#8b5cf6','#2dff9b','#0b0b10'],0]];
-const DOM=n=>{const k=n.toLowerCase();const free=k==='nodo'?[k+'mayorista.cl']:[k+'mayorista.cl',k+'tech.cl'];return k+'.cl tomado · libre: '+free.map(d=>'<b>'+d+'</b>').join(' · ');};
-let favs=[];try{favs=JSON.parse(localStorage.getItem('okm-favs')||'[]')}catch(e){}
-$('names').innerHTML=names.map((n,i)=>'<button type="button" class="nm" id="nm'+i+'" data-n="'+n[0]+'" aria-pressed="'+favs.includes(n[0])+'">'+(n[4]?'<span class="top3">TOP 3</span>':'')+'<span class="word" style="color:'+n[3][0]+'">'+n[0]+'</span><span class="sl">'+n[1]+'</span><span class="cp">'+n[2]+'</span><span class="dom">'+DOM(n[0])+'</span><span class="sw">'+n[3].map(c=>'<i style="background:'+c+'"></i>').join('')+'</span><span class="fav">'+(favs.includes(n[0])?'♥ Me gusta':'♡ Tocar para marcar')+'</span></button>').join('');
-document.querySelectorAll('.nm').forEach(b=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.querySelector('.fav').textContent=on?'♥ Me gusta':'♡ Tocar para marcar';
- const k=b.dataset.n;favs=on?[...favs,k]:favs.filter(x=>x!==k);try{localStorage.setItem('okm-favs',JSON.stringify(favs))}catch(e){}}));
 
 $('copyBtn').addEventListener('click',()=>{const t=$('kw').textContent;
  const sel=()=>{const r=document.createRange();r.selectNodeContents($('kw'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('copyMsg').textContent='Texto seleccionado. Cópialo y respóndenos.';};
