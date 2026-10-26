@@ -173,6 +173,8 @@ td.tt.big{color:var(--orange);font-weight:700}
 .nm .word{font-family:var(--f-display);font-weight:900;font-size:26px;letter-spacing:.02em}
 .nm .sl{font-size:15px;color:var(--fg)}
 .nm .cp{font-size:13.5px;color:var(--muted)}
+.nm .dom{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);line-height:1.5}
+.nm .dom b{color:var(--green);font-weight:700}
 .sw{display:flex;gap:6px;margin-top:4px}
 .sw i{width:22px;height:22px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
 .nm .fav{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
@@ -376,11 +378,11 @@ footer a{color:var(--muted);word-break:break-word}
 
 <!-- NOMBRES -->
 <section id="marca"><div class="wrap stack">
-  <span class="eyebrow">Opcional · Marca para tu línea mayorista</span>
+  <span class="eyebrow">Sugerencias de cambio de nombre · Opcional</span>
   <h2>Un nombre que venda antes de que digas una palabra.</h2>
-  <p class="lead">"GS Electronic" sigue el mismo patrón que KBOD, CDC o CPC: siglas más categoría. Funciona como razón social, pero no le dice al comprador qué gana. Si quieres una marca para tu tienda mayorista, estas son 10 opciones. Toca las que te gusten.</p>
+  <p class="lead">"GS Electronic" sigue el mismo patrón que KBOD, CDC o CPC: siglas más categoría. Funciona como razón social, pero no le dice al comprador qué gana. Te dejamos 10 sugerencias de cambio de nombre para tu tienda mayorista. Son ideas para conversar, no una decisión: toca las que te gusten.</p>
   <div class="names" id="names"></div>
-  <p class="note">Disponibilidad de marca (INAPI) y dominio .cl (NIC Chile) por confirmar antes de elegir.</p>
+  <p class="note">Dominios revisados en NIC Chile el 26 oct 2026: los 10 nombres exactos en .cl ya están tomados; las variantes indicadas en cada tarjeta están libres para inscribir. El registro de marca en INAPI queda por confirmar antes de elegir.</p>
 </div></section>
 
 <!-- ACCIÓN -->
@@ -468,8 +470,9 @@ const names=[
  ['MARGEN','Compras para revender, no para guardar.','Le habla directo al bolsillo del revendedor.',['#2dff9b','#f6f4fb','#0b0b10'],0],
  ['REVENDE','Tu proveedor con margen incluido.','El nombre es la instrucción.',['#ff2e88','#f6f4fb','#0b0b10'],0],
  ['NODO','Conecta tu tienda al stock.','El punto donde se cruza todo el abastecimiento.',['#8b5cf6','#2dff9b','#0b0b10'],0]];
+const DOM=n=>{const k=n.toLowerCase();const free=k==='nodo'?[k+'mayorista.cl']:[k+'mayorista.cl',k+'tech.cl'];return k+'.cl tomado · libre: '+free.map(d=>'<b>'+d+'</b>').join(' · ');};
 let favs=[];try{favs=JSON.parse(localStorage.getItem('okm-favs')||'[]')}catch(e){}
-$('names').innerHTML=names.map((n,i)=>'<button type="button" class="nm" id="nm'+i+'" data-n="'+n[0]+'" aria-pressed="'+favs.includes(n[0])+'">'+(n[4]?'<span class="top3">TOP 3</span>':'')+'<span class="word" style="color:'+n[3][0]+'">'+n[0]+'</span><span class="sl">'+n[1]+'</span><span class="cp">'+n[2]+'</span><span class="sw">'+n[3].map(c=>'<i style="background:'+c+'"></i>').join('')+'</span><span class="fav">'+(favs.includes(n[0])?'♥ Me gusta':'♡ Tocar para marcar')+'</span></button>').join('');
+$('names').innerHTML=names.map((n,i)=>'<button type="button" class="nm" id="nm'+i+'" data-n="'+n[0]+'" aria-pressed="'+favs.includes(n[0])+'">'+(n[4]?'<span class="top3">TOP 3</span>':'')+'<span class="word" style="color:'+n[3][0]+'">'+n[0]+'</span><span class="sl">'+n[1]+'</span><span class="cp">'+n[2]+'</span><span class="dom">'+DOM(n[0])+'</span><span class="sw">'+n[3].map(c=>'<i style="background:'+c+'"></i>').join('')+'</span><span class="fav">'+(favs.includes(n[0])?'♥ Me gusta':'♡ Tocar para marcar')+'</span></button>').join('');
 document.querySelectorAll('.nm').forEach(b=>b.addEventListener('click',()=>{const on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);b.querySelector('.fav').textContent=on?'♥ Me gusta':'♡ Tocar para marcar';
  const k=b.dataset.n;favs=on?[...favs,k]:favs.filter(x=>x!==k);try{localStorage.setItem('okm-favs',JSON.stringify(favs))}catch(e){}}));
 
