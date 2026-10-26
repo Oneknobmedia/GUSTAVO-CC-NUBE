@@ -156,7 +156,14 @@ td.tt.big{color:var(--orange);font-weight:700}
 .sp b{font-family:var(--f-mono);text-align:right}
 
 .seg{display:flex;flex-wrap:wrap;gap:8px}
-.seg button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 14px var(--f-body);cursor:pointer}
+.seg button{min-height:44px;padding:8px 16px;border-radius:16px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 14px var(--f-body);cursor:pointer;display:inline-flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left}
+.seg .ads{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--muted)}
+.seg .d{width:18px;height:18px;font-size:10px}
+.seg .d.n{background:rgba(220,38,38,.1);color:#dc2626;box-shadow:inset 0 0 0 1px #dc2626}
+.seg .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
+.seg button.pro{border-color:#16a34a;color:#15803d}
+.seg button.pro[aria-pressed="true"]{border-color:#16a34a;background:rgba(22,163,74,.12);color:#15803d}
+.cmp.two{grid-template-columns:minmax(0,1fr) 108px!important}
 .seg button[aria-pressed="true"]{border-color:var(--pink);color:var(--fg);background:rgba(238,122,20,.12)}
 .cmp{display:grid;grid-template-columns:minmax(0,1fr) 108px 108px;font-size:15px}
 .cmp>div{padding:12px 10px;border-bottom:1px solid rgba(47,74,154,.14);display:flex;align-items:center}
@@ -414,9 +421,10 @@ footer a{color:var(--muted);word-break:break-word}
   <p class="lead">Una tienda online profesional incluye herramientas de medición de resultados y performance, como el <b>Meta Pixel</b> y el <b>Google Tag</b>. Con ellas vas armando una base de clientes fieles cada vez más grande y alimentas tu base de datos, para que los motores de publicidad se acerquen cada vez más a mostrar tus anuncios a tu cliente ideal.</p>
   <p class="lead">¿Algún catálogo de tu competencia sirve para hacer publicidad que venda? Elige uno y compáralo.</p>
   <div class="seg" role="group" aria-label="Elegir contra qué comparar">
-    <button type="button" id="seg-pdf" data-k="pdf" aria-pressed="true">PDF o catálogo de WhatsApp</button>
-    <button type="button" id="seg-ext" data-k="ext" aria-pressed="false">App de terceros o link en bio</button>
-    <button type="button" id="seg-cheap" data-k="cheap" aria-pressed="false">Tienda barata de plantilla</button>
+    <button type="button" id="seg-pdf" data-k="pdf" aria-pressed="true"><span class="t">PDF o catálogo de WhatsApp</span><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></button>
+    <button type="button" id="seg-ext" data-k="ext" aria-pressed="false"><span class="t">App de terceros o link en bio</span><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></button>
+    <button type="button" id="seg-cheap" data-k="cheap" aria-pressed="false"><span class="t">Tienda barata de plantilla</span><span class="ads">Sirve para publicidad: <i class="d n">✕</i></span></button>
+    <button type="button" id="seg-pro" class="pro" data-k="pro" aria-pressed="false"><span class="t">Tienda online profesional</span><span class="ads">Sirve para publicidad: <i class="d y">✓</i></span></button>
   </div>
   <div class="panel" style="padding:6px 8px 10px;overflow:hidden"><div class="cmp" id="cmp"></div></div>
   <div class="panel" style="padding:18px;display:flex;flex-direction:column;gap:10px">
@@ -505,15 +513,16 @@ const rows=[
  ['Aparece en Google Shopping','n','n','h'],
  ['Remarketing a quien vio un producto y no compró','n','n','h'],
  ['Vende de noche y a regiones sin que estés conectado','n','n','n']];
-const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata'};
+const labels={pdf:'PDF / WhatsApp',ext:'App terceros / bio',cheap:'Tienda barata',pro:'Tienda online profesional'};
 const verdicts={
  pdf:'<b>PDF y catálogo de WhatsApp</b> (KBOD, Nexora y Cosashop los usan como apoyo): sirven para mostrar, no para medir. En el celular hay que hacer zoom, no hay carrito y la venta no deja rastro para la publicidad.',
  ext:'<b>App de terceros o link en bio</b>: Haomai y Meidimake usan Yollgo: hay que descargar la app y crear un usuario, y en Haomai además ingresar un código que solo se consigue en la tienda o en sus redes, antes de ver un solo producto. Cosashop manda a Taplink. El dominio no es tuyo: no lo puedes verificar en Meta ni reclamar en Google Merchant Center.',
- cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.'};
-const idx={pdf:1,ext:2,cheap:3};
-function cmp(k){const i=idx[k];let s=0;
- let h='<div class="hd c1h">Capacidad y oportunidad de venta</div><div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>';
- rows.forEach((r,ri)=>{const v=r[i],x='';s+=v==='y'?1:v==='h'?.5:0;h+='<div class="c1'+x+'">'+r[0]+'</div><div class="c'+x+'"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro'+x+'"><span class="d y">✓</span></div>';});
+ cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.',
+ pro:'<b>Tienda online profesional</b>: cumple las 10 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
+const idx={pdf:1,ext:2,cheap:3,pro:0};
+function cmp(k){const i=idx[k],P=k==='pro';let s=0;$('cmp').classList.toggle('two',P);
+ let h='<div class="hd c1h">Capacidad y oportunidad de venta</div>'+(P?'<div class="hd pro">Tienda online profesional</div>':'<div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>');
+ rows.forEach((r,ri)=>{const v=P?'y':r[i],x='';s+=v==='y'?1:v==='h'?.5:0;h+='<div class="c1">'+r[0]+'</div>'+(P?'<div class="c pro"><span class="d y">✓</span></div>':'<div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>');});
  $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*10)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>cmp(b.dataset.k)));cmp('pdf');
