@@ -158,12 +158,14 @@ td.tt.big{color:var(--orange);font-weight:700}
 .seg{display:flex;flex-wrap:wrap;gap:8px}
 .seg button{min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--line-soft);background:var(--surface);color:var(--muted);font:600 14px var(--f-body);cursor:pointer}
 .seg button[aria-pressed="true"]{border-color:var(--pink);color:var(--fg);background:rgba(238,122,20,.12)}
-.cmp{display:grid;grid-template-columns:minmax(0,1fr) 92px 92px;font-size:15px}
+.cmp{display:grid;grid-template-columns:minmax(0,1fr) 92px 112px;font-size:15px}
 .cmp>div{padding:12px 10px;border-bottom:1px solid rgba(47,74,154,.14);display:flex;align-items:center}
 .cmp .hd{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);justify-content:center;text-align:center}
 .cmp .hd:first-child{justify-content:flex-start}
 .cmp .c{justify-content:center}
-.cmp .pro{background:rgba(47,85,200,.05)}
+.cmp .pro{background:rgba(22,163,74,.08)}
+.cmp .hd.pro{color:#15803d;font-weight:800;background:rgba(22,163,74,.14)}
+.cmp .pro .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
 .scorebar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px}
 .scorebar .track{height:12px;border-radius:99px;background:rgba(47,74,154,.18);overflow:hidden}
 .scorebar .fill{height:100%;border-radius:99px;transition:width .5s ease}
@@ -501,7 +503,7 @@ const verdicts={
  cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin píxel configurado, sin API de Conversiones, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.'};
 const idx={pdf:1,ext:2,cheap:3};
 function cmp(k){const i=idx[k];let s=0;
- let h='<div class="hd">Capacidad</div><div class="hd">'+labels[k]+'</div><div class="hd pro">Profesional</div>';
+ let h='<div class="hd">Capacidad</div><div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>';
  rows.forEach(r=>{const v=r[i];s+=v==='y'?1:v==='h'?.5:0;h+='<div>'+r[0]+'</div><div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>';});
  $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*10)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
