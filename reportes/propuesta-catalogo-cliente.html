@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Catálogo que Vende</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: relato en capítulos; un teléfono interactivo como momento central (hoy vs con catálogo) */
+:root{
+  color-scheme:dark;
+  --bg:#07060b;--panel:#0f0d17;--panel2:#151223;--line:#7c3aed;--neon:#b26bff;
+  --o:#ff7a18;--p:#ff2d95;--m:#8b5cf6;--g:#22f5a0;--w:#ffffff;--mut:#aaa4be;--red:#ff4d6d;
+  --wa:#0b141a;--wa2:#1f2c33;--wa3:#005c4b;
+  --grad:linear-gradient(90deg,var(--o),var(--p),var(--m),var(--g));
+  --fd:"Space Grotesk",system-ui,sans-serif;--fb:Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--w);font:16px/1.6 var(--fb);
+  background-image:radial-gradient(circle at 15% 0%,#2a0f4a66,transparent 45%),radial-gradient(circle at 85% 30%,#ff2d9522,transparent 40%)}
+h1,h2,h3{font-family:var(--fd);line-height:1.1;margin:0 0 .5em;text-wrap:balance}
+h1{font-size:clamp(34px,7vw,68px);letter-spacing:-.02em}
+h2{font-size:clamp(26px,4.6vw,42px);letter-spacing:-.01em}
+h3{font-size:19px}
+p{max-width:62ch}
+.wrap{max-width:1100px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.kick{letter-spacing:.2em;text-transform:uppercase;font-size:12px;color:var(--neon);margin-bottom:12px}
+.mut{color:var(--mut)}
+section{padding-block:64px}
+.hero{padding-block:72px 40px}
+.hero p{font-size:19px;color:var(--mut)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 0 28px #7c3aed22}
+.grid{display:grid;gap:16px}
+.grid>*{min-width:0}
+.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr));align-items:center;gap:40px}
+.stat{font:700 clamp(40px,7vw,58px)/1 var(--fd);font-variant-numeric:tabular-nums}
+.ring{border:2px solid transparent;border-radius:22px;padding:28px;background:linear-gradient(var(--panel2),var(--panel2)) padding-box,var(--grad) border-box}
+
+/* teléfono */
+.phone-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+.toggle{display:inline-flex;padding:4px;border-radius:999px;border:1px solid var(--line);background:var(--panel)}
+.toggle button{font:600 14px var(--fb);color:var(--w);background:none;border:0;padding:10px 18px;border-radius:999px;cursor:pointer}
+.toggle button[aria-pressed="true"]{background:var(--grad);color:#000}
+.toggle button:focus-visible{outline:2px solid var(--g);outline-offset:2px}
+.phone{width:min(320px,100%);aspect-ratio:9/18.5;max-width:100%;border-radius:40px;border:2px solid var(--neon);padding:12px;background:#000;box-shadow:0 0 40px #b26bff44,inset 0 0 0 6px #111}
+.screen{height:100%;border-radius:30px;overflow:hidden;position:relative;background:var(--wa)}
+.screen>div{position:absolute;inset:0;display:flex;flex-direction:column}
+.wa-top{background:var(--wa2);padding:14px 14px 10px;font-size:13px;display:flex;gap:10px;align-items:center}
+.av{width:30px;height:30px;border-radius:50%;background:#3b4a54;flex:0 0 30px}
+.wa-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px;font-size:13px;overflow:hidden}
+.b{max-width:80%;padding:8px 10px;border-radius:10px;line-height:1.35}
+.b.in{background:var(--wa2);align-self:flex-start}
+.b.out{background:var(--wa3);align-self:flex-end}
+.b small{display:block;color:#9fb0b8;font-size:10px;text-align:right}
+.pdf{display:flex;gap:8px;align-items:center}
+.pdf span{background:#e53935;color:#fff;font-weight:700;font-size:10px;padding:6px 5px;border-radius:4px}
+.typing{color:#9fb0b8;font-style:italic;font-size:12px;margin-top:auto}
+.ig{background:#0d0c12}
+.ig-top{padding:14px 14px 8px;display:flex;gap:10px;align-items:center;font-size:13px}
+.ig-top .av{background:var(--grad)}
+.ig-top small{display:block;color:var(--mut);font-size:11px}
+.car{display:flex;gap:8px;overflow-x:auto;padding:0 12px 8px;scroll-snap-type:x mandatory;scrollbar-width:none}
+.prod{flex:0 0 78%;scroll-snap-align:start;border-radius:14px;background:var(--panel2);border:1px solid #3b2a66;overflow:hidden}
+.ph{aspect-ratio:1;display:grid;place-items:center;font-size:54px;background:radial-gradient(circle at 50% 40%,#2b1d4d,#120f1d)}
+.pi{padding:10px;font-size:12.5px}
+.pi b{display:block;font-size:13.5px}
+.pr{display:flex;justify-content:space-between;margin-top:6px;font-variant-numeric:tabular-nums}
+.pr em{font-style:normal;color:var(--g);font-weight:700}
+.buy{display:block;margin-top:8px;text-align:center;background:var(--grad);color:#000;font-weight:700;border-radius:8px;padding:7px;font-size:12.5px}
+.ig-cap{padding:6px 14px;font-size:12px;color:var(--mut)}
+.ex{font-size:11px;color:var(--mut)}
+
+/* pasos */
+.steps{display:grid;gap:12px}
+.step{display:flex;gap:14px;align-items:flex-start;padding:16px;border-radius:14px;background:var(--panel);border:1px solid #2e2250}
+.step .n{flex:0 0 38px;height:38px;border-radius:10px;display:grid;place-items:center;font:700 17px var(--fd);color:#000}
+.bad .n{background:#5a2433;color:#fff}
+.good .n{background:var(--grad)}
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;counter-reset:r}
+.road .card{position:relative;padding-top:30px}
+.road .card::before{counter-increment:r;content:counter(r);position:absolute;top:-16px;left:20px;width:36px;height:36px;border-radius:50%;background:var(--grad);color:#000;display:grid;place-items:center;font:700 18px var(--fd)}
+.ben{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+.ben div{padding:18px;border-radius:14px;background:var(--panel);border-left:3px solid var(--g)}
+.ben div:nth-child(3n+2){border-left-color:var(--p)}
+.ben div:nth-child(3n+3){border-left-color:var(--o)}
+.ben b{display:block;font-family:var(--fd);font-size:17px;margin-bottom:4px}
+.meter{height:16px;border-radius:999px;background:#1a1430;overflow:hidden;border:1px solid #3b2a66}
+.meter span{display:block;height:100%;width:4%;background:var(--grad);border-radius:999px}
+.names{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.nm{padding:22px;border-radius:16px;background:var(--panel);border:1px solid var(--line)}
+.nm strong{display:block;font:700 30px/1 var(--fd);margin-bottom:6px}
+.close{text-align:center;padding-block:80px}
+.close p{margin-inline:auto;color:var(--mut);font-size:18px}
+.cta{display:inline-block;margin-top:20px;padding:16px 26px;border-radius:14px;font:700 17px var(--fd);color:#000;background:var(--grad);box-shadow:0 0 30px #ff2d9555}
+footer{padding-block:20px 50px;color:var(--mut);font-size:12px;text-align:center}
+@media (prefers-reduced-motion:no-preference){.pulse{animation:pl 2.4s ease-in-out infinite}@keyframes pl{50%{box-shadow:0 0 50px #ff2d9599}}}
+@media (max-width:600px){section{padding-block:44px}.hero{padding-block:48px 24px}}
+</style>
+
+<main>
+<header class="wrap hero">
+  <div class="kick">Mayoreo de electrónica · Estación Central</div>
+  <h1>Tus próximos clientes ya están mirando el celular.<br><span class="grad">La pregunta es qué catálogo ven.</span></h1>
+  <p>En San Alfonso y Sazie hay producto, precio y miles de seguidores. Lo que casi nadie tiene todavía es la herramienta que convierte esa atención en ventas fuera del local.</p>
+</header>
+
+<section class="wrap" style="padding-top:0">
+  <div class="kick">Lo que está pasando en el barrio</div>
+  <div class="grid g3">
+    <div class="card"><div class="stat grad">192K</div><p class="mut">personas siguen en TikTok a una tienda de Sazie. Para comprar, tienen que ir al local.</p></div>
+    <div class="card"><div class="stat grad">0</div><p class="mut">mayoristas de San Alfonso con anuncios de catálogo en Facebook e Instagram hoy.</p></div>
+    <div class="card"><div class="stat grad">283K</div><p class="mut">visitas al mes recibe el único competidor del grupo que tiene catálogo online y anuncia.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="grid g2">
+    <div>
+      <div class="kick">La diferencia</div>
+      <h2>Mismo producto. <span class="grad">Otra forma de llegar.</span></h2>
+      <p class="mut">Cambia la vista del teléfono. A la izquierda, cómo compra hoy un cliente de regiones. A la derecha, cómo podría comprarte a ti.</p>
+      <div class="steps" id="stepsHoy">
+        <div class="step bad"><div class="n">1</div><div>Ve un video y escribe "¿precio?" por WhatsApp.</div></div>
+        <div class="step bad"><div class="n">2</div><div>Espera que le manden un PDF.</div></div>
+        <div class="step bad"><div class="n">3</div><div>Pregunta stock. Espera otra vez.</div></div>
+        <div class="step bad"><div class="n">4</div><div>Pide datos para transferir… o se aburre y compra en otro lado.</div></div>
+      </div>
+      <div class="steps" id="stepsCat" hidden>
+        <div class="step good"><div class="n">1</div><div>Ve tu anuncio con el producto, el precio detalle y el precio por mayor.</div></div>
+        <div class="step good"><div class="n">2</div><div>Toca "Comprar" y paga desde el celular.</div></div>
+        <div class="step good"><div class="n">3</div><div>Si no compró hoy, mañana vuelve a ver ese mismo producto.</div></div>
+      </div>
+    </div>
+    <div class="phone-wrap">
+      <div class="toggle" role="group" aria-label="Vista del teléfono">
+        <button id="tHoy" aria-pressed="true">Hoy</button>
+        <button id="tCat" aria-pressed="false">Con catálogo</button>
+      </div>
+      <div class="phone"><div class="screen">
+        <div id="vHoy">
+          <div class="wa-top"><div class="av"></div><div><b>Tienda Mayorista</b><br><span style="color:#9fb0b8;font-size:11px">en línea hace 3 h</span></div></div>
+          <div class="wa-body">
+            <div class="b out">Hola! precio del cargador 20W? soy de Talca<small>10:14</small></div>
+            <div class="b out">tienen stock?<small>10:31</small></div>
+            <div class="b in">Hola, te envío catálogo<small>13:02</small></div>
+            <div class="b in pdf"><span>PDF</span><div>catalogo_final_v3.pdf<br><small style="text-align:left">18 MB</small></div></div>
+            <div class="b out">no me abre 😕<small>13:40</small></div>
+            <div class="typing">Sin respuesta…</div>
+          </div>
+        </div>
+        <div id="vCat" class="ig" hidden>
+          <div class="ig-top"><div class="av"></div><div><b>Tu marca</b><small>Publicidad</small></div></div>
+          <div class="car">
+            <div class="prod"><div class="ph">🔌</div><div class="pi"><b>Cargador 20W USB-C</b>Carga rápida<div class="pr"><span>Detalle $3.990</span><em>x3 $2.490</em></div><span class="buy">Comprar</span></div></div>
+            <div class="prod"><div class="ph">🎧</div><div class="pi"><b>Audífonos Bluetooth</b>Estuche de carga<div class="pr"><span>Detalle $9.990</span><em>x3 $6.990</em></div><span class="buy">Comprar</span></div></div>
+            <div class="prod"><div class="ph">🔋</div><div class="pi"><b>Power bank 10.000 mAh</b>2 salidas<div class="pr"><span>Detalle $8.990</span><em>x3 $5.990</em></div><span class="buy">Comprar</span></div></div>
+          </div>
+          <div class="ig-cap">Precio mayorista desde 3 unidades · Despacho a todo Chile</div>
+          <div class="ig-cap ex">Ejemplo ilustrativo de productos y precios.</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="ring">
+    <div class="kick">Por qué nadie del barrio anuncia</div>
+    <h2>Facebook, Instagram, Google y TikTok <span class="grad">no pueden leer un PDF.</span></h2>
+    <p class="mut">Para mostrar el producto correcto a la persona correcta, estas plataformas necesitan un catálogo digital: foto, nombre, precio y stock de cada producto, conectado a la cuenta de anuncios. Sin eso, lo único posible es "promocionar una publicación", que trae likes, no pedidos. Por eso hoy el mayoreo de Estación Central no aparece en la publicidad: no le falta producto ni presupuesto, le falta catálogo.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="kick">Lo que cambia cuando tienes catálogo</div>
+  <h2>Tu local, <span class="grad">abierto en todo Chile, todo el día.</span></h2>
+  <div class="ben" style="margin-top:20px">
+    <div><b>Vendes a regiones</b>El revendedor de Talca o Antofagasta compra sin viajar a Santiago.</div>
+    <div><b>Anuncios que eligen solos</b>Cada persona ve el producto que más probablemente va a comprar.</div>
+    <div><b>Nadie se te escapa</b>Quien miró un producto y no compró lo vuelve a ver en su feed.</div>
+    <div><b>Menos tiempo en WhatsApp</b>El precio y el stock ya están a la vista. El chat queda para cerrar ventas, no para mandar PDFs.</div>
+    <div><b>Sabes qué vende</b>Cada venta queda asociada al anuncio que la trajo.</div>
+    <div><b>Un catálogo, todas las vitrinas</b>El mismo catálogo aparece en Instagram, Facebook, Google Shopping y TikTok.</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="grid g2">
+    <div>
+      <div class="kick">La ventana</div>
+      <h2>Hoy la vitrina digital del mayoreo <span class="grad">está vacía.</span></h2>
+      <p class="mut">La publicidad funciona como una subasta: mientras menos negocios compiten por el mismo cliente, más barato es llegar a él. Hoy ningún mayorista de San Alfonso está en esa subasta con catálogo. El primero que entre aprende con datos propios mientras el resto sigue respondiendo chats.</p>
+    </div>
+    <div class="card">
+      <p style="margin-top:0"><b>Mayoristas del barrio anunciando con catálogo</b></p>
+      <div class="meter"><span></span></div>
+      <p class="mut" style="font-size:14px;margin-bottom:0">0 de 5 competidores analizados en San Alfonso y Sazie. El único del grupo que anuncia con catálogo es también el que más visitas recibe.</p>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="kick">El camino</div>
+  <h2>De la bodega <span class="grad">al feed de tus clientes.</span></h2>
+  <div class="road" style="margin-top:30px">
+    <div class="card"><h3>Catálogo profesional</h3><p class="mut">Fotos con estándar, nombres como la gente los busca, precio detalle y por mayor, stock al día.</p></div>
+    <div class="card"><h3>Conectado a las plataformas</h3><p class="mut">Facebook, Instagram, Google y TikTok leen tu catálogo y miden cada venta.</p></div>
+    <div class="card"><h3>Campañas que venden</h3><p class="mut">Anuncios que muestran tus productos a quien está listo para comprarlos, y los recuerdan a quien dudó.</p></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="kick">Y una marca que se recuerde</div>
+  <h2>Un nombre que <span class="grad">venda antes de hablar.</span></h2>
+  <div class="names" style="margin-top:20px">
+    <div class="nm"><strong class="grad">PILAS</strong><span class="mut">"Ponte las pilas."</span></div>
+    <div class="nm"><strong class="grad">AL TIRO</strong><span class="mut">"Llega hoy. Funciona siempre."</span></div>
+    <div class="nm"><strong class="grad">MAYOR 56</strong><span class="mut">"Precio mayorista, a todo Chile."</span></div>
+  </div>
+</section>
+
+<section class="wrap close">
+  <h2>El primer catálogo de San Alfonso que aparece<br>en el celular de tus clientes <span class="grad">puede ser el tuyo.</span></h2>
+  <p>Ya tienes el producto y el precio. Lo que sigue es que te encuentren.</p>
+  <span class="cta pulse">Quiero ver mi catálogo en acción</span>
+</section>
+</main>
+
+<footer class="wrap">Basado en Meta Ads Library (Chile, octubre 2026), perfiles públicos de TikTok y estimaciones de tráfico de Semrush.</footer>
+
+<script>
+const tH=document.getElementById('tHoy'),tC=document.getElementById('tCat');
+function show(cat){
+  document.getElementById('vHoy').hidden=cat;document.getElementById('vCat').hidden=!cat;
+  document.getElementById('stepsHoy').hidden=cat;document.getElementById('stepsCat').hidden=!cat;
+  tH.setAttribute('aria-pressed',!cat);tC.setAttribute('aria-pressed',cat);
+}
+tH.onclick=()=>show(false);tC.onclick=()=>show(true);
+</script>
+
+</html>
