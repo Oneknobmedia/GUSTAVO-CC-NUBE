@@ -183,6 +183,11 @@ td.tt.big{color:var(--orange);font-weight:700}
 .cmp .hd.c1h{font-size:13px;letter-spacing:0;justify-content:flex-start;text-align:left;padding-left:10px}
 @media(min-width:480px){.cmp .hd.c1h{font-size:15px}}
 @media(max-width:420px){.cmp{grid-template-columns:minmax(0,1fr) 92px 92px!important}.cmp .hd{font-size:11px;letter-spacing:0;padding-inline:2px}}
+@property --a{syntax:"<angle>";initial-value:0deg;inherits:false}
+#cmp{position:relative}
+.cmp .hl{position:absolute;left:0;pointer-events:none;border-radius:10px;padding:3px;z-index:2;background:conic-gradient(from var(--a),transparent 0deg,transparent 200deg,rgba(242,138,30,.15) 240deg,#f28a1e 320deg,#ff9f40 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);animation:hlspin 7s linear infinite;filter:drop-shadow(0 0 4px rgba(242,138,30,.55))}
+@keyframes hlspin{to{--a:360deg}}
+@media(prefers-reduced-motion:reduce){.cmp .hl{animation:none;background:#f28a1e}}
 .cmp .d.n{background:rgba(220,38,38,.1);color:#dc2626;box-shadow:inset 0 0 0 1px #dc2626}
 .cmp .pro .d.y{background:rgba(22,163,74,.16);color:#15803d;box-shadow:inset 0 0 0 1px #16a34a}
 .scorebar{display:grid;grid-template-columns:110px 1fr 48px;gap:10px;align-items:center;font-size:14px}
@@ -525,10 +530,12 @@ const verdicts={
  cheap:'<b>Tienda barata de plantilla</b>: tiene la base, pero casi siempre sale sin herramientas de medición configuradas, sin catálogo conectado y sin precio por mayor. Es una vitrina, no una máquina de ventas.',
  pro:'<b>Tienda online profesional</b>: cumple las 11 capacidades. Se ve rápido en el celular, muestra el precio por mayor, arma el pedido solo, mide cada venta y se conecta a la publicidad. Es la única opción que sirve para vender y para hacer publicidad.'};
 const idx={pdf:1,ext:2,cheap:3,pro:0};
+function hl(){const e=$('cmp'),c=e.querySelector('.c1'),b=e.querySelector('.hl');if(!c||!b)return;b.style.top=c.offsetTop+'px';b.style.height=c.offsetHeight+'px';b.style.width=e.clientWidth+'px'}
+addEventListener('resize',()=>hl());
 function cmp(k){const i=idx[k],P=k==='pro';let s=0;$('cmp').classList.toggle('two',P);
  let h='<div class="hd c1h">Capacidad y oportunidad de venta</div>'+(P?'<div class="hd pro">Tienda online profesional</div>':'<div class="hd">'+labels[k]+'</div><div class="hd pro">Tienda online profesional</div>');
  rows.forEach((r,ri)=>{const v=P?'y':r[i],x='';s+=v==='y'?1:v==='h'?.5:0;h+='<div class="c1">'+r[0]+'</div>'+(P?'<div class="c pro"><span class="d y">✓</span></div>':'<div class="c"><span class="d '+D[v][0]+'">'+D[v][1]+'</span></div><div class="c pro"><span class="d y">✓</span></div>');});
- $('cmp').innerHTML=h;$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*100/rows.length)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
+ $('cmp').innerHTML=h+'<i class="hl"></i>';hl();$('lblA').textContent=labels[k];$('barA').style.width=Math.max(4,s*100/rows.length)+'%';$('scA').textContent=s.toString().replace('.',',');$('verdict').innerHTML=verdicts[k];
  document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k));}
 document.querySelectorAll('.seg button').forEach(b=>b.addEventListener('click',()=>cmp(b.dataset.k)));cmp('pdf');
 
