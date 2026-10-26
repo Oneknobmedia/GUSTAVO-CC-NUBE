@@ -78,8 +78,10 @@ a{color:var(--green)}
 .msg.sys{align-self:center;font-family:var(--f-mono);font-size:11px;color:var(--muted);background:transparent;padding:2px}
 .msg.cold{align-self:flex-start;background:var(--surface-2);color:var(--dim);border:1px dashed var(--dim);border-bottom-left-radius:4px}
 .msg .t{display:block;font-family:var(--f-mono);font-size:10px;opacity:.7;margin-top:4px;text-align:right}
-.alt{margin-top:14px;padding:12px;border-radius:14px;border:1px solid var(--green);background:rgba(47,85,200,.06);font-size:14px}
-.alt b{color:var(--green)}
+.alt{margin-top:14px;padding:12px;border-radius:14px;border:1px solid #16a34a;background:rgba(22,163,74,.08);font-size:14px}
+.alt b{color:#15803d}
+.alt .alt-t{display:block;margin-bottom:6px;font-family:var(--f-display);font-size:14px;color:#16a34a}
+.phone .ante{display:block;margin:0 8px 8px;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
 
 .losses{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px}
 .loss{padding:18px 18px 20px;border-left:3px solid var(--pink);background:var(--surface);border-radius:4px 14px 14px 4px;display:flex;flex-direction:column;gap:6px}
@@ -224,7 +226,7 @@ footer a{color:var(--muted);word-break:break-word}
     <p class="lead">Ese pedido no se perdió por el precio del cable. Se perdió porque <b>el negocio cierra cuando cierras tú</b>, y tu cliente compra cuando tiene tiempo: de noche, en el bus, entre clientes.</p>
   </div>
   <div class="phone" aria-label="Ejemplo de conversación de WhatsApp sin respuesta">
-    <div class="bar"><span>23:41</span><span>Mayorista · en línea hace 6 h</span></div>
+    <span class="ante">Antes · sin tienda</span><div class="bar"><span>23:41</span><span>Mayorista · en línea hace 6 h</span></div>
     <div class="chat">
       <div class="msg sys">HOY</div>
       <div class="msg out">Hola! Vi su video. Necesito 50 cables tipo C y 20 cargadores 20W. ¿Precio por mayor? ¿Envían a Talca?<span class="t">23:40 ✓✓</span></div>
@@ -232,7 +234,7 @@ footer a{color:var(--muted);word-break:break-word}
       <div class="msg sys">8 h 40 min después</div>
       <div class="msg cold">hola, ¿qué necesitas?<span class="t">08:32</span></div>
     </div>
-    <div class="alt"><b>Mientras tanto, en otra pestaña:</b> una tienda con precio por mayor, carrito y despacho a regiones. Pedido hecho a las 23:47.</div>
+    <div class="alt"><span class="alt-t">Tienda online con WhatsApp automático</span><b>Mientras tanto, en otra pestaña:</b> una tienda con precio por mayor, carrito y despacho a regiones. Pedido hecho a las 23:47.</div>
   </div>
 </div></section>
 
