@@ -24,7 +24,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 section{padding-block:clamp(56px,9vw,104px);position:relative}
 section+section::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:var(--grad);opacity:.45}
 h1,h2,h3{font-family:var(--f-display);line-height:1.12;margin:0;text-wrap:balance;letter-spacing:-.01em}
-h1{font-size:clamp(40px,10.5vw,92px);font-weight:900;line-height:1.04}
+h1{font-size:clamp(40px,11.5vw,120px);font-weight:900;line-height:1.04}
 h2{font-size:clamp(19px,2.8vw,27px);font-weight:600;line-height:1.25}
 h3{font-size:clamp(15px,1.8vw,18px);font-weight:600}
 p{margin:0;max-width:65ch}
@@ -47,10 +47,11 @@ a{color:var(--green)}
 
 .heroT{padding:0;height:210svh;background:radial-gradient(90% 60% at 85% 10%,rgba(91,141,239,.35),transparent 60%),radial-gradient(70% 50% at 0% 100%,rgba(242,138,30,.22),transparent 60%),linear-gradient(180deg,#0c1735,#16296b);color:#fff;--fg:#fff;--muted:#c3cdea}
 .heroT>.wrap{position:sticky;top:calc(env(safe-area-inset-top,0px) + 49px);min-height:calc(100svh - 49px);display:flex;flex-direction:column;justify-content:center}
-.heroT .stage{display:flex;flex-direction:column;gap:28px;padding-block:32px}
+.heroT>.wrap{max-width:1400px}
+.heroT .stage{display:flex;flex-direction:column;gap:20px;padding-block:16px}
 .heroT .eyebrow{color:#c3cdea}
 .heroT h1{color:#fff;transform-origin:left center;will-change:transform}
-.heroT h1 .w{display:inline-block;margin-right:.24em}
+.heroT h1 .w{display:inline-block;margin-right:.2em}
 .js .heroT h1 .w{opacity:.16;transform:translateY(.18em);transition:opacity .25s linear,transform .25s ease-out}
 .heroT .hint{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:#c3cdea;transition:opacity .3s}
 .heroT .hint i{display:inline-block;font-style:normal;animation:nudge 1.4s ease-in-out infinite}
@@ -195,7 +196,7 @@ footer a{color:var(--muted);word-break:break-word}
 <!-- ATENCIÓN -->
 <section class="heroT"><div class="wrap"><div class="stage">
   <span class="eyebrow">Preparado para GS Electronic</span>
-  <h1 id="ttl"><span class="w">Tus</span> <span class="w">próximos</span> <span class="w">clientes</span> <span class="w">ya</span> <span class="w">están</span> <span class="w">mirando</span> <span class="w">el</span> <span class="w">celular.</span> <span class="w" style="color:#f28a1e">La</span> <span class="w" style="color:#f5a04a">pregunta</span> <span class="w" style="color:#f5b97d">es</span> <span class="w" style="color:#8fb2f5">qué</span> <span class="w" style="color:#6f9cf3">catálogo</span> <span class="w" style="color:#5fd0ff">ven.</span></h1>
+  <h1 id="ttl"><span class="w">Todo</span> <span class="w">el</span> <span class="w">mundo</span> <span class="w">en</span> <span class="w">Estación</span> <span class="w">Central</span> <span class="w">está</span> <span class="w">mirando</span> <span class="w">el</span> <span class="w">celular.</span> <span class="w" style="color:#f28a1e">La</span> <span class="w" style="color:#f5a04a">pregunta</span> <span class="w" style="color:#f5b97d">es:</span> <span class="w" style="color:#8fb2f5">¿el</span> <span class="w" style="color:#6f9cf3">catálogo</span> <span class="w" style="color:#6f9cf3">de</span> <span class="w" style="color:#5fd0ff">quién</span> <span class="w" style="color:#5fd0ff">están</span> <span class="w" style="color:#5fd0ff">mirando?</span></h1>
   <span class="hint" id="hint">Desliza <i>↓</i></span>
 </div></div></section>
 
@@ -450,6 +451,11 @@ $('copyBtn').addEventListener('click',()=>{const t=$('kw').textContent;
  try{navigator.clipboard.writeText(t).then(()=>{$('copyMsg').textContent='Copiado. Pégalo en tu respuesta.';},sel);}catch(e){sel();}});
 
 document.documentElement.classList.add('js');
+function fitTitle(){const h=$('ttl'),st=h.parentElement;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+ const others=[...st.children].filter(e=>e!==h).reduce((a,e)=>a+e.offsetHeight,0),gap=40,
+ avail=innerHeight-49-others-gap-32;let lo=24,hi=200;
+ while(hi-lo>1){const m=(lo+hi)>>1;h.style.fontSize=m+'px';if(h.offsetHeight<=avail)lo=m;else hi=m;}h.style.fontSize=lo+'px';}
+fitTitle();addEventListener('resize',fitTitle);document.fonts&&document.fonts.ready.then(fitTitle);
 (function(){const st=document.querySelector('.heroT'),ws=[...st.querySelectorAll('h1 .w')],h=$('ttl'),hint=$('hint');
  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
  let tk=false;function upd(){tk=false;const r=st.getBoundingClientRect(),span=r.height-innerHeight;
